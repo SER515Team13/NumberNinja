@@ -38,10 +38,8 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let element">
-            <div>
-                    <button class="btn btn-primary" ng-click="updateUser()">Accept</button>
-                    <button class="btn btn-danger" ng-click="deleteUser(userToEdit)"><i class="icon-trash"></i> Delete</button>
-                  </div>  
+                    <button type="button"  class="btn btn-primary" (click)="updateUser(element)">Accept</button>
+                    <button type="button"  class="btn btn-danger" (click)="deleteUser(element)"> Delete</button>
       </mat-cell>
     </ng-container>
   
