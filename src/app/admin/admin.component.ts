@@ -3,16 +3,29 @@ import {FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
 
 export interface User {
-  name: string;
-  position: number;
+  firstName: string;
+  lastName: string;
+  email: string;
   role: string;
-  action: string;
 }
 
 export interface Role {
   name: string;
   value: string;
 }
+
+const ELEMENT_DATA : User[] = [
+  {firstName: 'Aloo',lastName: 'Pakode',email: 'asd@gingle.com', role: 'Student'},
+  {firstName: 'Paratha',lastName: 'Shop',email: 'dada@eat.com', role: ''},
+  {firstName: 'Abhinaw',lastName: 'Sarang',email: 'scrummaster@gmail.com',  role: 'Student'},
+  {firstName: 'Sukhy',lastName: 'Anand',email: 'Badebhaiya@gmail.com', role: 'Student'},
+  {firstName: 'Smit',lastName: 'Shah',email: 'librarian@library.com', role: 'Student'},
+  {firstName: 'Saksham',lastName: 'Jhawar',email: 'chotebhaiya@gmail.com', role: 'Teacher'},
+  {firstName: 'Sagar',lastName: 'Khar',email: 'jagte@raho.com', role: 'Student'},
+  {firstName: 'Abcd',lastName: 'Dsef',email: 'adv@sas.org', role: ''},
+  {firstName: 'asdf',lastName: 'sdf',email: 'wee3@eee.eed', role: 'Teacher'},
+  {firstName: 'ded',lastName: 'edd',email: 'ded.edd@wer.com', role: 'Student'},
+];
 
 
 @Component({
@@ -23,46 +36,33 @@ export interface Role {
 
 export class AdminComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'action'];
-  
+  constructor() {
+  }
+
+  ngOnInit() {
+    }
+
+  dataSource =  new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'role', 'action'];
+
   roles  = ['Student' , 'Teacher'];
-
-  ELEMENT_DATA : User[] = [
-    {position: 1, name: 'Hydrogen', role: 'Student', action: 'A'},
-    {position: 2, name: 'Helium', role: '', action: 'A'},
-    {position: 3, name: 'Lithium', role: 'Student', action: 'A'},
-    {position: 4, name: 'Beryllium', role: 'Student', action: 'A'},
-    {position: 5, name: 'Boron', role: 'Student', action: 'A'},
-    {position: 6, name: 'Carbon', role: 'Teacher', action: 'A'},
-    {position: 7, name: 'Nitrogen', role: 'Student', action: 'A'},
-    {position: 8, name: 'Oxygen', role: '', action: 'A'},
-    {position: 9, name: 'Fluorine', role: 'Teacher', action: 'D'},
-    {position: 10, name: 'Neon', role: 'Student', action: 'A'},
-  ];
-
-
-  public dataSource =  new MatTableDataSource(this.ELEMENT_DATA);
 
   roleControl = new FormControl('', [ Validators.required]);
   changeDetectorRefs: any;
 
- deleteUser( selectedUser : User){
+ public deleteUser( selectedUser : User){
   
   const index: number = this.dataSource.data.indexOf(selectedUser);
-  
+  const data = this.dataSource.data;
   if (index !== -1) {
-    console.log(index + " "+ selectedUser.name + " is deleted");
-    this.dataSource.data.splice(index, 1);
-    console.log(this.dataSource.data.length);
+    console.log(index + " "+ selectedUser.firstName + " is deleted");
+    //const dsData = this.dataSource.data;
+    //const itemIndex = dsData.findIndex(selectedUser);
+    data.splice(index, 1);
+    this.dataSource.data = data;
   }
  }
 
-  constructor() { 
-
-  }
-
-  ngOnInit() {
- this.dataSource;
-  }
+  
 
 }
