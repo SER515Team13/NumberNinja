@@ -44,7 +44,7 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let element">
-                    <button mat-button class="btn btn-primary" >Accept</button>
+                    <button mat-button class="btn btn-primary" (click)="acceptUser(element)">Accept</button>
                     <button mat-button (click)="deleteUser(element)">Reject</button>
       </mat-cell>
     </ng-container>
