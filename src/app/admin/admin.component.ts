@@ -9,10 +9,9 @@ export interface User {
   role: string;
 }
 
-export interface Role {
-  name: string;
-  value: string;
-}
+const userRoles : String[] = [ 'Student',
+'Teacher'
+];
 
 const ELEMENT_DATA : User[] = [
   {firstName: 'Aloo',lastName: 'Pakode',email: 'asd@gingle.com', role: 'Student'},
@@ -40,27 +39,25 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    }
+  }
+
+  roles : String[] = userRoles;
 
   dataSource =  new MatTableDataSource(ELEMENT_DATA);
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'role', 'action'];
-
-  roles  = ['Student' , 'Teacher'];
+  displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
 
   roleControl = new FormControl('', [ Validators.required]);
-  changeDetectorRefs: any;
 
- public deleteUser( selectedUser : User){
+
+ public deleteUser( selectedUser : User) {
   
-  const index: number = this.dataSource.data.indexOf(selectedUser);
-  const data = this.dataSource.data;
-  if (index !== -1) {
-    console.log(index + " "+ selectedUser.firstName + " is deleted");
-    //const dsData = this.dataSource.data;
-    //const itemIndex = dsData.findIndex(selectedUser);
-    data.splice(index, 1);
-    this.dataSource.data = data;
-  }
+    const index: number = this.dataSource.data.indexOf(selectedUser);
+    const data = this.dataSource.data;
+    if (index !== -1) {
+      console.log(index + " "+ selectedUser.firstName + " is deleted");
+      data.splice(index, 1);
+      this.dataSource.data = data;
+    }
  }
 
   
