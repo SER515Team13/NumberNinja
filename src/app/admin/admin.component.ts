@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
+import { HttpService } from "../shared/http.services";
+
 
 export interface User {
   name: string;
@@ -43,6 +45,8 @@ export class AdminComponent implements OnInit {
 
   public dataSource =  new MatTableDataSource(this.ELEMENT_DATA);
 
+  constructor(public http: HttpService) {}
+
   roleControl = new FormControl('', [ Validators.required]);
   changeDetectorRefs: any;
 
@@ -54,15 +58,27 @@ export class AdminComponent implements OnInit {
     console.log(index + " "+ selectedUser.name + " is deleted");
     this.dataSource.data.splice(index, 1);
     console.log(this.dataSource.data.length);
+    this.triggerEmail(selectedUser, false);
   }
- }
+}
 
-  constructor() { 
-
+triggerEmail (currentUser : User, requestAccepted : boolean) {
+  let user = {
+    name: currentUser.name,
+    email: "asarang@asu.edu",
+    requestAccepted: requestAccepted
   }
+  this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
+    data => {
+      let res:any = data; 
+      console.log("Mail has been sent to the user."
+     );
+    }
+  );
+}
 
   ngOnInit() {
- this.dataSource;
+    this.dataSource;
   }
 
 }
