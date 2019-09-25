@@ -6,13 +6,13 @@ import { HttpClient } from "@angular/common/http";
 })
 export class HttpService {
   test = "Your server is running";
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   httpGet(url) {
     return this.http.get(url);
   }
 
-  httpPost(url, {}) {
+  httpPost(url, { }) {
     return this.http.post(url, { name: "Number Ninja" });
   }
 

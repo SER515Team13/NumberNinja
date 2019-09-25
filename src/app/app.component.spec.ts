@@ -1,15 +1,28 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import {AdminComponent} from './admin/admin.component';
+import { MatTableModule } from '@angular/material/table';
+import {MatSelectModule } from '@angular/material/select';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatSelectModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        AdminComponent
       ],
     }).compileComponents();
   }));
@@ -26,7 +39,8 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('NumberNinja');
   });
 
-  it('should render title', () => {
+  //The app.component.html was modifies to remove unnecessary things, this test in not valid anymore.
+  xit('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
