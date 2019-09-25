@@ -87,8 +87,7 @@ export class AdminComponent implements OnInit {
     this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
       data => {
         let res: any = data;
-        console.log("Mail has been sent to the user."
-        );
+        console.log("Mail has been sent to the user.");
       }
     );
   }
