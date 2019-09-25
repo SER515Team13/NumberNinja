@@ -52,10 +52,9 @@ export class AdminComponent implements OnInit {
 
   public acceptUser(selectedUser: User) {
 
-    const index: number = this.dataSource.data.indexOf(selectedUser);
     const data = this.dataSource.data;
+    const index: number = data.indexOf(selectedUser);
     if (index !== -1) {
-      console.log(index + " " + selectedUser.firstName + " is deleted");
       data.splice(index, 1);
       this.dataSource.data = data;
       this.triggerEmail(selectedUser, true);
@@ -66,14 +65,13 @@ export class AdminComponent implements OnInit {
 
   public deleteUser(selectedUser: User) {
 
-    const index: number = this.dataSource.data.indexOf(selectedUser);
     const data = this.dataSource.data;
+    const index: number = data.indexOf(selectedUser);
+    
     if (index !== -1) {
-      console.log(index + " " + selectedUser.firstName + " is deleted");
       data.splice(index, 1);
       this.dataSource.data = data;
       this.triggerEmail(selectedUser, false);
-
     }
   }
 
@@ -87,8 +85,7 @@ export class AdminComponent implements OnInit {
     this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
       data => {
         let res: any = data;
-        console.log("Mail has been sent to the user."
-        );
+        console.log("Mail has been sent to the user.");
       }
     );
   }
