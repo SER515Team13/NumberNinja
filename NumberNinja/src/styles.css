@@ -2,7 +2,7 @@
 button.btn-submit{
     background-color: #38547b;
     color: #fff;
-    width: 100%;
+    width: 25%;
 }
 button.btn-submit:focus,button.btn-submit:hover{
     background-color: #38547b;
