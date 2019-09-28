@@ -11,7 +11,7 @@ import { UserService } from '../../shared/user.service';
 })
 export class SignUpComponent implements OnInit {
   user: User;
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+  emailPattern = "^[a-zA-Z0-9_\-.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$";
 
   constructor(private userService: UserService, private toastr: ToastrService) { }
 

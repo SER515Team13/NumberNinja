@@ -3,26 +3,27 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mongoose = require('mongoose');
+var cors = require('cors');
 
 var app = express();
 
-// Add mongoose 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://Sukhpreet:Sukhpreet@numberninjadatabase-xl9uv.mongodb.net/UsersDB?retryWrites=true&w=majority');
+const MongoDBConnectionString = 'mongodb+srv://Sukhpreet:Sukhpreet@numberninjadatabase-xl9uv.mongodb.net/UsersDB?retryWrites=true&w=majority'; 
+const CorsOrigin = 'http://localhost:4200';
 
+// Connect to MongoDB database using mongoose
+mongoose.connect(MongoDBConnectionString);
 mongoose.connection.once('open', function() {
   console.log('Connection to database has been made!');
 }).on('error', function(error) {
   console.log('Connection error: ',error);
 })
 
-// Add CORS 
-var cors = require('cors');
+// Use cross origin resource sharing
 app.use(cors({
-  origin:'http://localhost:4200'
+  origin: CorsOrigin
 }));
 
 // view engine setup

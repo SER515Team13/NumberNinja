@@ -3,6 +3,10 @@ var router = express.Router();
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
 
+/* POST API to register user details to users collection of 
+ * MongoDB database and also check whether the user's email
+ * is registered before.
+ */
 router.post('/register',  function(req,res,next){
   var user = new User({
     email: req.body.Email,
@@ -14,11 +18,11 @@ router.post('/register',  function(req,res,next){
     creation_dt: Date.now()
   });
 
-  console.log("Email: "+req.body.Email);
-  console.log("UserName: "+req.body.UserName);
-  console.log("Password: "+req.body.Password);
-  console.log("FirstName: "+req.body.FirstName);
-  console.log("LastName: "+req.body.LastName);
+  console.log("Email: "+ req.body.Email);
+  console.log("UserName: "+ req.body.UserName);
+  console.log("Password: "+ req.body.Password);
+  console.log("FirstName: "+ req.body.FirstName);
+  console.log("LastName: "+ req.body.LastName);
 
   let promise = User.findOne({email:req.body.Email}).exec();
   promise.then(function(doc) {
@@ -42,11 +46,16 @@ router.post('/register',  function(req,res,next){
   })
 })
 
+/* POST API to login user details from users collection of 
+ * MongoDB database and checks whether user is already registered
+ * or not. It also generates an authentication token to verify 
+ * the user's signin session.
+ */
 router.post('/login', function(req,res,next) {
   let promise = User.findOne({email:req.body.Email}).exec();
 
-  console.log("Email: "+req.body.Email);
-  console.log("Password: "+req.body.Password);
+  console.log("Email: "+ req.body.Email);
+  console.log("Password: "+ req.body.Password);
 
   promise.then(function(doc) {
     if(doc) {
@@ -69,6 +78,9 @@ router.post('/login', function(req,res,next) {
   })
 })
 
+/* GET API to verify and fetch the decoded authentication token 
+ * of user's login session.
+ */
 router.get('/verifyToken', verifyToken, function(req,res,next){
   return res.status(200).json(decodedToken.Email);
 })

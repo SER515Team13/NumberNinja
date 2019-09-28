@@ -10,12 +10,15 @@ export class AuthInterceptor implements HttpInterceptor {
 
     constructor(private router: Router) { }
 
+    /* HttpInterceptors allow us to modify HTTP requests within 
+     * our application. This intercept function is used to add 
+     * an authorization header to each request.
+     */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (req.headers.get('No-Auth') == "True")
             return next.handle(req.clone());
 
         if (localStorage.getItem('userToken') != null) {
-            console.log("Hello");
             const clonedreq = req.clone({
                 headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('userToken'))
             });

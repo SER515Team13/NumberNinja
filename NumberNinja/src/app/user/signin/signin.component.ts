@@ -13,17 +13,15 @@ export class SignInComponent implements OnInit {
   isLoginError : boolean = false;
   constructor(private userService : UserService, private router : Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  OnSubmit(email,password){
-      this.userService.userAuthentication(email,password).subscribe((data : any)=>{
-      localStorage.setItem('userToken',data.access_token);
+  OnSubmit(email, password) {
+      this.userService.userAuthentication(email, password).subscribe((data: any) => {
+      localStorage.setItem('userToken', data.access_token);
       this.router.navigate(['/home']);
     },
-    (err : HttpErrorResponse) => {
+    (err: HttpErrorResponse) => {
       this.isLoginError = true;
     });
   }
-
 }

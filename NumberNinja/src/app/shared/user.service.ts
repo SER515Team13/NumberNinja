@@ -10,7 +10,7 @@ export class UserService {
   readonly rootUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
-  registerUser(user: User) {
+  registerUser(user: User): Observable<{}> {
     const body: User = {
       UserName: user.UserName,
       Password: user.Password,
@@ -22,7 +22,7 @@ export class UserService {
     return this.http.post(this.rootUrl + '/users/register', body,{headers:reqHeader });
   }
 
-  userAuthentication(email, password) {
+  userAuthentication(email, password): Observable<{}> {
     const body: any = {
       Email: email,
       Password: password
@@ -31,7 +31,7 @@ export class UserService {
     return this.http.post(this.rootUrl + '/users/login', body, { headers: reqHeader });
   }
 
-  validateToken() {
+  validateToken(): Observable<{}> {
     return this.http.get(this.rootUrl + '/users/verifyToken', {
       observe: 'body',
       params: new HttpParams().append('token', localStorage.getItem('userToken'))
