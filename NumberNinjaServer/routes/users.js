@@ -10,12 +10,12 @@ var jwt = require('jsonwebtoken');
 router.post('/register',  function(req,res,next){
   var user = new User({
     email: req.body.Email,
-    username: req.body.UserName,
+    userName: req.body.UserName,
     password: User.hashPassword(req.body.Password),
-    firstname: req.body.FirstName,
-    lastname: req.body.LastName,
+    firstName: req.body.FirstName,
+    lastName: req.body.LastName,
     role: null,
-    creation_dt: Date.now()
+    creationDate: Date.now()
   });
 
   console.log("Email: "+ req.body.Email);
