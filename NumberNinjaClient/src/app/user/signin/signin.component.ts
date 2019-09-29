@@ -1,4 +1,3 @@
-  
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./signin.component.css']
 })
 export class SignInComponent implements OnInit {
-  isLoginError : boolean = false;
-  constructor(private userService : UserService, private router : Router) { }
+  isLoginError = false;
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {}
 

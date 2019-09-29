@@ -17,17 +17,17 @@ export class UserService {
       Email: user.Email,
       FirstName: user.FirstName,
       LastName: user.LastName
-    }
-    var reqHeader = new HttpHeaders({'No-Auth':'True'});
-    return this.http.post(this.rootUrl + '/users/register', body,{headers:reqHeader });
+    };
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+    return this.http.post(this.rootUrl + '/users/register', body, {headers: reqHeader });
   }
 
   userAuthentication(email, password): Observable<{}> {
     const body: any = {
       Email: email,
       Password: password
-    }
-    var reqHeader = new HttpHeaders({'No-Auth':'True' });
+    };
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/login', body, { headers: reqHeader });
   }
 
@@ -37,5 +37,4 @@ export class UserService {
       params: new HttpParams().append('token', localStorage.getItem('userToken'))
     });
   }
-
 }

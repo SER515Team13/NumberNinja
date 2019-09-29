@@ -14,10 +14,16 @@ addons:
 
 cache:
   directories:
-     - ./node_modules
+     - ./NumberNinjaClient/node_modules
+
+before_install:
+  - cd ./NumberNinjaClient
 
 install:
   - npm install
+
+before_script:
+  - cd ./NumberNinjaClient
 
 script:
   - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
