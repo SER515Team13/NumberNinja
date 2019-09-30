@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
 import { HttpService } from "../shared/http.services";
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 export interface User {
@@ -43,9 +45,9 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
   }
+  readonly rootUrl = 'http://localhost:3000';
 
-  constructor(public http: HttpService) {
-  }
+  constructor(public http: HttpClient) { }
 
   public acceptUser(selectedUser: User) {
     const data = this.dataSource.data;
@@ -53,7 +55,12 @@ export class AdminComponent implements OnInit {
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
-      this.triggerEmail(selectedUser, true);
+      this.triggerEmail(selectedUser, true).subscribe(
+        data => {
+          let res: any = data;
+          console.log("Mail has been sent to the user.");
+        });
+
     }
   }
 
@@ -64,21 +71,24 @@ export class AdminComponent implements OnInit {
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
-      this.triggerEmail(selectedUser, false);
+      this.triggerEmail(selectedUser, false).subscribe(
+        data => {
+          let res: any = data;
+          console.log("Mail has been sent to the user.");
+        });
     }
   }
 
-  triggerEmail(currentUser: User, requestAccepted: boolean) {
-    let user = {
+
+  triggerEmail(currentUser: User, requestAccepted: boolean): Observable<{}> {
+    console.log("Sending email to the User.");
+    let body = {
       name: currentUser.firstName,
       email: currentUser.email,
       requestAccepted: requestAccepted
     }
-    this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
-      data => {
-        let res: any = data;
-        console.log("Mail has been sent to the user.");
-      }
-    );
+    //return this.http.sendEmail("http://localhost:3000/sendmail", body)
+    const reqHeader = new HttpHeaders({ 'No-Auth': 'True' });
+    return this.http.post(this.rootUrl + '/sendmail', body, { headers: reqHeader });
   }
 }

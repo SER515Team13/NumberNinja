@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const emailRouter = require('./routes/email');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -36,7 +37,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
+app.use('/sendmail', emailRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -57,60 +60,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-/*
- Below the the server code to control email sending to user
-*/
-app.use(bodyParser.json());
-app.get('/', (req, res) => {
-  res.send(
-    'Number Ninja'
-  );
-});
-
-app.post('/sendmail', (req, res) => {
-  console.log('request came');
-  let currentUser = req.body;
-  sendMail(currentUser, info => {
-    console.log('The mail has been sent and the message id is ${info.messageId}');
-    res.send(info);
-  });
-});
-
-async function sendMail(currentUser, callback) {
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: details.email,
-      pass: details.password
-    }
-  });
-
-  let mailOptionsAccepted = {
-    from: "'Number Ninja'<numberninjateam13@gmail.com>", // sender address
-    to: currentUser.email, // list of receivers
-    subject: 'NumberNinja registration approved!', // Subject line
-    html: `<h1>Hi ${currentUser.name}</h1><br>
-    <h4>Your registration for NumberNinja has been approved.</n>
-    You may sign in to your account using the credentials you provided during registration.</n>
-    Welcome aboard!</h4>
-    <h4>~ Number Ninja Admin Team</h4>`
-  };
-
-  let mailOptionsRejected = {
-    from: "'Number Ninja'<numberninjateam13@gmail.com>", // sender address
-    to: currentUser.email, // list of receivers
-    subject: 'NumberNinja registration not approved', // Subject line
-    html: `<h1>Hi ${currentUser.name}</h1><br>
-    <h4>You have not been authorized to you this application. Your details did not match any Student / Teacher records in the school.</h4>
-    <h4>~ Number Ninja Admin Team</h4>`
-  };
-
-  // send mail with defined transport object
-  let info = currentUser.requestAccepted ? await transporter.sendMail(mailOptionsAccepted) : await transporter.sendMail(mailOptionsRejected);
-
-  callback(info);
-}
