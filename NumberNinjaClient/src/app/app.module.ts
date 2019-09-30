@@ -15,6 +15,10 @@ import { SignUpComponent } from './user/signup/signup.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { AdminComponent } from './admin/admin.component';
+//import { AppRoutingModule } from './app-routing.module';
+import { MatTableModule } from '@angular/material' ;
+import {MatSelectModule} from '@angular/material/select'; 
 
 
 @NgModule({
@@ -23,7 +27,8 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     SignUpComponent,
     UserComponent,
     SignInComponent,
-    HomeComponent
+    HomeComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +36,11 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     HttpClientModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    //AppRoutingModule,
+    MatTableModule,
+    ReactiveFormsModule,
+    MatSelectModule,
   ],
   providers: [UserService, AuthGuard,
     {
