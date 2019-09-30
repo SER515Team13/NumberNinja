@@ -7,11 +7,8 @@ describe('workspace-project App', () => {
   beforeEach(() => {
     page = new AppPage();
   });
-
-<<<<<<< HEAD:e2e/src/app.e2e-spec.ts
-=======
+  
   // This is not a valid test anymore
->>>>>>> develop:NumberNinjaClient/e2e/src/app.e2e-spec.ts
   xit('should display welcome message', () => {
     page.navigateTo();
     expect(page.getTitleText()).toEqual('NumberNinja app is running!');
