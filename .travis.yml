@@ -14,7 +14,10 @@ addons:
 
 cache:
   directories:
-     - ./node_modules
+     - ./NumberNinjaClient/node_modules
+
+before_install:
+  - cd ./NumberNinjaClient
 
 install:
   - npm install
