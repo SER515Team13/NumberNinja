@@ -5,14 +5,14 @@ import { MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule } from 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToollbarComponent } from './toollbar/toollbar.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TeachertoolbarComponent } from './teachertoolbar/teachertoolbar.component';
 import { AdmintoolbarComponent } from './admintoolbar/admintoolbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToollbarComponent,
+    ToolbarComponent,
     TeachertoolbarComponent,
     AdmintoolbarComponent
   ],
