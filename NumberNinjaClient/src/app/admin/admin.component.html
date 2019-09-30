@@ -1,0 +1,57 @@
+<div>
+        <h2 align="center">Hi Admin</h2>
+</div>
+<h3>Role Assignment For Pending Accounts :</h3>
+
+<section class='tableSection'>
+        <mat-table [dataSource]="dataSource" class="matTable">
+
+                <!--First Name Column -->
+                <ng-container matColumnDef="firstName">
+                        <mat-header-cell *matHeaderCellDef>First Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+                </ng-container>
+
+                <!--Last Name Column -->
+                <ng-container matColumnDef="lastName">
+                        <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                </ng-container>
+
+                <!-- Role Column -->
+                <ng-container matColumnDef="role">
+                        <mat-header-cell *matHeaderCellDef>User Role*</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                                <mat-form-field>
+                                        <mat-select required [(ngModel)]="element.role">
+                                                <mat-option>--</mat-option>
+                                                <mat-option [value]="role" *ngFor="let role of roles">
+                                                        {{role}}
+                                                </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="roleControl.hasError('required')">Please choose a role
+                                        </mat-error>
+                                </mat-form-field>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                                <button mat-button class="btn btn-primary" (click)="acceptUser(element)">Accept</button>
+                                <button mat-button class="btn btn-danger" (click)="deleteUser(element)">Reject</button>
+                        </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+</section>
