@@ -92,18 +92,20 @@ async function sendMail(currentUser, callback) {
   let mailOptionsAccepted = {
     from: "'Number Ninja'<numberninjateam13@gmail.com>", // sender address
     to: currentUser.email, // list of receivers
-    subject: 'Welcome to Number Ninja !!!', // Subject line
+    subject: 'NumberNinja registration approved!', // Subject line
     html: `<h1>Hi ${currentUser.name}</h1><br>
-    <h4>Thanks for joining us</h4>
+    <h4>Your registration for NumberNinja has been approved.</n>
+    You may sign in to your account using the credentials you provided during registration.</n>
+    Welcome aboard!</h4>
     <h4>~ Number Ninja Admin Team</h4>`
   };
 
   let mailOptionsRejected = {
     from: "'Number Ninja'<numberninjateam13@gmail.com>", // sender address
     to: currentUser.email, // list of receivers
-    subject: 'We are Sorry !!!', // Subject line
+    subject: 'NumberNinja registration not approved', // Subject line
     html: `<h1>Hi ${currentUser.name}</h1><br>
-    <h4>You have not be authorized for requested role. Thanks for trying, Hope to see you again.</h4>
+    <h4>You have not been authorized to you this application. Your details did not match any Student / Teacher records in the school.</h4>
     <h4>~ Number Ninja Admin Team</h4>`
   };
 

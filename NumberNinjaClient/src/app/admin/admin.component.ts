@@ -36,45 +36,37 @@ const ELEMENT_DATA: User[] = [
 })
 
 export class AdminComponent implements OnInit {
+  private roles: String[] = userRoles;
+  private dataSource = new MatTableDataSource(ELEMENT_DATA);
+  private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
+  private roleControl = new FormControl('', [Validators.required]);
 
   ngOnInit() {
   }
 
-  roles: String[] = userRoles;
-
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
-
-  constructor(public http: HttpService) { }
-
-  roleControl = new FormControl('', [Validators.required]);
-
+  constructor(public http: HttpService) {
+  }
 
   public acceptUser(selectedUser: User) {
-
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedUser);
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
       this.triggerEmail(selectedUser, true);
-
     }
   }
 
-
   public deleteUser(selectedUser: User) {
-
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedUser);
-    
+
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
       this.triggerEmail(selectedUser, false);
     }
   }
-
 
   triggerEmail(currentUser: User, requestAccepted: boolean) {
     let user = {
@@ -89,5 +81,4 @@ export class AdminComponent implements OnInit {
       }
     );
   }
-
 }

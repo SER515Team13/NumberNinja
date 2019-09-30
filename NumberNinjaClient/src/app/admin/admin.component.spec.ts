@@ -50,14 +50,12 @@ describe('AdminComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('.mat-header-cell')).length).toEqual(5);
   });
 
-  //Need further work.
-  xit('should have accept and reject buttons', () => {
+  it('should have accept and reject buttons', () => {
     const compiledDom = fixture.debugElement.nativeElement;
     compiledDom.querySelector('mat-cell').click();
     fixture.detectChanges();
-    for (let entry of fixture.debugElement.queryAll(By.css('.cdk-column-action'))) {
-      expect(entry.queryAll(By.css('.btn btn-primary')).length).toEqual(2);
-
+    for (let entry of fixture.debugElement.queryAll(By.css('.mat-cell.mat-column-action'))) {
+      expect(entry.queryAll(By.css('.btn')).length).toEqual(2);
     }
   });
 });
