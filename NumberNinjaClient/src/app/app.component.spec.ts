@@ -39,7 +39,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('NumberNinja');
   });
 
-  //The app.component.html was modifies to remove unnecessary things, this test in not valid anymore.
+  // The app.component.html was modifies to remove unnecessary things, this test in not valid anymore.
   xit('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();

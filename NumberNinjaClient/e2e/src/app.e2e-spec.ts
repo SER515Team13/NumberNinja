@@ -8,7 +8,7 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-//Not a valid test anymore.
+  // This is not a valid test anymore
   xit('should display welcome message', () => {
     page.navigateTo();
     expect(page.getTitleText()).toEqual('NumberNinja app is running!');
