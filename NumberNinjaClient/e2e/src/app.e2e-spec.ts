@@ -7,7 +7,7 @@ describe('workspace-project App', () => {
   beforeEach(() => {
     page = new AppPage();
   });
-
+  
   // This is not a valid test anymore
   xit('should display welcome message', () => {
     page.navigateTo();

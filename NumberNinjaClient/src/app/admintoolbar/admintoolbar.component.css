@@ -1,0 +1,8 @@
+.navbar {
+    margin-top: 1px;
+    padding: 1px;
+}
+.navbar-brand {
+    font-family: lobster;
+    font-style: italic;  
+}
