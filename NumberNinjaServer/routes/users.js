@@ -59,39 +59,46 @@ router.post('/login', function(req,res,next) {
 
   promise.then(function(doc) {
     if(doc) {
-      console.log("isValid: "+ doc.isValid(req.body.Password));
+
+      if(doc.role == null) {
+        return res.status(501).json({message: 'User account is not approved yet.'});
+      }
+
       if(doc.isValid(req.body.Password)) {
         // generate token
-        let token = jwt.sign({Email:doc.Email},'secret', {expiresIn : '3h'});
-        return res.status(200).json(token);
+        let token = jwt.sign({Email:doc.Email}, 'secret', {expiresIn : '3h'});
+        let userRole = doc.role;
+        console.log(token);
+        return res.status(200).json({token: token, role: userRole});
       } else {
-        return res.status(501).json({message:' Invalid Credentials'});
+        return res.status(501).json({message: 'Incorrect email or password.'});
       }
     } else {
-      return res.status(501).json({message:'User email is not registered.'});
+      return res.status(501).json({message: 'User email is not registered.'});
     }
   });
 
   promise.catch(function(err) {
     console.log("promise catch");
-    return res.status(501).json({message:'Some internal error'});
+
+    return res.status(501).json({message: 'Some internal error'});
   })
 })
 
 /* GET API to verify and fetch the decoded authentication token 
  * of user's login session.
  */
-router.get('/verifyToken', verifyToken, function(req,res,next){
+router.get('/verifyToken', verifyToken, function(req,res,next) {
   return res.status(200).json(decodedToken.Email);
 })
 
 var decodedToken='';
-function verifyToken(req,res,next){
+function verifyToken(req,res,next) {
   let token = req.query.token;
 
   jwt.verify(token,'secret', function(err, tokendata) {
     if (err) {
-      return res.status(400).json({message:' Unauthorized request'});
+      return res.status(400).json({message: 'Unauthorized request'});
     }
     if (tokendata) {
       decodedToken = tokendata;
