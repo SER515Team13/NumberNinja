@@ -19,7 +19,14 @@ export class AuthGuard implements CanActivate {
         console.log("User token exists.");
         if (this.userService.validateToken()) {
           console.log("User token is valid.");
-          return true;
+          if (localStorage.getItem('userRole') == String(next.url)) {
+            return true;
+          } else {
+            this.router.navigate(['/'+localStorage.getItem('userRole')]);
+            return false;
+          }
+          //console.log(next.url + " | " + state);
+          //return true;
         }
       }
       this.router.navigate(['/login']);

@@ -18,10 +18,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
 //import { AppRoutingModule } from './app-routing.module';
 import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule } from '@angular/material' ;
-import {MatSelectModule} from '@angular/material/select';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { TeachertoolbarComponent } from './teachertoolbar/teachertoolbar.component';
-import { AdmintoolbarComponent } from './admintoolbar/admintoolbar.component'; 
+import { MatSelectModule } from '@angular/material/select';
+import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
+import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
+import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.component';
+import { TeacherComponent } from './teacher/teacher.component';
+import { StudentComponent } from './student/student.component'; 
 
 
 @NgModule({
@@ -32,9 +34,11 @@ import { AdmintoolbarComponent } from './admintoolbar/admintoolbar.component';
     SignInComponent,
     HomeComponent,
     AdminComponent,
-    ToolbarComponent,
-    TeachertoolbarComponent,
-    AdmintoolbarComponent
+    StudentToolbarComponent,
+    TeacherToolbarComponent,
+    AdminToolbarComponent,
+    TeacherComponent,
+    StudentComponent
   ],
   imports: [
     BrowserModule,
