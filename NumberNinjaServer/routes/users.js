@@ -1,22 +1,69 @@
+var mongoose = require("mongoose");
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
+var Schema = mongoose.Schema;
+var registrationSchema = new Schema({
+  email: String,
+  userName: String,
+  firstName: String,
+  lastName: String,
+  role: String,
+  creationDate: Date,
+  password: String
+})
 
 /* POST API to register user details to users collection of 
  * MongoDB database and also check whether the user's email
  * is registered before.
  */
-router.post('/register',  function(req,res,next){
-  var user = new User({
-    email: req.body.Email,
-    userName: req.body.UserName,
-    password: User.hashPassword(req.body.Password),
-    firstName: req.body.FirstName,
-    lastName: req.body.LastName,
-    role: null,
-    creationDate: Date.now()
+
+router.get('/getalldata', function(_,res) {
+  console.log("Inside server api");
+
+  // const numberObservable = new Observable((observer) => {
+  //   observer.User.find({},{firstName:1,lastName:1,email:1,role:1}).exec(function(doc) {
+  //     return res.status(200).json(doc);
+  //   });
+  // });
+
+// numberObservable.subscribe(value => console.log(value));
+
+  let promise = User.find({},{firstName:1,lastName:1,email:1,role:1}).exec();
+  promise.then(function(doc) {
+    console.log("insdie promise");
+    console.log(doc);
+    if(doc) {
+      return doc;
+    }
   });
+  // User.find({},{firstName:1,lastName:1,email:1,role:1}).exec(function(err,docs) {
+  //   console.log(docs);
+  //   return res.json(docs);
+  // });
+  // promise.then(function(doc) {
+  //   return doc;
+  // })
+
+})
+ 
+router.post('/register',  function(req,res,next){
+  console.log(req.body);
+  var user = mongoose.model("user",registrationSchema);
+  console.log("hi2");
+  var userToStore = new user({
+    email: req.body.email,
+    userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    role: null,
+    creationDate: Date.now(),
+    password: User.hashPassword(req.body.password)
+  });
+  console.log("hi3");
+
+  console.log(userToStore);
 
   console.log("Email: "+ req.body.Email);
   console.log("UserName: "+ req.body.UserName);
@@ -29,7 +76,7 @@ router.post('/register',  function(req,res,next){
     if(doc) {
       return res.status(501).json({message:'This email is already registered.'});
     } else {
-      let userpromise = user.save();
+      let userpromise = userToStore.save();
 
       userpromise.then(function(doc){
         return res.status(201).json(doc);

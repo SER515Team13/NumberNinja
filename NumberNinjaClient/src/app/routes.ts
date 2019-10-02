@@ -4,6 +4,7 @@ import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './user/signup/signup.component';
 import { SignInComponent } from './user/signin/signin.component';
 import { AuthGuard } from './auth/auth.guard';
+import { AdminComponent } from './admin/admin.component';
 
 export const appRoutes: Routes = [
     {
@@ -15,7 +16,7 @@ export const appRoutes: Routes = [
         children: [{ path: '', component: SignUpComponent }]
     },
     {
-        path: 'login', component: UserComponent,
+        path: 'login', component: AdminComponent,
         children: [{ path: '', component: SignInComponent }]
     },
     {

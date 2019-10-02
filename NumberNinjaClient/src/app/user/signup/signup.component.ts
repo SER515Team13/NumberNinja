@@ -24,16 +24,16 @@ export class SignUpComponent implements OnInit {
       form.reset();
     }
     this.user = {
-      UserName: '',
-      Password: '',
-      Email: '',
-      FirstName: '',
-      LastName: ''
+      userName: '',
+      password: '',
+      email: '',
+      firstName: '',
+      lastName: ''
     };
   }
 
   OnSubmit(form: NgForm) {
-    this.userService.registerUser(form.value)
+    this.userService.registerUser(this.user)
       .subscribe((data: any) => {
         if (data.key !== '') {
           this.resetForm(form);
