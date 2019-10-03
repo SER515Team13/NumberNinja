@@ -35,7 +35,6 @@ export class AdminComponent implements OnInit {
   constructor(public http: HttpClient, private userService:UserService) { }
 
   ngOnInit() {
-    console.log("hii123");
     var userData = this.userService.getAllUserData().subscribe((data: any) => {
       if (data.key !== '') {
         console.log(data);
