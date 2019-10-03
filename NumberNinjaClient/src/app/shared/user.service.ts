@@ -14,24 +14,10 @@ export class UserService {
 
   getAllUserData(): Observable<{}> {
     console.log("Inside client service.");
-    const body = {};
-    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-    return this.http.post(this.rootUrl + '/users/getalldata', body, {headers: reqHeader });
-    // var response;
-    /*
-    let promise = this.http.get(this.rootUrl + '/users/getalldata');
-    console.log("in service layer");
-    return new Promise(resolve=>{
-      this.http.get(this.rootUrl + '/users/getalldata')
-      //  .take(1) //useful if you need the data once and don't want to manually cancel the subscription again
-       .subscribe(
-          (data:any) => {
-              console.log(data);
-              resolve(data);
-       })
-    
-  })*/
-
+    return this.http.get(this.rootUrl + '/users/getalldata', {
+      observe: 'body',
+      params: new HttpParams()
+    });
   }
 
   registerUser(user: User): Observable<{}> {
@@ -44,6 +30,11 @@ export class UserService {
     };
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/register', body, {headers: reqHeader });
+  }
+
+  addDelete(user : User) {
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+    return this.http.post(this.rootUrl + '/users/addRole', user, {headers: reqHeader });
   }
 
   userAuthentication(email, password): Observable<{}> {

@@ -19,34 +19,40 @@ var registrationSchema = new Schema({
  * is registered before.
  */
 
-router.get('/getalldata', function(_,res) {
+router.get('/getalldata', function(req,res,next) {
   console.log("Inside server api");
-
-  // const numberObservable = new Observable((observer) => {
-  //   observer.User.find({},{firstName:1,lastName:1,email:1,role:1}).exec(function(doc) {
-  //     return res.status(200).json(doc);
-  //   });
-  // });
-
-// numberObservable.subscribe(value => console.log(value));
-
-  let promise = User.find({},{firstName:1,lastName:1,email:1,role:1}).exec();
+  console.log(req.body);
+  let promise = User.find({role:null},{firstName:1,lastName:1,email:1,role:1}).exec();
   promise.then(function(doc) {
     console.log("insdie promise");
     console.log(doc);
     if(doc) {
-      return doc;
+      return res.status(200).json(doc);
     }
   });
-  // User.find({},{firstName:1,lastName:1,email:1,role:1}).exec(function(err,docs) {
-  //   console.log(docs);
-  //   return res.json(docs);
-  // });
-  // promise.then(function(doc) {
-  //   return doc;
-  // })
-
 })
+
+router.post('/addRole',function(req,res,next){
+  console.log("inside allrole");
+  var data = req.body;
+  console.log(data);
+  if(data['flag'] === true) {
+    let promise = User.updateOne({email:data.email},{$set:{role:data.role}}).exec();
+    promise.then(function(doc) {
+      if(doc) {
+        return res.status(200).json(doc);
+      }
+    })
+  } else {
+    let promise = User.deleteOne({email:data.email}).exec();
+    promise.then(function(doc) {
+      if(doc) {
+        return res.status(200).json(doc);
+      }
+    })
+  }
+});
+
  
 router.post('/register',  function(req,res,next){
   console.log(req.body);
@@ -71,7 +77,7 @@ router.post('/register',  function(req,res,next){
   console.log("FirstName: "+ req.body.FirstName);
   console.log("LastName: "+ req.body.LastName);
 
-  let promise = User.findOne({email:req.body.Email}).exec();
+  let promise = User.findOne({email:req.body.email}).exec();
   promise.then(function(doc) {
     if(doc) {
       return res.status(501).json({message:'This email is already registered.'});

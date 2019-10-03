@@ -7,7 +7,6 @@ import { AdminComponent } from './admin/admin.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { AuthGuard } from './auth/auth.guard';
-import { AdminComponent } from './admin/admin.component';
 
 export const appRoutes: Routes = [
     {
@@ -31,7 +30,7 @@ export const appRoutes: Routes = [
         children: [{ path: '', component: SignUpComponent }]
     },
     {
-        path: 'login', component: AdminComponent,
+        path: 'login', component: UserComponent,
         children: [{ path: '', component: SignInComponent }]
     },
     {

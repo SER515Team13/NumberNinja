@@ -15,8 +15,8 @@ export interface User {
   role: string;
 }
 
-const userRoles: String[] = ['Student',
-  'Teacher'
+const userRoles: String[] = ['student',
+  'teacher'
 ];
 
 const ELEMENT_DATA: User[] = [
@@ -42,26 +42,47 @@ const ELEMENT_DATA: User[] = [
 export class AdminComponent implements OnInit {
   private roles: String[] = userRoles;
   public allData: User[];
-  private dataSource ;
+  // private dataSource ;
+  private responseFromAPi;
   // private dataSource = this.userService.getAllUserData().subscribe();
+  private dataSource = new MatTableDataSource<User>(this.responseFromAPi);
   private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
   private roleControl = new FormControl('', [Validators.required]);
 
+  constructor(public http: HttpClient, private userService:UserService) { }
+
   ngOnInit() {
     console.log("hii123");
-    var responseFromAPi;
-    var userData = this.userService.getAllUserData();
-    // responseFromAPi = values;
+    var userData = this.userService.getAllUserData().subscribe((data: any) => {
+      if (data.key !== '') {
+        console.log(data);
+      } else {
+        console.log("gaand mara");
+      }
+      this.dataSource = new MatTableDataSource<User>(data);
+    });
+    console.log(userData);
+    this.responseFromAPi = userData;
+    
     // console.log(values)});
     // console.log(responseFromAPi  + "hiiiiii");
   }
   readonly rootUrl = 'http://localhost:3000';
 
-  constructor(public http: HttpClient, private userService:UserService) { }
+  
 
   public acceptUser(selectedUser: User) {
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedUser);
+    var callServertoAddRole = selectedUser;
+    callServertoAddRole['flag'] = true;
+    this.userService.addDelete(callServertoAddRole).subscribe((data:any) => {
+      if(data.key !== '') {
+        console.log(data);
+      } else {
+        console.log("failed");
+      }
+    });
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
@@ -72,12 +93,22 @@ export class AdminComponent implements OnInit {
         });
 
     }
+    console.log(selectedUser);
+    
   }
 
   public deleteUser(selectedUser: User) {
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedUser);
-
+    var callServertoAddRole = selectedUser;
+    callServertoAddRole['flag'] = false;
+    this.userService.addDelete(callServertoAddRole).subscribe((data:any) => {
+      if(data.key !== '') {
+        console.log(data);
+      } else {
+        console.log("failed");
+      }
+    });
     if (index !== -1) {
       data.splice(index, 1);
       this.dataSource.data = data;
@@ -87,6 +118,7 @@ export class AdminComponent implements OnInit {
           console.log("Mail has been sent to the user.");
         });
     }
+    console.log(selectedUser);
   }
 
 
