@@ -57,7 +57,7 @@ export class AdminComponent implements OnInit {
       if (data.key !== '') {
         console.log(data);
       } else {
-        console.log("gaand mara");
+        console.log("");
       }
       this.dataSource = new MatTableDataSource<User>(data);
     });
