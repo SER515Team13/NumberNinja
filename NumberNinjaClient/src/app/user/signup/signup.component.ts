@@ -11,7 +11,7 @@ import { UserService } from '../../shared/user.service';
 })
 export class SignUpComponent implements OnInit {
   user: User;
-  emailPattern = "^[a-zA-Z0-9_\-.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$";
+  emailPattern = "^[a-zA-Z0-9_\\-.]+@[a-zA-Z0-9\\-]+\.[a-zA-Z0-9\\-.]+$";
 
   constructor(private userService: UserService, private toastr: ToastrService) { }
 
@@ -24,22 +24,22 @@ export class SignUpComponent implements OnInit {
       form.reset();
     }
     this.user = {
-      UserName: '',
-      Password: '',
-      Email: '',
-      FirstName: '',
-      LastName: ''
+      userName: '',
+      password: '',
+      email: '',
+      firstName: '',
+      lastName: ''
     };
   }
 
   OnSubmit(form: NgForm) {
-    this.userService.registerUser(form.value)
+    this.userService.registerUser(this.user)
       .subscribe((data: any) => {
-        if (data.Succeeded === true) {
+        if (data.key !== '') {
           this.resetForm(form);
           this.toastr.success('User registration successful');
         } else {
-          this.toastr.error(data.Errors[0]);
+          this.toastr.error('Registration failed');
         }
       });
   }
