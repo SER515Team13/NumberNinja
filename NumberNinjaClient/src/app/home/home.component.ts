@@ -8,9 +8,30 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  adminRole: String = "admin";
+  teacherRole: String = "teacher";
+  studentRole: String = "student";
+
   constructor(private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    switch(localStorage.getItem('userRole')) {
+      case this.adminRole:
+        this.router.navigate(['/admin']);
+        break;
+      
+      case this.teacherRole:
+        this.router.navigate(['/teacher']);
+        break;
+
+      case this.studentRole:
+        this.router.navigate(['/student']);
+        break;
+
+      default:
+        this.router.navigate(['/login'])
+    }
+  }
 
   Logout() {
     localStorage.removeItem('userToken');

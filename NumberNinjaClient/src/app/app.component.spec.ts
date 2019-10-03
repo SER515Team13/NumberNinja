@@ -7,9 +7,9 @@ import {MatSelectModule } from '@angular/material/select';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { TeachertoolbarComponent } from './teachertoolbar/teachertoolbar.component';
-import { AdmintoolbarComponent } from './admintoolbar/admintoolbar.component';
+import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
+import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
+import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,9 +26,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         AdminComponent,
-        ToolbarComponent,
-        TeachertoolbarComponent,
-        AdmintoolbarComponent
+        StudentToolbarComponent,
+        TeacherToolbarComponent,
+        AdminToolbarComponent
       ],
     }).compileComponents();
   }));

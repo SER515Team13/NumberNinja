@@ -1,20 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AdmintoolbarComponent } from './admintoolbar.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AdminToolbarComponent } from './admintoolbar.component';
 
 describe('AdmintoolbarComponent', () => {
-  let component: AdmintoolbarComponent;
-  let fixture: ComponentFixture<AdmintoolbarComponent>;
+  let component: AdminToolbarComponent;
+  let fixture: ComponentFixture<AdminToolbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdmintoolbarComponent ]
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [ AdminToolbarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdmintoolbarComponent);
+    fixture = TestBed.createComponent(AdminToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

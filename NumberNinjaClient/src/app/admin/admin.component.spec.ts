@@ -6,6 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminToolbarComponent } from './../toolbars/admintoolbar/admintoolbar.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -19,9 +21,13 @@ describe('AdminComponent', () => {
         ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        RouterTestingModule
       ],
-      declarations: [AdminComponent]
+      declarations: [
+        AdminComponent,
+        AdminToolbarComponent
+      ]
     })
       .compileComponents();
   }));
