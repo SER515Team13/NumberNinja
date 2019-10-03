@@ -12,6 +12,7 @@ import { UserService } from '../../shared/user.service';
 export class SignUpComponent implements OnInit {
   user: User;
   emailPattern = "^[a-zA-Z0-9_\\-.]+@[a-zA-Z0-9\\-]+\.[a-zA-Z0-9\\-.]+$";
+  confPassword: String = '';
 
   constructor(private userService: UserService, private toastr: ToastrService) { }
 
