@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { UserService } from '../shared/user.service';
 import { User } from '../shared/user.model';
 
-
 export interface User {
   firstName: string;
   lastName: string;
@@ -19,20 +18,6 @@ const userRoles: String[] = ['student',
   'teacher'
 ];
 
-const ELEMENT_DATA: User[] = [
-  // { firstName: 'Aloo', lastName: 'Pakode', email: 'asd@gingle.com', role: 'Student' },
-  // { firstName: 'Paratha', lastName: 'Shop', email: 'dada@eat.com', role: '' },
-  // { firstName: 'Abhinaw', lastName: 'Sarang', email: 'abhinaw.sarang@gmail.com', role: 'Student' },
-  // { firstName: 'Sukhy', lastName: 'Anand', email: 'Badebhaiya@gmail.com', role: 'Student' },
-  // { firstName: 'Smit', lastName: 'Shah', email: 'sshah73@asu.edu', role: 'Student' },
-  // { firstName: 'Saksham', lastName: 'Jhawar', email: 'sjhawar2@asu.edu', role: 'Teacher' },
-  // { firstName: 'Sagar', lastName: 'Khar', email: 'sagark93@gmail.com', role: 'Student' },
-  // { firstName: 'Abcd', lastName: 'Dsef', email: 'adv@sas.org', role: '' },
-  // { firstName: 'asdf', lastName: 'sdf', email: 'wee3@eee.eed', role: 'Teacher' },
-  // { firstName: 'ded', lastName: 'edd', email: 'ded.edd@wer.com', role: 'Student' },
-];
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -42,9 +27,7 @@ const ELEMENT_DATA: User[] = [
 export class AdminComponent implements OnInit {
   private roles: String[] = userRoles;
   public allData: User[];
-  // private dataSource ;
   private responseFromAPi;
-  // private dataSource = this.userService.getAllUserData().subscribe();
   private dataSource = new MatTableDataSource<User>(this.responseFromAPi);
   private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
   private roleControl = new FormControl('', [Validators.required]);
@@ -63,9 +46,6 @@ export class AdminComponent implements OnInit {
     });
     console.log(userData);
     this.responseFromAPi = userData;
-    
-    // console.log(values)});
-    // console.log(responseFromAPi  + "hiiiiii");
   }
   readonly rootUrl = 'http://localhost:3000';
 
@@ -94,7 +74,6 @@ export class AdminComponent implements OnInit {
 
     }
     console.log(selectedUser);
-    
   }
 
   public deleteUser(selectedUser: User) {
@@ -129,7 +108,6 @@ export class AdminComponent implements OnInit {
       email: currentUser.email,
       requestAccepted: requestAccepted
     }
-    //return this.http.sendEmail("http://localhost:3000/sendmail", body)
     const reqHeader = new HttpHeaders({ 'No-Auth': 'True' });
     return this.http.post(this.rootUrl + '/sendmail', body, { headers: reqHeader });
   }
