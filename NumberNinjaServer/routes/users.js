@@ -30,6 +30,10 @@ router.get('/getalldata', function(req,res,next) {
       return res.status(200).json(doc);
     }
   });
+
+  promise.catch(function(err){
+    return res.status(501).json({message:'Some internal error'});
+  })
 })
 
 router.post('/addRole',function(req,res,next){
