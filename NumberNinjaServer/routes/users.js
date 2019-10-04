@@ -1,22 +1,75 @@
+var mongoose = require("mongoose");
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
+var Schema = mongoose.Schema;
+var registrationSchema = new Schema({
+  email: String,
+  userName: String,
+  firstName: String,
+  lastName: String,
+  role: String,
+  creationDate: Date,
+  password: String
+})
 
 /* POST API to register user details to users collection of 
  * MongoDB database and also check whether the user's email
  * is registered before.
  */
-router.post('/register',  function(req,res,next){
-  var user = new User({
-    email: req.body.Email,
-    userName: req.body.UserName,
-    password: User.hashPassword(req.body.Password),
-    firstName: req.body.FirstName,
-    lastName: req.body.LastName,
-    role: null,
-    creationDate: Date.now()
+
+router.get('/getalldata', function(req,res,next) {
+  console.log("Inside server api");
+  console.log(req.body);
+  let promise = User.find({role:null},{firstName:1,lastName:1,email:1,role:1}).exec();
+  promise.then(function(doc) {
+    console.log("insdie promise");
+    console.log(doc);
+    if(doc) {
+      return res.status(200).json(doc);
+    }
   });
+})
+
+router.post('/addRole',function(req,res,next){
+  console.log("inside allrole");
+  var data = req.body;
+  console.log(data);
+  if(data['flag'] === true) {
+    let promise = User.updateOne({email:data.email},{$set:{role:data.role}}).exec();
+    promise.then(function(doc) {
+      if(doc) {
+        return res.status(200).json(doc);
+      }
+    })
+  } else {
+    let promise = User.deleteOne({email:data.email}).exec();
+    promise.then(function(doc) {
+      if(doc) {
+        return res.status(200).json(doc);
+      }
+    })
+  }
+});
+
+ 
+router.post('/register',  function(req,res,next){
+  console.log(req.body);
+  var user = mongoose.model("user",registrationSchema);
+  console.log("hi2");
+  var userToStore = new user({
+    email: req.body.email,
+    userName: req.body.userName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    role: null,
+    creationDate: Date.now(),
+    password: User.hashPassword(req.body.password)
+  });
+  console.log("hi3");
+
+  console.log(userToStore);
 
   console.log("Email: "+ req.body.Email);
   console.log("UserName: "+ req.body.UserName);
@@ -24,12 +77,12 @@ router.post('/register',  function(req,res,next){
   console.log("FirstName: "+ req.body.FirstName);
   console.log("LastName: "+ req.body.LastName);
 
-  let promise = User.findOne({email:req.body.Email}).exec();
+  let promise = User.findOne({email:req.body.email}).exec();
   promise.then(function(doc) {
     if(doc) {
       return res.status(501).json({message:'This email is already registered.'});
     } else {
-      let userpromise = user.save();
+      let userpromise = userToStore.save();
 
       userpromise.then(function(doc){
         return res.status(201).json(doc);

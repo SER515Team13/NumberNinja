@@ -1,28 +1,32 @@
 <form class="col s12 white" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
     <div class="row">
         <div class="input-field col s6">
-            <input class="validate" type="text" name="UserName" #UserName="ngModel" [(ngModel)]="user.UserName" required>
+            <input class="validate" type="text" name="UserName" #UserName="ngModel" [(ngModel)]="user.userName" required>
             <label data-error="Required field!">UserName</label>
         </div>
         <div class="input-field col s6">
-            <input class="validate" type="password" name="Password" #Password="ngModel" [(ngModel)]="user.Password" required minlength="3">
-            <label [attr.data-error]="Password.errors!=null?(Password.errors.required?'Required field!':'Minimum 3 characters needed'):''">Password</label>
+            <input class="validate" type="text" name="Email" #Email="ngModel" [(ngModel)]="user.email" [pattern]="emailPattern">
+            <label data-error="Invalid email!">Email</label>
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12">
-            <input class="validate" type="text" name="Email" #Email="ngModel" [(ngModel)]="user.Email" [pattern]="emailPattern">
-            <label data-error="Invalid email!">Email</label>
+        <div class="input-field col s6">
+            <input class="validate" type="password" name="Password" #Password="ngModel" [(ngModel)]="user.password" required minlength="3">
+            <label [attr.data-error]="Password.errors != null ? (Password.errors.required ? 'Required field!' : 'Minimum 3 characters needed') : '' ">Password</label>
         </div>
+        <div class="input-field col s6">
+            <input class="validate" type="password" name="ConfPassword" #ConfPassword="ngModel" [(ngModel)]="confPassword" required minlength="3" compare='Password'>
+            <label [attr.data-error]="ConfPassword.errors != null ? (ConfPassword.errors.compare ? 'Passwords are not same.' : '' ) : '' ">Confirm Password</label>
         </div>
+    </div>
     <div class="row">
         <div class="input-field col s6">
-            <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.FirstName">
-            <label>First Name</label>
+            <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.firstName" required>
+            <label data-error="Required field!">First Name</label>
         </div>
         <div class="input-field col s6">
-            <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.LastName">
-            <label>Last Name</label>
+            <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.lastName" required>
+            <label data-error="Required field!">Last Name</label>
         </div>
     </div>
     <div class="row">
