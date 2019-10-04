@@ -80,7 +80,8 @@ router.post('/register',  function(req,res,next){
   let promise = User.findOne({email:req.body.email}).exec();
   promise.then(function(doc) {
     if(doc) {
-      return res.status(501).json({message:'This email is already registered.'});
+      console.log(doc);
+      return res.status(220).json({message:'This email is already registered.'});
     } else {
       let userpromise = userToStore.save();
 
