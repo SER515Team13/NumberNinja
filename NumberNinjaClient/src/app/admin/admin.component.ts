@@ -15,7 +15,7 @@ export interface User {
 }
 
 const userRoles: String[] = ['student',
-  'teacher'
+  'teacher','admin'
 ];
 
 @Component({
@@ -25,10 +25,13 @@ const userRoles: String[] = ['student',
 })
 
 export class AdminComponent implements OnInit {
+  private taskMessage: string = "ASSIGN ROLES FOR PENDING ACCOUNTS";
+  private noUsersMessage: string = "NO PENDING TASKS FOR ADMIN";
+
   private roles: String[] = userRoles;
   public allData: User[];
   private responseFromAPi;
-  private dataSource = new MatTableDataSource<User>(this.responseFromAPi);
+  private dataSource = null; // = new MatTableDataSource<User>(this.responseFromAPi);
   private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
   private roleControl = new FormControl('', [Validators.required]);
 
@@ -36,14 +39,13 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     var userData = this.userService.getAllUserData().subscribe((data: any) => {
-      if (data.key !== '') {
-        console.log(data);
-      } else {
-        console.log("");
+      console.log("Testing:" + data +".");
+      if (data && data != undefined && data.length) {
+        console.log("Inside");
+        this.dataSource = new MatTableDataSource<User>(data);
       }
-      this.dataSource = new MatTableDataSource<User>(data);
     });
-    console.log(userData);
+    console.log("Testing 2:" + userData);
     this.responseFromAPi = userData;
   }
   readonly rootUrl = 'http://localhost:3000';
@@ -89,7 +91,11 @@ export class AdminComponent implements OnInit {
     });
     if (index !== -1) {
       data.splice(index, 1);
-      this.dataSource.data = data;
+      if (data && data != undefined && data.length) {
+        this.dataSource.data = data;
+      } else {
+        this.dataSource = null;
+      }
       this.triggerEmail(selectedUser, false).subscribe(
         data => {
           let res: any = data;
