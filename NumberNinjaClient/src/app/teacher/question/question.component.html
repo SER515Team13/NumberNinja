@@ -1,0 +1,34 @@
+<mat-card-header>
+    <mat-toolbar class="toolbar">
+        <mat-card-title>Question Information</mat-card-title>
+        <span class="toolbar-spacer"></span>
+        <mat-icon (click)="onNoClick()">cancel</mat-icon>
+    </mat-toolbar>
+</mat-card-header>
+<mat-card-content>
+    <div class="container">
+        <form [formGroup]="_questionForm" (submit)="onSubmit()">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Select Type</label>
+                        <input type="text" formControlName="formulaType" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Write Formula</label>
+                        <input type="text" formControlName="formula" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-card-content>
