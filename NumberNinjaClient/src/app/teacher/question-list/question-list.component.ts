@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { QuestionService } from '../service/question-service';
+import { MatDialog } from '@angular/material';
+import { QuestionComponent } from '../question/question.component';
 
 @Component({
   selector: 'app-question-list',
@@ -7,9 +10,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionListComponent implements OnInit {
 
-  constructor() { }
+  isPopupOpened = false;
+
+  constructor(private dialog?: MatDialog,
+    private questionService?: QuestionService) { }
 
   ngOnInit() {
   }
 
+  get QuestionList() {
+    return this.questionService.getAllQuestion();
+  }
+
+  addQuestion() {
+    this.isPopupOpened = true;
+    const dialogRef = this.dialog.open(QuestionComponent, {
+      data: {}
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.isPopupOpened = false;
+    });
+  }
+
+  editQuestion(id: number) {
+    this.isPopupOpened = true;
+    const currentQuestion = this.questionService.getAllQuestion().find(index => index.id === id);
+    const dialogRef = this.dialog.open(QuestionComponent, {
+      data: currentQuestion
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.isPopupOpened = false;
+    });
+  }
+
+  deleteQuestion(id: number) {
+    
+  }
 }

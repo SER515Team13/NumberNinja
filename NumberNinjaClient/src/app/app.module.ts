@@ -17,7 +17,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
 //import { AppRoutingModule } from './app-routing.module';
-import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule, MatDialogModule } from '@angular/material';
+import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
 import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
@@ -28,6 +28,7 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
 import { QuestionComponent } from './teacher/question/question.component'; 
 import { QuestionService } from './teacher/service/question-service';
 import { QuestionListComponent } from './teacher/question-list/question-list.component';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -64,7 +65,7 @@ import { QuestionListComponent } from './teacher/question-list/question-list.com
     MatToolbarModule,
     MatIconModule,
     MatDialogModule,
-    MatToolbarModule
+    MatToolbarModule,
   ],
   providers: [UserService, AuthGuard,
     {

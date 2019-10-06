@@ -10,13 +10,13 @@
       <div class="container">
         <table class="table">
           <thead>
-            <th>Question</th>
-            <th>Question Type</th>
+            <th>Formula</th>
+            <th>Formula Type</th>
           </thead>
-          <tr *ngFor="let Contact of ContactList">
+          <tr *ngFor="let Question of QuestionList">
             <td>{{Question.formula}}</td>
             <td>{{Question.formulaType}}</td>
-            <td><mat-icon (click)="editQuestion(Contact.ID)">edit</mat-icon></td>
+            <td><mat-icon (click)="editQuestion(Question.ID)">edit</mat-icon></td>
             <td><mat-icon (click)="deleteQuestion(Question.id)">delete</mat-icon></td>
         
           </tr>
