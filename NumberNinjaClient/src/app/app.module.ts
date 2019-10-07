@@ -24,7 +24,8 @@ import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolba
 import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
-import { CompareValidatorDirective } from './shared/compare-validator.directive'; 
+import { CompareValidatorDirective } from './shared/compare-validator.directive';
+import { AssignmentsComponent } from './teacher/assignments/assignments.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
     AdminToolbarComponent,
     TeacherComponent,
     StudentComponent,
-    CompareValidatorDirective
+    CompareValidatorDirective,
+    AssignmentsComponent
   ],
   imports: [
     BrowserModule,
