@@ -46,9 +46,9 @@ export class QuestionListComponent implements OnInit {
     });
   }
 
-  editQuestion(id: number) {
+  editQuestion(question: Question) {
     this.isPopupOpened = true;
-    const currentQuestion = this.questionService.getAllQuestion().find(index => index.id === id);
+    const currentQuestion = this.questionService.getAllQuestion().find(index => index.id === question.id);
     const dialogRef = this.dialog.open(QuestionComponent, {
       data: currentQuestion
     });
@@ -60,6 +60,6 @@ export class QuestionListComponent implements OnInit {
   }
 
   deleteQuestion(id: number) {
-    
+    this.questionService.deleteQuestion(id);
   }
 }

@@ -28,8 +28,13 @@ export class QuestionService {
         this.questionList.push(currentQuestion);
     }
 
+    editQuestion(currentQuestion: Question) {
+        const index = this.questionList.findIndex(index => index.id === currentQuestion.id);
+        this.questionList[index] = currentQuestion;
+    }
+
     deleteQuestion(id: number) {
-        const currentQuestion = this.questionList.findIndex(index => index.id = id);
+        const currentQuestion = this.questionList.findIndex(index => index.id === id);
         this.questionList.splice(currentQuestion, 1);
     }
 
