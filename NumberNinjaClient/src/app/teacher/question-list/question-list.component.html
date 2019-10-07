@@ -6,21 +6,31 @@
         <mat-icon (click)="addQuestion()">add</mat-icon>
       </mat-toolbar>
     </mat-card-header>
-    <mat-card-content>
-      <div class="container">
-        <table class="table">
-          <thead>
-            <th>Formula</th>
-            <th>Formula Type</th>
-          </thead>
-          <tr *ngFor="let Question of QuestionList">
-            <td>{{Question.formula}}</td>
-            <td>{{Question.formulaType}}</td>
-            <td><mat-icon (click)="editQuestion(Question.ID)">edit</mat-icon></td>
-            <td><mat-icon (click)="deleteQuestion(Question.id)">delete</mat-icon></td>
-        
-          </tr>
-        </table>
-      </div>
-    </mat-card-content>
+      
+    <mat-table [dataSource]="questionList" class="matTable" >
+              <!--First Name Column -->
+              <ng-container matColumnDef="question">
+                      <mat-header-cell *matHeaderCellDef>Question</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.formula}} </mat-cell>
+              </ng-container>
+
+              <!--Last Name Column -->
+              <ng-container matColumnDef="questiontype">
+                      <mat-header-cell *matHeaderCellDef>Question Type</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.formulaType}} </mat-cell>
+              </ng-container>
+
+              <!-- Email Column -->
+              <ng-container matColumnDef="action">
+                      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <button mat-icon (click)="editQuestion(element)">edit</button>
+                        <button mat-icon (click)="deleteQuestion(element)">delete</button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
   </mat-card>
