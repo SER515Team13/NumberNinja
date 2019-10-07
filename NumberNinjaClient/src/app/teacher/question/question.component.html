@@ -7,18 +7,22 @@
 </mat-card-header>
 <mat-card-content>
     <div class="container">
-        <form [formGroup]="questionForm" (submit)="onSubmit()">
+        <form ngNativeValidate [formGroup]="questionForm" (submit)="onSubmit()">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Select Type</label>
-                        <input type="text" formControlName="formulaType" class="form-control">
+                        <label for="formulaType">Select Type:</label>
+                        <select class="form-control" id="formulaType" width='50%' formControlName="formulaType" required>
+                            <option>Fill in the Blanks</option>
+                            <option>Find the Answer</option>
+                            <option>Random (Self varified)</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label>Write Formula</label>
-                        <input type="text" formControlName="formula" class="form-control">
+                        <input id="formula" type="text" formControlName="formula" class="form-control" required>
                     </div>
                 </div>
                 <div class="row">

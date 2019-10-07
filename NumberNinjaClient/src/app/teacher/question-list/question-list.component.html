@@ -16,9 +16,8 @@
           <tr *ngFor="let Question of QuestionList">
             <td>{{Question.formula}}</td>
             <td>{{Question.formulaType}}</td>
-            <td><mat-icon (click)="editQuestion(Question.ID)">edit</mat-icon></td>
+            <td><mat-icon (click)="editQuestion(Question)">edit</mat-icon></td>
             <td><mat-icon (click)="deleteQuestion(Question.id)">delete</mat-icon></td>
-        
           </tr>
         </table>
       </div>

@@ -25,13 +25,18 @@ export class QuestionComponent implements OnInit {
   ngOnInit() {
     this.questionForm = this.formBuilder.group({
       id: [],
-      formula: ['', [Validators.required]],
-      formulaType: ['', [Validators.required]]
+      formula: [this.data.formula, [Validators.required]],
+      formulaType: [this.data.formulaType, [Validators.required]]
     })
   }
   onSubmit() {
-    this.questionService.addQuestion(this.questionForm.value);
-    this.dialogRef.close();
+    if (isNaN(this.data.ID)) {
+      this.questionService.addQuestion(this.questionForm.value);
+      this.dialogRef.close();
+    } else {
+      this.questionService.editQuestion(this.questionForm.value);
+      this.dialogRef.close();
+    }
   }
 
 }
