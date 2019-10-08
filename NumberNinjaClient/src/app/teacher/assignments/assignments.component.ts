@@ -33,7 +33,10 @@ export class AssignmentsComponent implements OnInit {
   }
 
   public deletebutton(selectedassignment : Assignment){
-
+    const data = this.dataSource.data;
+    const index: number = data.indexOf(selectedassignment);
+    data.splice(index, 1);
+    this.dataSource.data=data;
   }
 
 }
