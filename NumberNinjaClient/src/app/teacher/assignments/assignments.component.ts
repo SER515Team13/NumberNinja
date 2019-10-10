@@ -4,14 +4,9 @@ import { MatTableDataSource } from '@angular/material';
 import { HttpService } from "../../shared/http.services";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserService } from '../../shared/user.service';
-import { Assignment } from '../../shared/assignment';
+import { Assignment } from '../model/assignment';
+import { AssignmentService } from '../service/assignment.service';
 
-
-const ELEMENT_DATA: Assignment[] = [
-  { assignmentname: 'Design Pattern', duedate: '10-10-2019', grade: 'Second', id:0},
-  { assignmentname: 'Mathematical Induction', duedate: '10-11-2019', grade: 'Seventh', id:1}
-];
 
 @Component({
   selector: 'app-assignments',
@@ -21,22 +16,39 @@ const ELEMENT_DATA: Assignment[] = [
 
 export class AssignmentsComponent implements OnInit {
 
-  private displayedColumns: String[] = ['assignmentname', 'duedate', 'grade', 'action'];
-  private dataSource = new MatTableDataSource(ELEMENT_DATA);
-  constructor() { }
+  private displayedColumns: String[] = ['id', 'assignmentname', 'duedate', 'grade', 'action'];
+  private dataSource;
+  //private responseFromAPi;
+  constructor(public AssignmentService:AssignmentService) { }
 
   ngOnInit() {
+    console.log('Inside the assignment component');
+    var userData = this.AssignmentService.getAssignments().subscribe((data: any) => {
+      console.log("Testing:" + data +".");
+      if (data && data != undefined && data.length) {
+        console.log("Inside");
+        this.dataSource = new MatTableDataSource<Assignment>(data);
+      }
+    });
+   // console.log("Testing 2:" + userData);
+    //this.responseFromAPi = userData;
+  
   }
+  readonly rootUrl = 'http://localhost:3000';
 
   public editbutton(selectedassignment : Assignment){
   
   }
 
-  public deletebutton(selectedassignment : Assignment){
+  public deletebutton(selectedassignment : Assignment) {
+    console.log('hello!2333' + selectedassignment.id);
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedassignment);
-    data.splice(index, 1);
-    this.dataSource.data=data;
+    this.AssignmentService.deleteAssignment(selectedassignment.id).subscribe((abc : any) => {
+      data.splice(index, 1);
+      this.dataSource.data=data;
+    }
+    )
   }
 
 }

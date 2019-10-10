@@ -1,7 +1,7 @@
 export class Assignment {
-    id: number;
+    id: string;
     name: string;
     description: string;
-    dueDate: Date;
-    class: number;
+    duedate: string;
+    grade: number;
 }

@@ -17,7 +17,7 @@ export class AssignmentService {
 
     getAssignments(): Observable<{}> {
         console.log("Calling assignments client service.");
-        return this.http.get(this.rootUrl + '/assignments/getAssignments', {
+        return this.http.get(this.rootUrl + '/assignments/getassignments', {
         observe: 'body',
         params: new HttpParams()
         });
@@ -32,10 +32,11 @@ export class AssignmentService {
         this.assignmentList[index] = currentAssignment;
     }
 
-    deleteAssignment(id: number) {
-        const currentAssignment = this.assignmentList.findIndex(index => index.id === id);
-        this.assignmentList.splice(currentAssignment, 1);
-    }
+    deleteAssignment(id: string): Observable<{}> {
+        const body : any = { Id : id};
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+    return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader });
+  }
 
     getAllQuestion() {
         return this.assignmentList;

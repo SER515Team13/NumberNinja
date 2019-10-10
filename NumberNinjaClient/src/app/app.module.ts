@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { UserService } from './shared/user.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,6 +25,8 @@ import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
 import { AssignmentsComponent } from './teacher/assignments/assignments.component';
+import { HttpModule } from '@angular/http';
+import { AssignmentService } from './teacher/service/assignment.service';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { AssignmentsComponent } from './teacher/assignments/assignments.componen
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
@@ -60,7 +62,7 @@ import { AssignmentsComponent } from './teacher/assignments/assignments.componen
     MatCardModule,
     MatToolbarModule
   ],
-  providers: [UserService, AuthGuard,
+  providers: [UserService, AssignmentService, AuthGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
