@@ -23,13 +23,16 @@ export class AssignmentService {
         });
     }
 
-    addAssignment(currentAssignment: Assignment) {
-        this.assignmentList.push(currentAssignment);
+    addAssignment(currentAssignment: Assignment): Observable<{}> {
+        console.log("Sending request to server to Add assignment");
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl + '/questions/addassignment', currentAssignment, { headers: reqHeader });
     }
 
-    editAssignment(currentAssignment: Assignment) {
-        const index = this.assignmentList.findIndex(index => index.id === currentAssignment.id);
-        this.assignmentList[index] = currentAssignment;
+    editAssignment(currentAssignment: Assignment): Observable<{}> {
+        console.log("Sending request to server to Edit assignment");
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl + '/questions/editassignment', currentAssignment, { headers: reqHeader });
     }
 
     deleteAssignment(id: string): Observable<{}> {
@@ -37,8 +40,4 @@ export class AssignmentService {
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader });
   }
-
-    getAllQuestion() {
-        return this.assignmentList;
-    }
 }
