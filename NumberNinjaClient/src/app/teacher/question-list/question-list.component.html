@@ -7,7 +7,7 @@
       </mat-toolbar>
     </mat-card-header>
       
-    <mat-table [dataSource]="questionList" class="matTable" >
+    <mat-table [dataSource]="dataSource" class="matTable" >
               <!--First Name Column -->
               <ng-container matColumnDef="question">
                       <mat-header-cell *matHeaderCellDef>Question</mat-header-cell>
@@ -24,8 +24,8 @@
               <ng-container matColumnDef="action">
                       <mat-header-cell *matHeaderCellDef></mat-header-cell>
                       <mat-cell *matCellDef="let element">
-                        <button mat-icon (click)="editQuestion(element)">edit</button>
-                        <button mat-icon (click)="deleteQuestion(element)">delete</button>
+                        <mat-icon (click)="editQuestion(element)">edit</mat-icon>
+                        <mat-icon (click)="deleteQuestion(element)">delete</mat-icon>
                 </mat-cell>
               </ng-container>
 

@@ -28,11 +28,15 @@ export class QuestionListComponent implements OnInit {
     private questionService?: QuestionService) { }
 
   ngOnInit() {
-  }
-
-  get QuestionList() {
-    return this.questionService.getAllQuestion();
-  }
+    console.log("in iNiT");
+    var userData = this.questionService.getQuestions().subscribe((data: any) => {
+      console.log("Testing:" + data +".");
+      if (data && data != undefined && data.length) {
+        console.log("Inside");
+        this.dataSource = new MatTableDataSource<Question>(data);
+      }
+  });
+}
 
   addQuestion() {
     this.isPopupOpened = true;

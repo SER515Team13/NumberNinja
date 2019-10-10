@@ -18,7 +18,7 @@ export class QuestionService {
 
   getQuestions(): Observable<{}> {
     console.log("calling questions client service.");
-    return this.http.get(this.rootUrl + '/questions/getQuestions', {
+    return this.http.get(this.rootUrl + '/questions/getquestions', {
       observe: 'body',
       params: new HttpParams()
     });
