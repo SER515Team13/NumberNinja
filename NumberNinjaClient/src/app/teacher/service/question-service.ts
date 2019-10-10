@@ -16,25 +16,28 @@ export class QuestionService {
 
   readonly rootUrl = 'http://localhost:3000';
 
-  getQuestions(): Observable<{}> {
-    console.log("calling questions client service.");
-    return this.http.get(this.rootUrl + '/questions/getquestions', {
-      observe: 'body',
-      params: new HttpParams()
-    });
-  }
-
-    addQuestion(currentQuestion: Question) {
-        this.questionList.push(currentQuestion);
+    getQuestions(): Observable<{}> {
+        console.log("calling questions client service.");
+        return this.http.get(this.rootUrl + '/questions/getquestions', {
+        observe: 'body',
+        params: new HttpParams()
+        });
     }
 
-    editQuestion(currentQuestion: Question) {
-        const index = this.questionList.findIndex(index => index.id === currentQuestion.id);
-        this.questionList[index] = currentQuestion;
+    addQuestion(currentQuestion: Question): Observable<{}> {
+        console.log("Sending request to server to Add question");
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl + '/questions/addquestion', currentQuestion, { headers: reqHeader });
     }
 
-    deleteQuestion(id: number) {
-        const currentQuestion = this.questionList.findIndex(index => index.id === id);
+    editQuestion(currentQuestion: Question): Observable<{}>  {
+        console.log("Sending request to server to Edit question");
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl + '/questions/editquestion', currentQuestion, { headers: reqHeader });
+    }
+
+    deleteQuestion(id: string) {
+        const currentQuestion = this.questionList.findIndex(index => index._id === id);
         this.questionList.splice(currentQuestion, 1);
     }
 

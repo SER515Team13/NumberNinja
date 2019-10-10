@@ -9,6 +9,10 @@
       
     <mat-table [dataSource]="dataSource" class="matTable" >
               <!--First Name Column -->
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element._id}} </mat-cell>
+              </ng-container>
               <ng-container matColumnDef="question">
                       <mat-header-cell *matHeaderCellDef>Question</mat-header-cell>
                       <mat-cell *matCellDef="let element"> {{element.formula}} </mat-cell>

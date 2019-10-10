@@ -17,9 +17,9 @@ import { Question } from '../model/question';
 })
 export class QuestionListComponent implements OnInit {
   
-  private displayedColumns: String[] = ['question', 'questiontype', 'action'];
-  private questionList :Question[] = null;
-  private dataSource = new MatTableDataSource<Question>(this.questionList);
+  private displayedColumns: String[] = ['id', 'question', 'questiontype', 'action'];
+  //private questionList :Question[] = null;
+  private dataSource;// = new MatTableDataSource<Question>(this.questionService.questionList);
 
 
   isPopupOpened = false;
@@ -28,15 +28,19 @@ export class QuestionListComponent implements OnInit {
     private questionService?: QuestionService) { }
 
   ngOnInit() {
-    console.log("in iNiT");
-    var userData = this.questionService.getQuestions().subscribe((data: any) => {
-      console.log("Testing:" + data +".");
-      if (data && data != undefined && data.length) {
-        console.log("Inside");
-        this.dataSource = new MatTableDataSource<Question>(data);
-      }
-  });
+   this.getData();
 }
+
+getData(){
+  var userData = this.questionService.getQuestions().subscribe((data: any) => {
+  console.log("Testing:" + data +".");
+  if (data && data != undefined && data.length) {
+    console.log("Inside");
+    this.dataSource = new MatTableDataSource<Question>(data);
+  }
+});
+}
+
 
   addQuestion() {
     this.isPopupOpened = true;
@@ -46,24 +50,26 @@ export class QuestionListComponent implements OnInit {
 
 
     dialogRef.afterClosed().subscribe(result => {
+      this.getData();
       this.isPopupOpened = false;
     });
   }
 
   editQuestion(question: Question) {
     this.isPopupOpened = true;
-    const currentQuestion = this.questionService.getAllQuestion().find(index => index.id === question.id);
+    //const currentQuestion = this.questionService.getQuestions().findIndex(index => index.id === question.id);
     const dialogRef = this.dialog.open(QuestionComponent, {
-      data: currentQuestion
+      data: question
     });
 
 
     dialogRef.afterClosed().subscribe(result => {
+      this.getData();
       this.isPopupOpened = false;
     });
   }
 
-  deleteQuestion(id: number) {
+  deleteQuestion(id: string) {
     this.questionService.deleteQuestion(id);
   }
 }
