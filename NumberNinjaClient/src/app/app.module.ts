@@ -15,8 +15,7 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
-//import { AppRoutingModule } from './app-routing.module';
-import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule } from '@angular/material' ;
+import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material' ;
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
 import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
@@ -24,9 +23,11 @@ import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.comp
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
-import { AssignmentsComponent } from './teacher/assignments/assignments.component';
+import { AssignmentsComponent } from './teacher/assignments/view-assignments/assignments.component';
 import { HttpModule } from '@angular/http';
 import { AssignmentService } from './teacher/service/assignment.service';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add-assignment.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AssignmentService } from './teacher/service/assignment.service';
     TeacherComponent,
     StudentComponent,
     CompareValidatorDirective,
-    AssignmentsComponent
+    AssignmentsComponent,
+    AddAssignmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,14 +55,16 @@ import { AssignmentService } from './teacher/service/assignment.service';
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
-    //AppRoutingModule,
     MatTableModule,
     ReactiveFormsModule,
     MatSelectModule,
     MatMenuModule,
     MatButtonModule,
     MatCardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatDialogModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
   ],
   providers: [UserService, AssignmentService, AuthGuard,
     {
@@ -68,6 +72,8 @@ import { AssignmentService } from './teacher/service/assignment.service';
       useClass : AuthInterceptor,
       multi : true
     }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddAssignmentComponent],
 })
+
 export class AppModule { }

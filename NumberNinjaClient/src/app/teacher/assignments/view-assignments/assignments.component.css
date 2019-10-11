@@ -1,0 +1,9 @@
+.container{
+    background-color:  rgb(76, 76, 82);
+    border-radius: 5px;
+    color: white;
+}
+
+.hyperlink {
+    cursor: pointer;
+}
