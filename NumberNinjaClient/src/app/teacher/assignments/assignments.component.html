@@ -11,7 +11,7 @@
             <!--Assignment Name Column -->
             <ng-container matColumnDef="assignmentname">
                     <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Assignment </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                    <mat-cell *matCellDef="let element" class="hyperlink" (click)="openassignment(element)" > <u>{{element.name}}</u> </mat-cell>
             </ng-container>
 
             <!--Deadline Column -->

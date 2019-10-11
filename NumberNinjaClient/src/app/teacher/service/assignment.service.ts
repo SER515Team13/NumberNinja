@@ -36,9 +36,15 @@ export class AssignmentService {
         const body : any = { Id : id};
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader });
-  }
+    }
 
     getAllQuestion() {
         return this.assignmentList;
+    }
+    
+    describeassignment(currentAssignment : Assignment){
+        const body : any ={ currentAssignment};
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl +'/assignments/clickassignment', body, {headers : reqHeader});
     }
 }

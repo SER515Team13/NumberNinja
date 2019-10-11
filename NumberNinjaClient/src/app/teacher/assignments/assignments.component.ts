@@ -50,5 +50,12 @@ export class AssignmentsComponent implements OnInit {
     }
     )
   }
+  public openassignment(selectedassignment : Assignment){
+    console.log('inside open assignment function' + selectedassignment);
+    //const data = this.dataSource.data;
+    this.AssignmentService.describeassignment(selectedassignment).subscribe((def : any)=>{
+
+    })
+  }
 
 }
