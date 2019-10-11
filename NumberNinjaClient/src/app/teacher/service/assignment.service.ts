@@ -26,13 +26,13 @@ export class AssignmentService {
     addAssignment(currentAssignment: Assignment): Observable<{}> {
         console.log("Sending request to server to Add assignment");
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        return this.http.post(this.rootUrl + '/questions/addassignment', currentAssignment, { headers: reqHeader });
+        return this.http.post(this.rootUrl + '/assignments/addassignment', currentAssignment, { headers: reqHeader });
     }
 
     editAssignment(currentAssignment: Assignment): Observable<{}> {
         console.log("Sending request to server to Edit assignment");
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        return this.http.post(this.rootUrl + '/questions/editassignment', currentAssignment, { headers: reqHeader });
+        return this.http.post(this.rootUrl + '/assignments/editassignment', currentAssignment, { headers: reqHeader });
     }
 
     deleteAssignment(id: string): Observable<{}> {

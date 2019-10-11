@@ -1,0 +1,48 @@
+<mat-card-header>
+    <mat-toolbar class="toolbar">
+        <mat-card-title>ADD ASSIGNMENT DETAILS</mat-card-title>
+        <span class="toolbar-spacer"></span>
+        <mat-icon (click)="onNoClick()">cancel</mat-icon>
+    </mat-toolbar>
+</mat-card-header>
+<mat-card-content>
+    <div class="container">
+        <form ngNativeValidate [formGroup]="addAssignmentForm" (submit)="onSubmit()">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="name">Assignment Name:</label>
+                        <input id="name" type="text" formControlName="name" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="description">Assignment Description:</label>
+                        <input id="description" type="text" formControlName="description" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="duedate">Due Date:</label>
+                        <input id="duedate" type="date" min="{{currentDate | date:'yyyy-MM-dd'}}" [(ngModel)]="datemodel" formControlName="duedate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="grade">Grade:</label>
+                        <select class="form-control" id="grade" width='50%' formControlName="grade" required>
+                            <option *ngFor="let grade of allowedGrades" value={{grade}}>
+                                {{grade}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success">ADD</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-card-content>

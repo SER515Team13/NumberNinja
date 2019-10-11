@@ -1,0 +1,19 @@
+.toolbar{
+    background-color:   rgb(76, 76, 82);
+    border-radius: 5px;
+    color: white;
+}
+
+table {
+    width: 50%;
+}
+
+.toolbar-spacer{
+    flex: 1 1 auto;
+}
+
+.container{
+    background-color:  rgb(255, 255, 255);
+    border-radius: 5px;
+    color: white;
+}
