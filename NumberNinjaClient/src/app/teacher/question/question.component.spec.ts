@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionComponent } from './question.component';
 import { QuestionService } from '../service/question-service';
+import { MatTableModule, MatCardTitle } from '@angular/material';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -9,6 +10,7 @@ describe('QuestionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [MatTableModule,MatCardTitle],
       providers: [ QuestionService ],
       declarations: [ QuestionComponent ]
     })

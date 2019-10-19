@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddAssignmentComponent } from './add-assignment.component';
 import { AssignmentService } from '../../service/assignment.service';
+import { MatCardHeader,MatIcon,MatCardTitle,MatToolbar,MatCardContent} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 
 describe('AddAssignmentComponent', () => {
   let component: AddAssignmentComponent;
@@ -9,8 +12,9 @@ describe('AddAssignmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [ AssignmentService ],
-      declarations: [ AddAssignmentComponent ]
+      imports:[FormsModule, ReactiveFormsModule, MatDialogModule],
+      providers: [ AssignmentService, MatDialogRef],
+      declarations: [AddAssignmentComponent,MatCardHeader,MatIcon,MatCardTitle,MatToolbar,MatCardContent ]
     })
     .compileComponents();
   }));

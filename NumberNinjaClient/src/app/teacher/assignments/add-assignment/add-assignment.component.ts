@@ -19,7 +19,7 @@ export class AddAssignmentComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<AddAssignmentComponent>,
-    private questionService: AssignmentService,
+    private assignmentService: AssignmentService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class AddAssignmentComponent implements OnInit {
 
   onSubmit() {
     if (isUndefined(this.data._id)) {
-      this.questionService.addAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
+      this.assignmentService.addAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
         console.log("Add assignment response" + data );
         if (data && data != undefined && data.length) {
           return data;
@@ -49,7 +49,7 @@ export class AddAssignmentComponent implements OnInit {
       this.dialogRef.close();
     } else {
       console.log("Add assignment form" + this.addAssignmentForm.value);
-      this.questionService.editAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
+      this.assignmentService.editAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
           return data;
