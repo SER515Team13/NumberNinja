@@ -17,14 +17,18 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
 //import { AppRoutingModule } from './app-routing.module';
-import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule } from '@angular/material' ;
+import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
 import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
 import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
-import { CompareValidatorDirective } from './shared/compare-validator.directive'; 
+import { CompareValidatorDirective } from './shared/compare-validator.directive';
+import { QuestionComponent } from './teacher/question/question.component'; 
+import { QuestionService } from './teacher/service/question-service';
+import { QuestionListComponent } from './teacher/question-list/question-list.component';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -40,7 +44,9 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
     AdminToolbarComponent,
     TeacherComponent,
     StudentComponent,
-    CompareValidatorDirective
+    CompareValidatorDirective,
+    QuestionComponent,
+    QuestionListComponent
   ],
   imports: [
     BrowserModule,
@@ -56,14 +62,18 @@ import { CompareValidatorDirective } from './shared/compare-validator.directive'
     MatMenuModule,
     MatButtonModule,
     MatCardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatDialogModule,
+    MatToolbarModule,
   ],
   providers: [UserService, AuthGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
       multi : true
-    }],
-  bootstrap: [AppComponent]
+    }, QuestionService],
+  bootstrap: [AppComponent],
+  entryComponents: [QuestionComponent],
 })
 export class AppModule { }
