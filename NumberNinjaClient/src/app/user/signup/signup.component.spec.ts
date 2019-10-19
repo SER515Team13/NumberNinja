@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignUpComponent } from './signup.component';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../shared/user.service';
-import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrService } from 'ngx-toastr';
 
 describe('SignUpComponent', () => {
@@ -14,7 +14,7 @@ describe('SignUpComponent', () => {
     TestBed.configureTestingModule({
       providers: [UserService, ToastrService],
       declarations: [ SignUpComponent ],
-      imports: [ FormsModule, HttpClientModule ],
+      imports: [ FormsModule, HttpClientTestingModule ],
     })
     .compileComponents();
   }));

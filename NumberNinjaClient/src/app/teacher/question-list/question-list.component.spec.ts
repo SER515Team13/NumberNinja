@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionService } from '../service/question-service';
-import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('QuestionListComponent', () => {
   let component: QuestionListComponent;
@@ -24,7 +24,7 @@ describe('QuestionListComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         MatDialogModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       declarations: [ QuestionListComponent ],
       providers: [ QuestionService ]
