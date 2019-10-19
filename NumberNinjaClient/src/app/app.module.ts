@@ -15,7 +15,7 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
-import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material' ;
+import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
 import { TeacherToolbarComponent } from './toolbars/teachertoolbar/teachertoolbar.component';
@@ -28,6 +28,9 @@ import { HttpModule } from '@angular/http';
 import { AssignmentService } from './teacher/service/assignment.service';
 import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add-assignment.component';
+import { QuestionComponent } from './teacher/question/question.component'; 
+import { QuestionService } from './teacher/service/question-service';
+import { QuestionListComponent } from './teacher/question-list/question-list.component';
 
 
 @NgModule({
@@ -46,6 +49,8 @@ import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add
     CompareValidatorDirective,
     AssignmentsComponent,
     AddAssignmentComponent,
+    QuestionComponent,
+    QuestionListComponent
   ],
   imports: [
     BrowserModule,
@@ -65,15 +70,16 @@ import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add
     MatIconModule,
     MatDialogModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
+    MatToolbarModule,
   ],
   providers: [UserService, AssignmentService, AuthGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
       multi : true
-    }],
+    }, QuestionService],
   bootstrap: [AppComponent],
-  entryComponents: [AddAssignmentComponent],
+  entryComponents: [AddAssignmentComponent, QuestionComponent],
 })
 
 export class AppModule { }
