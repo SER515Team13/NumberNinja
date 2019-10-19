@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionListComponent } from './question-list.component';
+import { QuestionService } from '../service/question-service';
 
 describe('QuestionListComponent', () => {
   let component: QuestionListComponent;
@@ -8,6 +9,7 @@ describe('QuestionListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [ QuestionService ],
       declarations: [ QuestionListComponent ]
     })
     .compileComponents();
