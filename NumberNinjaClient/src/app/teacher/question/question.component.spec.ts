@@ -5,7 +5,7 @@ import { MatToolbarModule, MatCardTitle, MatCardModule, MatIconModule, MatDialog
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionService } from '../service/question-service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -20,14 +20,14 @@ describe('QuestionComponent', () => {
         ReactiveFormsModule,
         FormsModule,
         BrowserAnimationsModule,
-        MatDialogModule
+        MatDialogModule,
+        HttpClientModule
       ],
       declarations: [ QuestionComponent ],
       providers: [{provide: MatDialogRef, useValue: {}},
         {provide: MAT_DIALOG_DATA},
         QuestionService,
-        HttpClient,
-        HttpHandler]
+        ]
     })
     .compileComponents();
   }));

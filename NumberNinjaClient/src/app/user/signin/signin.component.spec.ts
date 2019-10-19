@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignInComponent } from './signin.component';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../shared/user.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 class MockRouter {
@@ -17,9 +17,9 @@ describe('SignInComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [UserService, HttpClient, HttpHandler, {provide: Router, useValue: mockRouter}],
+      providers: [UserService, {provide: Router, useValue: mockRouter}],
       declarations: [ SignInComponent ],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientModule],
     })
     .compileComponents();
   }));
