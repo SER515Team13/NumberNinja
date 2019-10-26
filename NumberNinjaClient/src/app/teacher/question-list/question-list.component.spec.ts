@@ -1,9 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionListComponent } from './question-list.component';
-import { QuestionService } from '../service/question-service';
-import { MatCardTitle,MatIcon,MatToolbar,MatCardHeader } from '@angular/material';
-
 import { MatDialog, MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
