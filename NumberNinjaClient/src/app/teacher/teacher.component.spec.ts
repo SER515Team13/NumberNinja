@@ -3,10 +3,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TeacherComponent } from './teacher.component';
 import { TeacherToolbarComponent } from './../toolbars/teachertoolbar/teachertoolbar.component';
 import {QuestionListComponent} from './question-list/question-list.component';
-import { MatDialog, MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule } from '@angular/material';
+import { MatDialog, MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AssignmentsComponent } from './assignments/view-assignments/assignments.component';
+import { AssignmentService } from './service/assignment.service';
+import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TeacherComponent', () => {
   let component: TeacherComponent;
@@ -23,13 +27,16 @@ describe('TeacherComponent', () => {
         ReactiveFormsModule,
         FormsModule,
         BrowserAnimationsModule,
+        MatDialogModule,
+        HttpClientTestingModule
       ],
       declarations: [ 
         TeacherComponent,
         TeacherToolbarComponent,
-        QuestionListComponent
-
-      ]
+        QuestionListComponent,
+        AssignmentsComponent
+      ],
+      providers: [AssignmentService]
     })
     .compileComponents();
   }));

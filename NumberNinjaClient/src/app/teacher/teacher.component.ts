@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AssignmentsComponent} from './assignments/view-assignments/assignments.component'
 
 @Component({
   selector: 'app-teacher',
