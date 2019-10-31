@@ -12,10 +12,15 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
+  class: string
 }
 
 const userRoles: String[] = ['student',
-  'teacher'
+  'teacher','admin'
+];
+
+const grades: String[] = ['grade 2',
+'grade 7'
 ];
 
 @Component({
@@ -26,6 +31,7 @@ const userRoles: String[] = ['student',
 
 export class AdminComponent implements OnInit {
   private roles: String[] = userRoles;
+  private classes: String[] = grades;
   public allData: User[];
   private responseFromAPi;
   private dataSource = new MatTableDataSource<User>(this.responseFromAPi);
