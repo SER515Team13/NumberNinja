@@ -12,7 +12,7 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
-  class: string
+  class: string;
 }
 
 const userRoles: String[] = ['student',
