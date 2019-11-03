@@ -29,6 +29,7 @@ import { QuestionComponent } from './teacher/question/question.component';
 import { QuestionService } from './teacher/service/question-service';
 import { QuestionListComponent } from './teacher/question-list/question-list.component';
 import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dial
     MatIconModule,
     MatDialogModule,
     MatToolbarModule,
+    MatButtonToggleModule
   ],
   providers: [UserService, AuthGuard,
     {

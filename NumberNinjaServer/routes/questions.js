@@ -26,7 +26,8 @@ router.post('/addquestion',  function(req,res,next){
   var questions = mongoose.model("questions", Question.schema);
   var questionToStore = new questions({
     formula: req.body.formula,
-    formulaType: req.body.formulaType,
+    formulaWithBlanks: req.body.formulaWithBlanks,
+    formulaType: req.body.formulaType
   });
 
   let questionPromise = questionToStore.save();

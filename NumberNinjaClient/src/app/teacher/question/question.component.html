@@ -7,7 +7,7 @@
 </mat-card-header>
 <mat-card-content>
     <div class="container">
-        <form ngNativeValidate [formGroup]="questionForm" (submit)="onSubmit()">
+        <form ngNativeValidate [formGroup]="questionForm" >
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
@@ -27,7 +27,22 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-success">
+                        <button (click)="myFunc()"></button>
+                    </div>
+                </div>
+                <mat-button-toggle-group #group="matButtonToggleGroup" multiple>
+                    <mat-button-toggle *ngFor="let item of digitsArray; let i = index" [value]= "i" (click)="addinarr(i)">
+                        {{item}}
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+                <!-- <div *ngFor="let emp of digitsArray">
+                    <button mat-button class="btn btn-success" style="background-color: brown;" class="btn-group">
+                        {{emp}}
+                    </button>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success" (click)="onSubmit()">
                             <mat-icon>save</mat-icon>
                         </button>
                     </div>
