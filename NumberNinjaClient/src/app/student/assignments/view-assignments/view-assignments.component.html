@@ -1,26 +1,33 @@
-<!--<section class='tableSection'>-->
-    <mat-table [dataSource]="dataSource" class="matTable">
+<div>
+        <app-studenttoolbar></app-studenttoolbar>
+</div>
+<mat-table [dataSource]="dataSource" class="matTable">
+
+        <!--Assignment Name Column -->
         <ng-container matColumnDef="assignmentname">
                 <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Assignment </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="hyperlink"> <u>{{element.name}}</u></mat-cell>
+                <mat-cell *matCellDef="let element" class="hyperlink"> <a [routerLink]="element._id">{{element.name}}</a></mat-cell>
         </ng-container>
 
-        <!--Deadline Column -->
+        <!--Duedate Column -->
         <ng-container matColumnDef="duedate">
-                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 18px"> Due Date </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Due Date </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.duedate}} </mat-cell>
         </ng-container>
 
-        <!--Grade Column -->
-        <ng-container matColumnDef="Score">
-                <!-- <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 18px"> Score </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.Score}} </mat-cell> -->
+        <!--score Column -->
+        <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Score </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{'NA'}} </mat-cell>
         </ng-container>
 
+        <!--status Column -->
         <ng-container matColumnDef="status">
-                <!-- <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 18px"> Score </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.Score}} </mat-cell> -->
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{'NA'}} </mat-cell>
         </ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns "></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
 </mat-table>

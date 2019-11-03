@@ -2,7 +2,7 @@
     <mat-toolbar class="toolbar">
         <mat-card-title>Question Information</mat-card-title>
         <span class="toolbar-spacer"></span>
-        <mat-icon (click)="onNoClick()">cancel</mat-icon>
+        <button mat-button><mat-icon (click)="onNoClick()">cancel</mat-icon></button>
     </mat-toolbar>
 </mat-card-header>
 <mat-card-content>
@@ -11,24 +11,24 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="formulaType">Select Type:</label>
+                        <label for="formulaType" style="font-family: 'Times New Roman', Times, serif ; font-size: 16px">Select Type:</label>
                         <select class="form-control" id="formulaType" width='50%' formControlName="formulaType" required>
                             <option>Fill in the Blanks</option>
                             <option>Find the Answer</option>
-                            <option>Random (Self varified)</option>
+                            <option>Random (Self verified)</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Write Formula</label>
+                        <label style="font-family: 'Times New Roman', Times, serif ; font-size: 16px">Write Formula</label>
                         <input id="formula" type="text" formControlName="formula" class="form-control" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-success">
-                            <mat-icon>save</mat-icon>
+                            <mat-icon>done</mat-icon>
                         </button>
                     </div>
                 </div>
