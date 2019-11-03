@@ -14,7 +14,6 @@ var Assignment = require('../models/assignment');
 var router = express.Router();
 
 
-
 router.get('/getassignments', function (req, res, next) {
   console.log("Getting assignments for teacher");
   console.log(req.body);
@@ -120,6 +119,7 @@ router.post('/deleterow', function (req, res, next) {
     }
   })
 });
+
 router.post('/getquestions', function (req, res, next) {
   var questions = mongoose.model("questions", Question.schema);
   let promise = assignments.find({ id: req.body.Id }).exec();
@@ -132,6 +132,7 @@ router.post('/getquestions', function (req, res, next) {
     return res.status(err.status).json({
       message: err.message +
         ' Error in getting questions.'
+
     })
   })
 })

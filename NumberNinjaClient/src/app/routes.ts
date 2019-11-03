@@ -6,7 +6,9 @@ import { SignInComponent } from './user/signin/signin.component';
 import { AdminComponent } from './admin/admin.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
+import { QuestionListComponent } from './teacher/question-list/question-list.component'
 import { AuthGuard } from './auth/auth.guard';
+import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 
 export const appRoutes: Routes = [
     {
@@ -21,8 +23,16 @@ export const appRoutes: Routes = [
         path: 'teacher', component: TeacherComponent,
         canActivate: [AuthGuard]
     },
+    { 
+        path: 'teacher/:id', component: QuestionListComponent,
+        canActivate: [AuthGuard]
+    },
     {
         path: 'student', component: StudentComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'student/:id', component: SolveQuestionComponent,
         canActivate: [AuthGuard]
     },
     {
