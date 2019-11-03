@@ -31,8 +31,8 @@
                 <ng-container matColumnDef="role">
                         <mat-header-cell *matHeaderCellDef>User Role*</mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                                <mat-form-field style="width:50%;">
-                                        <mat-select style="width:50%;" required [(ngModel)]="element.role">
+                                <mat-form-field >
+                                        <mat-select required [(ngModel)]="element.role" (ngModelChange)="isAcceptDisabled(element)">
                                                 <mat-option>--</mat-option>
                                                 <mat-option [value]="role" *ngFor="let role of roles">
                                                         {{role}}
@@ -41,16 +41,14 @@
                                         <mat-error *ngIf="roleControl.hasError('required')">Please choose a class
                                         </mat-error>
                                 </mat-form-field>
-                        </mat-cell>
-                </ng-container>
-                <ng-container>
-                        <mat-cell *matCellDef="let element">
-                                <mat-select *ngIf="element.role == 'teacher' || element.role == 'student'"> 
-                                        <mat-option>--</mat-option>
-                                        <mat-option [value]="class" *ngFor="let class of classes">
-                                                {{class}}
-                                        </mat-option>
-                                </mat-select>
+                                <mat-form-field *ngIf="element.role == 'teacher' || element.role == 'student'">
+                                        <mat-select [(ngModel)]="element.grade" (ngModelChange)="isAcceptDisabled(element)"> 
+                                                <mat-option>-grade-</mat-option>
+                                                <mat-option [value]="class" *ngFor="let class of classes">
+                                                        {{class}}
+                                                </mat-option>
+                                        </mat-select>
+                                </mat-form-field>
                         </mat-cell>
                 </ng-container>
 
@@ -58,8 +56,8 @@
                 <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                                <button mat-button class="btn btn-primary" (click)="acceptUser(element)">Accept</button>
-                                <button mat-button class="btn btn-danger" (click)="deleteUser(element)">Reject</button>
+                                <button mat-button class="btn btn-primary" [disabled] = "isDisabled" (click)="acceptUser(element)">Accept</button>
+                                <button mat-button class="btn btn-danger" (click)="deleteUser(element)">Reject</button> 
                         </mat-cell>
                 </ng-container>
 

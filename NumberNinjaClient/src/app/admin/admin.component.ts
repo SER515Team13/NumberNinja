@@ -12,7 +12,7 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
-  class: string;
+  grade: string;
 }
 
 const userRoles: String[] = ['student',
@@ -33,6 +33,7 @@ export class AdminComponent implements OnInit {
   private roles: String[] = userRoles;
   private classes: String[] = grades;
   public allData: User[];
+  public isDisabled = true;
   private responseFromAPi;
   private dataSource = new MatTableDataSource<User>(this.responseFromAPi);
   private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
@@ -79,6 +80,25 @@ export class AdminComponent implements OnInit {
 
     }
     console.log(selectedUser);
+  }
+
+  public isAcceptDisabled(element : User) {
+    console.log("Select clickded");
+      if(element.role == 'teacher' || element.role == 'student') {
+        if(element.grade == null || element.grade == '-grade-') {
+          this.isDisabled = true;
+        }
+        else {
+          this.isDisabled = false;
+        }
+      }
+      else if(element.role == 'admin') {
+        this.isDisabled = false;
+      }
+      else {
+      this.isDisabled =  true;
+    }
+    console.log("dis is -"+this.isDisabled);
   }
 
   public deleteUser(selectedUser: User) {
