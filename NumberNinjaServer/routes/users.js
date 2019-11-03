@@ -1,3 +1,10 @@
+/**
+ * @author Sukhpreet Anand <ssanand3@asu.edu>
+ *          Login, signin API added
+ * @author Abhinaw Sarang <asarang@augments.edu>
+ *          Modified signup to get grade and email
+ */
+
 var mongoose = require("mongoose");
 var express = require('express');
 var router = express.Router();
@@ -126,8 +133,10 @@ router.post('/login', function(req,res,next) {
         // generate token
         let token = jwt.sign({Email:doc.Email}, 'secret', {expiresIn : '3h'});
         let userRole = doc.role;
+        let userGrade =doc.grade;
+        let userEmail = doc.email;
         console.log(token);
-        return res.status(200).json({token: token, role: userRole});
+        return res.status(200).json({token: token, role: userRole, userGrade: userGrade, userEmail: userEmail});
       } else {
         return res.status(501).json({message: 'Incorrect email or password.'});
       }
