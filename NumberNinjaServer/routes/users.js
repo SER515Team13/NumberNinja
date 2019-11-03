@@ -125,8 +125,10 @@ router.post('/login', function(req,res,next) {
         // generate token
         let token = jwt.sign({Email:doc.Email}, 'secret', {expiresIn : '3h'});
         let userRole = doc.role;
+        let userGrade=doc.grade;
+        let userEmail= doc.Email;
         console.log(token);
-        return res.status(200).json({token: token, role: userRole});
+        return res.status(200).json({token: token, role: userRole, userGrade: userGrade, userEmail: userEmail});
       } else {
         return res.status(501).json({message: 'Incorrect email or password.'});
       }

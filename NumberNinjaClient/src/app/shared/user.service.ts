@@ -26,7 +26,9 @@ export class UserService {
       password: user.password,
       email: user.email,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      role: null,
+      grade: null
     };
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/register', body, {headers: reqHeader });

@@ -46,4 +46,14 @@ export class AssignmentService {
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl +'/assignments/clickassignment', body, {headers : reqHeader});
     }
+
+    getAssignmentStudent(grade: string, email: string): Observable<{}> {
+        console.log("Calling student assignments service.");
+        const body: any = {grade : grade, email: email}
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+
+        return this.http.post(this.rootUrl + '/assignments/getassignments-student', body, {headers : reqHeader
+        });
+    }
+
 }

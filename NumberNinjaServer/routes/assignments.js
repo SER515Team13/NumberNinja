@@ -56,7 +56,6 @@ router.get('/getassignments-student', function (req, res, next) {
     });
   })
 })
-db.bios.find().limit(5).sort({ name: 1 })
 
 router.post('/addassignment', function (req, res, next) {
   console.log("Storing assignment into database");
