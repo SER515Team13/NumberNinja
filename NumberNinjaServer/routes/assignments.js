@@ -39,8 +39,16 @@ router.get('/getassignments', function (req, res, next) {
 router.get('/getassignments-student', function (req, res, next) {
   console.log("Getting assignments for student");
   console.log(req.body);
-  let promise = Assignment.find({ grade: req.body.grade },
-    { id: 1, name: 1, duedate: 1 }).sort({ id: -1 }).exec();
+  let promise = Assignment.aggregate([
+    {$match : {grade : req.body.grade}},
+    {$lookup: {from: "student-assignment", localField: "assignmentId", foreignField: "id", as: "studentAssignment"}},
+    {$project : {
+            studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentId' , req.body.email] } } },
+            name : 1,
+            duedate : 1
+
+        }}
+      ]).sort({ id: -1 }).exec();
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
@@ -56,7 +64,6 @@ router.get('/getassignments-student', function (req, res, next) {
     });
   })
 })
-db.bios.find().limit(5).sort({ name: 1 })
 
 router.post('/addassignment', function (req, res, next) {
   console.log("Storing assignment into database");
