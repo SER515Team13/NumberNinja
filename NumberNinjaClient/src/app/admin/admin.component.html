@@ -1,13 +1,21 @@
 <div>
         <app-admintoolbar></app-admintoolbar>
 </div>
-<div>
-        <h2 align="center">Hi Admin</h2>
-</div>
-<h3>Role Assignment For Pending Accounts :</h3>
-
+<ng-template
+  *ngIf="(dataSource && dataSource != null); then showBlock; else notShowBlock">
+</ng-template>
+<ng-template #showBlock>
+        <h4>
+                ASSIGN ROLES FOR PENDING ACCOUNTS
+        </h4>
+</ng-template>
+<ng-template #notShowBlock>
+        <h4>
+                NO PENDING TASKS FOR ADMIN
+        </h4>
+</ng-template>
 <section class='tableSection'>
-        <mat-table [dataSource]="dataSource" class="matTable">
+        <mat-table [dataSource]="dataSource" class="matTable" *ngIf='dataSource && dataSource != null'>
 
                 <!--First Name Column -->
                 <ng-container matColumnDef="firstName">
@@ -35,7 +43,7 @@
                                         <mat-select required [(ngModel)]="element.role" (ngModelChange)="isAcceptDisabled(element)">
                                                 <mat-option>--</mat-option>
                                                 <mat-option [value]="role" *ngFor="let role of roles">
-                                                        {{role}}
+                                                        {{role.charAt(0).toUpperCase() + role.slice(1)}}
                                                 </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="roleControl.hasError('required')">Please choose a class
