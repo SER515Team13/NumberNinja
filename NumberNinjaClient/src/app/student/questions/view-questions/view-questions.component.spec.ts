@@ -1,5 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule, MatDialogModule } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QuestionServiceService } from '../../service/question-service.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { ViewQuestionsComponent } from './view-questions.component';
 
 describe('ViewQuestionsComponent', () => {
@@ -8,7 +15,19 @@ describe('ViewQuestionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewQuestionsComponent ]
+      imports: [
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatTableModule,
+        ReactiveFormsModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        HttpClientTestingModule
+      ],
+      declarations: [ ViewQuestionsComponent ],
+      providers: [ QuestionServiceService ]
     })
     .compileComponents();
   }));

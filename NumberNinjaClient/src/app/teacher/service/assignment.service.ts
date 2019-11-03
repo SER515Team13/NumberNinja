@@ -41,7 +41,7 @@ export class AssignmentService {
         return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader });
     }
     
-    describeassignment(currentAssignment : Assignment) {
+    describeAssignment(currentAssignment : Assignment) {
         const body : any ={ currentAssignment};
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl +'/assignments/clickassignment', body, {headers : reqHeader});

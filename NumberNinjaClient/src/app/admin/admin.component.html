@@ -14,10 +14,6 @@
                 NO PENDING TASKS FOR ADMIN
         </h4>
 </ng-template>
-<div>
-        <h4 *ngIf='dataSource && dataSource != null'>{{taskMessage}}</h4>
-        <h4 *ngIf='!(dataSource && dataSource != null)'>{{noUserMessage}}</h4>
-</div>
 <section class='tableSection'>
         <mat-table [dataSource]="dataSource" class="matTable" *ngIf='dataSource && dataSource != null'>
 

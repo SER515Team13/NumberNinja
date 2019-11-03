@@ -1,5 +1,5 @@
 export class Question {
-    _id: string;
+    id: string;
     formula: string;
     formulaType: string;
 }

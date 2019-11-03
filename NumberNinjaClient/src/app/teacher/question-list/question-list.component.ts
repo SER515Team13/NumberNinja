@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
+import { ActivatedRoute} from "@angular/router";
 import { HttpService } from "../../shared/http.services";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,6 +10,7 @@ import { QuestionService } from '../service/question-service';
 import { MatDialog } from '@angular/material';
 import { QuestionComponent } from '../question/question.component';
 import { Question } from '../model/question';
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-question-list',
@@ -17,30 +19,27 @@ import { Question } from '../model/question';
 })
 export class QuestionListComponent implements OnInit {
   
-  private displayedColumns: String[] = ['id', 'question', 'questiontype', 'action'];
-  //private questionList :Question[] = null;
-  private dataSource;// = new MatTableDataSource<Question>(this.questionService.questionList);
+  private displayedColumns: String[] = ['question', 'questiontype', 'action'];
+  private dataSource;
+  private isPopupOpened = false;
 
+  assignmentID: any;
 
-  isPopupOpened = false;
-
-  constructor(private dialog?: MatDialog,
-    private questionService?: QuestionService) { }
+  constructor(private location: Location, private dialog: MatDialog,
+    private questionService: QuestionService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-   this.getData();
-}
-
-getData(){
-  var userData = this.questionService.getQuestions().subscribe((data: any) => {
-  console.log("Testing:" + data +".");
-  if (data && data != undefined && data.length) {
-    console.log("Inside");
-    this.dataSource = new MatTableDataSource<Question>(data);
+    this.assignmentID = this.route.snapshot.paramMap.get('id');
+    this.getData();
   }
-});
-}
 
+  getData() {
+    var userData = this.questionService.getQuestions(this.assignmentID).subscribe((data: any) => {
+      if (data && data != undefined && data.length) {
+        this.dataSource = new MatTableDataSource<Question>(data);
+      }
+    });
+  }
 
   addQuestion() {
     this.isPopupOpened = true;
@@ -48,20 +47,17 @@ getData(){
       data: {}
     });
 
-
     dialogRef.afterClosed().subscribe(result => {
       this.getData();
       this.isPopupOpened = false;
     });
   }
 
-  editQuestion(question: Question) {
+  editQuestion(selectedQuestion: Question) {
     this.isPopupOpened = true;
-    //const currentQuestion = this.questionService.getQuestions().findIndex(index => index.id === question.id);
     const dialogRef = this.dialog.open(QuestionComponent, {
-      data: question
+      data: selectedQuestion
     });
-
 
     dialogRef.afterClosed().subscribe(result => {
       this.getData();
@@ -69,7 +65,16 @@ getData(){
     });
   }
 
-  deleteQuestion(id: string) {
-    this.questionService.deleteQuestion(id);
+  deleteQuestion(selectedQuestion: Question) {
+    const data = this.dataSource.data;
+    const index: number = data.indexOf(selectedQuestion);
+    this.questionService.deleteQuestion(selectedQuestion.id).subscribe((abc : any) => {
+      data.splice(index, 1);
+      this.dataSource.data=data;
+    });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
