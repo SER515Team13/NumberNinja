@@ -83,7 +83,6 @@ export class AdminComponent implements OnInit {
   }
 
   public isAcceptDisabled(element : User) {
-    console.log("Select clickded");
       if(element.role == 'teacher' || element.role == 'student') {
         if(element.grade == null || element.grade == '-grade-') {
           this.isDisabled = true;
@@ -98,7 +97,6 @@ export class AdminComponent implements OnInit {
       else {
       this.isDisabled =  true;
     }
-    console.log("dis is -"+this.isDisabled);
   }
 
   public deleteUser(selectedUser: User) {
