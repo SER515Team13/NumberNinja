@@ -12,10 +12,15 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
+  grade: string;
 }
 
 const userRoles: String[] = ['student',
   'teacher','admin'
+];
+
+const grades: String[] = ['grade 2',
+'grade 7'
 ];
 
 @Component({
@@ -29,7 +34,9 @@ export class AdminComponent implements OnInit {
   private noUsersMessage: string = "NO PENDING TASKS FOR ADMIN";
 
   private roles: String[] = userRoles;
+  private classes: String[] = grades;
   public allData: User[];
+  public isDisabled = true;
   private responseFromAPi;
   private dataSource = null; // = new MatTableDataSource<User>(this.responseFromAPi);
   private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
@@ -75,6 +82,23 @@ export class AdminComponent implements OnInit {
 
     }
     console.log(selectedUser);
+  }
+
+  public isAcceptDisabled(element : User) {
+      if(element.role == 'teacher' || element.role == 'student') {
+        if(element.grade == null || element.grade == '-grade-') {
+          this.isDisabled = true;
+        }
+        else {
+          this.isDisabled = false;
+        }
+      }
+      else if(element.role == 'admin') {
+        this.isDisabled = false;
+      }
+      else {
+      this.isDisabled =  true;
+    }
   }
 
   public deleteUser(selectedUser: User) {
