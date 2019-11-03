@@ -3,8 +3,6 @@ var express = require('express');
 var Assignment = require('../models/assignment');
 var router = express.Router();
 
-
-
 router.get('/getassignments', function(req,res,next) {
   console.log("Inside server api");
   console.log(req.body);
@@ -77,6 +75,7 @@ router.post('/deleterow',function(req,res,next){
       }
     })
 });
+
 router.post('/getquestions',function(req,res,next){
   var questions = mongoose.model("questions",Question.schema);
   let promise = assignments.find({id: req.body.Id}).exec();
