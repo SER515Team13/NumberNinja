@@ -5,5 +5,5 @@ export class User {
     firstName: string;
     lastName: string;
     grade: string;
-    role: string;
+    role: string; 
 }

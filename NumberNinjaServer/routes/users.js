@@ -29,9 +29,9 @@ var registrationSchema = new Schema({
 router.get('/getalldata', function(req,res,next) {
   console.log("Inside server api");
   console.log(req.body);
-  let promise = User.find({role:null},{firstName:1,lastName:1,email:1,role:1}).exec();
+  let promise = User.find({role:null},{firstName:1,lastName:1,email:1,role:1,grade:1}).exec();
   promise.then(function(doc) {
-    console.log("insdie promise");
+    console.log("inside promise");
     console.log(doc);
     if(doc) {
       return res.status(200).json(doc);
@@ -45,10 +45,11 @@ router.get('/getalldata', function(req,res,next) {
 
 router.post('/addRole',function(req,res,next){
   console.log("inside allrole");
-  var data = req.body;
+  var data = req.body;  
   console.log(data);
+  gradeNum = data.grade.substring(data.grade.length - 2);
   if(data['flag'] === true) {
-    let promise = User.updateOne({email:data.email},{$set:{role:data.role}}).exec();
+    let promise = User.updateOne({email:data.email},{$set:{role:data.role,grade:gradeNum}}).exec();
     promise.then(function(doc) {
       if(doc) {
         return res.status(200).json(doc);
