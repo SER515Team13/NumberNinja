@@ -9,7 +9,6 @@ import { AssignmentService } from '../../service/assignment.service';
 import { AddAssignmentComponent } from '../add-assignment/add-assignment.component'
 import { MatDialog } from '@angular/material';
 
-
 @Component({
   selector: 'app-assignments',
   templateUrl: './assignments.component.html',
@@ -21,9 +20,8 @@ export class AssignmentsComponent implements OnInit {
   private displayedColumns: String[] = ['assignmentname', 'duedate', 'grade', 'action'];
   private dataSource;
   private isPopupOpened: boolean = false;
-  readonly rootUrl = 'http://localhost:3000';
 
-  constructor(private dialog?: MatDialog, private assignmentService?:AssignmentService) { }
+  constructor(private dialog: MatDialog, private assignmentService:AssignmentService) { }
 
   ngOnInit() {
     this.getData();
@@ -70,13 +68,6 @@ export class AssignmentsComponent implements OnInit {
     this.assignmentService.deleteAssignment(selectedassignment.id).subscribe((abc : any) => {
       data.splice(index, 1);
       this.dataSource.data=data;
-    })
-  }
-
-  public openassignment(selectedassignment : Assignment){
-    console.log('inside open assignment function' + selectedassignment);
-    //const data = this.dataSource.data;
-    this.assignmentService.describeassignment(selectedassignment).subscribe((def : any)=>{
     })
   }
 }

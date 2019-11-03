@@ -16,11 +16,12 @@ export class QuestionService {
 
     readonly rootUrl = 'http://localhost:3000';
 
-    getQuestions(): Observable<{}> {
+    getQuestions(id: any): Observable<{}> {
         console.log("calling questions client service.");
+        console.log("ID: "+id);
         return this.http.get(this.rootUrl + '/questions/getquestions', {
         observe: 'body',
-        params: new HttpParams()
+        params: new HttpParams().append('id', id)
         });
     }
 
@@ -36,9 +37,13 @@ export class QuestionService {
         return this.http.post(this.rootUrl + '/questions/editquestion', currentQuestion, { headers: reqHeader });
     }
 
-    deleteQuestion(id: string) {
-        const currentQuestion = this.questionList.findIndex(index => index._id === id);
-        this.questionList.splice(currentQuestion, 1);
+    deleteQuestion(id: string): Observable<{}> {
+        const body : any = { Id : id};
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        console.log("Inside delete service");
+        return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader });
+        /*const currentQuestion = this.questionList.findIndex(index => index._id === id);
+        this.questionList.splice(currentQuestion, 1);*/
     }
 
     getAllQuestion() {
