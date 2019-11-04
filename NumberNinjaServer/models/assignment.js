@@ -6,7 +6,8 @@ var schema = new Schema({
     name: {type:String, require:true},
     description: {type:String, require:true},
     duedate: {type:String, require:true},
-    grade: {type:String, require:true},
+    grade: {type:String, require:false},
+    role: {type : String, require: true}
 });
 
 module.exports = mongoose.model('Assignment',schema);

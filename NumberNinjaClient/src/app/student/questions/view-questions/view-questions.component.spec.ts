@@ -6,7 +6,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionServiceService } from '../../service/question-service.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { StudentToolbarComponent } from 'src/app/toolbars/studenttoolbar/studenttoolbar.component';
 import { ViewQuestionsComponent } from './view-questions.component';
 
 describe('ViewQuestionsComponent', () => {
@@ -24,9 +25,10 @@ describe('ViewQuestionsComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         MatDialogModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule
       ],
-      declarations: [ ViewQuestionsComponent ],
+      declarations: [ ViewQuestionsComponent, StudentToolbarComponent ],
       providers: [ QuestionServiceService ]
     })
     .compileComponents();

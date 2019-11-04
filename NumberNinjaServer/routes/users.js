@@ -1,3 +1,10 @@
+/**
+ * @author Sukhpreet Anand <ssanand3@asu.edu>
+ *          Login, signin API added
+ * @author Abhinaw Sarang <asarang@augments.edu>
+ *          Modified signup to get grade and email
+ */
+
 var mongoose = require("mongoose");
 var express = require('express');
 var router = express.Router();
@@ -12,7 +19,7 @@ var registrationSchema = new Schema({
   role: String,
   grade: String,
   creationDate: Date,
-  password: String
+  password: String,
 })
 
 /* Get API to get user details of users that are not accepted.
@@ -102,7 +109,8 @@ router.post('/register',  function(req,res,next){
   let promise = User.findOne({email:req.body.email}).exec();
   promise.then(function(doc) {
     if(doc) {
-      return res.status(501).json({message:'This email is already registered.'});
+      console.log(doc);
+      return res.status(220).json({message:'This email is already registered.'});
     } else {
       let userpromise = userToStore.save();
 
@@ -143,8 +151,10 @@ router.post('/login', function(req,res,next) {
         // generate token
         let token = jwt.sign({Email:doc.Email}, 'secret', {expiresIn : '3h'});
         let userRole = doc.role;
+        let userGrade =doc.grade;
+        let userEmail = doc.email;
         console.log(token);
-        return res.status(200).json({token: token, role: userRole});
+        return res.status(200).json({token: token, role: userRole, userGrade: userGrade, userEmail: userEmail});
       } else {
         return res.status(501).json({message: 'Incorrect email or password.'});
       }

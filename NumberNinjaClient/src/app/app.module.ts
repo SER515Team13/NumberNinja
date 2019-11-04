@@ -31,6 +31,7 @@ import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add
 import { QuestionComponent } from './teacher/question/question.component'; 
 import { QuestionService } from './teacher/service/question-service';
 import { QuestionListComponent } from './teacher/question-list/question-list.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ViewAssignmentsComponent } from './student/assignments/view-assignments/view-assignments.component';
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
@@ -79,6 +80,7 @@ import { ExistuserComponent } from './admin/existuser/existuser.component';
     MatDialogModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     MatToolbarModule,
+    MatButtonToggleModule
   ],
   providers: [UserService, AssignmentService, AuthGuard,
     {

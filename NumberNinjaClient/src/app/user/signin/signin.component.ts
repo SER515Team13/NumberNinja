@@ -25,6 +25,8 @@ export class SignInComponent implements OnInit {
       this.userService.userAuthentication(email, password).subscribe((data: any) => {
       localStorage.setItem('userToken', data.token);
       localStorage.setItem('userRole', data.role);
+      localStorage.setItem('userGrade',data.userGrade)
+      localStorage.setItem('userEmail',data.userEmail)
 
       switch(data.role) {
         case this.adminRole:
@@ -37,6 +39,7 @@ export class SignInComponent implements OnInit {
 
         case this.studentRole:
           this.router.navigate(['/student']);
+          
           break;
 
         default:

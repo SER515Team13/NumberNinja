@@ -18,15 +18,15 @@ export class QuestionService {
 
     getQuestions(id: any): Observable<{}> {
         console.log("calling questions client service.");
-        console.log("ID: "+id);
         return this.http.get(this.rootUrl + '/questions/getquestions', {
-        observe: 'body',
-        params: new HttpParams().append('id', id)
+            observe: 'body',
+            params: new HttpParams().append('id', id)
         });
     }
 
     addQuestion(currentQuestion: Question): Observable<{}> {
         console.log("Sending request to server to Add question");
+        console.log(currentQuestion);
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl + '/questions/addquestion', currentQuestion, { headers: reqHeader });
     }

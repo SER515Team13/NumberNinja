@@ -18,7 +18,7 @@ const MongoDBConnectionString = 'mongodb+srv://Sukhpreet:Sukhpreet@numberninjada
 const CorsOrigin = 'http://localhost:4200';
 
 // Connect to MongoDB database using mongoose
-mongoose.connect(MongoDBConnectionString);
+mongoose.connect(MongoDBConnectionString, { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.connection.once('open', function() {
   console.log('Connection to database has been made!');
 }).on('error', function(error) {
