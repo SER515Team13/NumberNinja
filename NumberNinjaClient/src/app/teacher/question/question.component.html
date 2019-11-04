@@ -7,7 +7,7 @@
 </mat-card-header>
 <mat-card-content>
     <div class="container">
-        <form ngNativeValidate [formGroup]="questionForm" (submit)="onSubmit()">
+        <form ngNativeValidate [formGroup]="questionForm" >
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
@@ -25,9 +25,47 @@
                         <input id="formula" type="text" formControlName="formula" class="form-control" required>
                     </div>
                 </div>
+
+                <div class="row" *ngIf="checkbox && questionForm.value.formulaType == 'Find the Answer'">
+                        <div class="col-md-6">
+                            <label style="font-family: 'Times New Roman', Times, serif ; font-size: 10px">Enter Option</label>
+                            <input id="formula1" type="text" formControlName="formula1"  class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                                <label style="font-family: 'Times New Roman', Times, serif ; font-size: 10px">Enter Option</label>
+                                <input id="formula2" type="text" formControlName="formula2"  class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                                <label style="font-family: 'Times New Roman', Times, serif ; font-size: 10px">Enter Option</label>
+                                <input id="formula3" type="text"  formControlName="formula3" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                                <label style="font-family: 'Times New Roman', Times, serif ; font-size: 10px">Enter Option</label>
+                                <input id="formula4" type="text" formControlName="formula4"  class="form-control" required>
+                        </div>
+                </div>>
+
+                <div class="row" *ngIf="questionForm.value.formulaType == 'Fill in the Blanks'">
+                    <div class="col-md-6">
+                        <button type="submit" id="addBlanks"  class="btn btn-success" (click)="myFunc()">Add Blanks</button>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="questionForm.value.formulaType == 'Find the Answer'">
+                        <div class="col-md-6">
+                            <button type="submit" id="addsingleblank"  class="btn btn-success" (click)="myFuncForSingle()">Add Options</button>
+                        </div>
+                </div>
+
+                <mat-button-toggle-group *ngIf="questionForm.value.formulaType == 'Fill in the Blanks'"  #group="matButtonToggleGroup" multiple>
+                    <mat-button-toggle *ngFor="let item of digitsArray; let i = index" [value]= "i" (click)="addinarr(i)">
+                        {{item}}
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+
                 <div class="row">
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" id="submitButton" class="btn btn-success" (click)="onSubmit()" disabled>
                             <mat-icon>done</mat-icon>
                         </button>
                     </div>

@@ -38,11 +38,11 @@ export class SignUpComponent implements OnInit {
   OnSubmit(form: NgForm) {
     this.userService.registerUser(this.user)
       .subscribe((data: any) => {
-        if (data.key !== '') {
+        if (data.message === undefined) {
           this.resetForm(form);
           this.toastr.success('User registration successful');
         } else {
-          this.toastr.error('Registration failed');
+          this.toastr.error(data.message);
         }
       });
   }
