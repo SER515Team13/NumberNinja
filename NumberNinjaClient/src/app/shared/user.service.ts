@@ -20,6 +20,14 @@ export class UserService {
     });
   }
 
+  getAllExistingUsers(): Observable<{}> {
+    console.log("Inside client service.");
+    return this.http.get(this.rootUrl + '/users/getExistingData', {
+      observe: 'body',
+      params: new HttpParams()
+    });
+  }
+
   registerUser(user: User): Observable<{}> {
     const body: User = {
       userName: user.userName,
@@ -37,6 +45,11 @@ export class UserService {
   addDelete(user : User) {
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/addRole', user, {headers: reqHeader });
+  }
+
+  delete(user : User) {
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+    return this.http.post(this.rootUrl + '/users/deleteUser', user, {headers: reqHeader });
   }
 
   userAuthentication(email, password): Observable<{}> {

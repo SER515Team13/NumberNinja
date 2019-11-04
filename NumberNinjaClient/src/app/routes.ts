@@ -3,13 +3,14 @@ import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './user/signup/signup.component';
 import { SignInComponent } from './user/signin/signin.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminComponent } from './admin/pending/admin.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { QuestionListComponent } from './teacher/question-list/question-list.component'
 import { AuthGuard } from './auth/auth.guard';
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
+import { ExistuserComponent } from './admin/existuser/existuser.component';
 
 export const appRoutes: Routes = [
     {
@@ -18,6 +19,10 @@ export const appRoutes: Routes = [
     },
     {
         path: 'admin', component: AdminComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'admin/existingusers', component: ExistuserComponent,
         canActivate: [AuthGuard]
     },
     {

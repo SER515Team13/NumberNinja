@@ -1,0 +1,84 @@
+<div>
+        <app-admintoolbar></app-admintoolbar>
+</div>
+<ng-template
+  *ngIf="(dataSource && dataSource != null); then showBlock; else notShowBlock">
+</ng-template>
+<ng-template #showBlock>
+        <h4>
+                ASSIGN ROLES FOR PENDING ACCOUNTS
+        </h4>
+</ng-template>
+<ng-template #notShowBlock>
+        <h4>
+                NO PENDING TASKS FOR ADMIN
+        </h4>
+</ng-template>
+<section class='tableSection'>
+        <mat-table [dataSource]="dataSource" class="matTable" *ngIf='dataSource && dataSource != null'>
+
+                <!--First Name Column -->
+                <ng-container matColumnDef="firstName">
+                        <mat-header-cell *matHeaderCellDef>First Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+                </ng-container>
+
+                <!--Last Name Column -->
+                <ng-container matColumnDef="lastName">
+                        <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                </ng-container>
+
+                <!-- Role Column -->
+                <ng-container matColumnDef="role">
+                        <mat-header-cell *matHeaderCellDef>User Role*</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                                <mat-form-field >
+                                        <mat-select required [(ngModel)]="element.role" (ngModelChange)="isAcceptDisabled(element)">
+                                                <mat-option>--</mat-option>
+                                                <mat-option [value]="role" *ngFor="let role of roles">
+                                                        {{role.charAt(0).toUpperCase() + role.slice(1)}}
+                                                </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="roleControl.hasError('required')">Please choose a class
+                                        </mat-error>
+                                </mat-form-field>
+                        </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="grade">
+                        <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+                        <mat-cell *matCellDef="let element">                              
+                                <mat-form-field *ngIf="element.role == 'teacher' || element.role == 'student'">
+                                        <mat-select [(ngModel)]="element.grade" (ngModelChange)="isAcceptDisabled(element)"> 
+                                                <mat-option>-grade-</mat-option>
+                                                <mat-option [value]="class" *ngFor="let class of classes">
+                                                        {{class}}
+                                                </mat-option>
+                                        </mat-select>
+                                </mat-form-field>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="action" >
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                                <div ng-init="element.isDisabled = 'true'">
+                                <button mat-button class="btn btn-primary" [disabled] = "element.isDisabled && isDisabled" (click)="acceptUser(element)">Accept</button>
+                                <button mat-button class="btn btn-danger" (click)="deleteUser(element)">Reject</button>
+                                </div>
+                        </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+</section>
