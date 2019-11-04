@@ -24,14 +24,17 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("IDDDDDDDDDDDDDDDDD: " + this.data);
     this.questionForm = this.formBuilder.group({
       _id: [this.data._id],
       formula: [this.data.formula, [Validators.required]],
-      formulaType: [this.data.formulaType, [Validators.required]]
+      formulaType: [this.data.formulaType, [Validators.required]],
+      assignmentID: [this.data]
     })
   }
   onSubmit() {
-    //console.log("Data Id" + this.data._id);
+    
+    console.log("Question form: " + this.questionForm.value);
     if (isUndefined(this.data._id)) {
       this.questionService.addQuestion(this.questionForm.value).subscribe((data: any) => {
         console.log("Add question response" + data );

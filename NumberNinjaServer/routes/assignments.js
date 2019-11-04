@@ -17,7 +17,7 @@ var router = express.Router();
 router.get('/getassignments', function (req, res, next) {
   console.log("Getting assignments for teacher");
   console.log(req.body);
-  let promise = Assignment.find({ grade: req.body.grade },
+  let promise = Assignment.find({},
     { id: 1, name: 1, grade: 1, duedate: 1 }).sort({ id: -1 }).exec();
   promise.then(function (doc) {
     console.log("Got assignments for teacher");

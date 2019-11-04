@@ -27,7 +27,9 @@ router.post('/addquestion',  function(req,res,next){
   var questionToStore = new questions({
     formula: req.body.formula,
     formulaType: req.body.formulaType,
+    assignmentID: req.body.assignmentID
   });
+  console.log(questionToStore);
 
   let questionPromise = questionToStore.save();
 
