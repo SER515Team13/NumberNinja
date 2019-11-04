@@ -27,6 +27,7 @@ export class QuestionService {
 
     addQuestion(currentQuestion: Question): Observable<{}> {
         console.log("Sending request to server to Add question");
+        console.log(currentQuestion);
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl + '/questions/addquestion', currentQuestion, { headers: reqHeader });
     }

@@ -41,7 +41,8 @@ export class QuestionComponent implements OnInit {
       formula1: [this.data.formula1, [Validators.required]],
       formula2: [this.data.formula2, [Validators.required]],
       formula3: [this.data.formula3, [Validators.required]],
-      formula4: [this.data.formula4, [Validators.required]]
+      formula4: [this.data.formula4, [Validators.required]],
+      assignmentID: [this.data]
     })
   }
   onSubmit() {
@@ -50,6 +51,7 @@ export class QuestionComponent implements OnInit {
       let question = new Question;
       question.formula= this.questionForm.value.formula.replace(/\s/g, "");
       question.formulaType = this.questionForm.value.formulaType;
+      question.assignmentID= this.data;
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
         var stringWithQuestions : string;
         stringWithQuestions = "";
@@ -61,6 +63,7 @@ export class QuestionComponent implements OnInit {
             }
         }
         question.formulaWithBlanks = stringWithQuestions;
+        question.answers = null;
         console.log(stringWithQuestions);
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
@@ -69,6 +72,7 @@ export class QuestionComponent implements OnInit {
         question.answers.push(this.questionForm.value.formula2);
         question.answers.push(this.questionForm.value.formula3);
         question.answers.push(this.questionForm.value.formula4);
+        question.formulaWithBlanks = null;
       }
       this.questionService.addQuestion(question).subscribe((data: any) => {
         console.log("Add question response" + data );

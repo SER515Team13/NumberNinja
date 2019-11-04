@@ -28,7 +28,8 @@ router.post('/addquestion',  function(req,res,next){
     formula: req.body.formula,
     formulaWithBlanks: req.body.formulaWithBlanks,
     formulaType: req.body.formulaType,
-    answers:req.body.answers
+    answers:req.body.answers,
+    assignmentID:req.body.assignmentID
   });
   console.log(questionToStore);
 

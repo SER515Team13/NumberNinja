@@ -44,7 +44,7 @@ export class QuestionListComponent implements OnInit {
   addQuestion() {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(QuestionComponent, {
-      data: {}
+      data: this.assignmentID
     });
 
     dialogRef.afterClosed().subscribe(result => {
