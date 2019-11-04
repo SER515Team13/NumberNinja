@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { UserService } from './shared/user.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -16,7 +15,6 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AdminComponent } from './admin/admin.component';
-//import { AppRoutingModule } from './app-routing.module';
 import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
@@ -25,11 +23,18 @@ import { AdminToolbarComponent } from './toolbars/admintoolbar/admintoolbar.comp
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { CompareValidatorDirective } from './shared/compare-validator.directive';
+import { AssignmentsComponent } from './teacher/assignments/view-assignments/assignments.component';
+import { HttpModule } from '@angular/http';
+import { AssignmentService } from './teacher/service/assignment.service';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddAssignmentComponent } from './teacher/assignments/add-assignment/add-assignment.component';
 import { QuestionComponent } from './teacher/question/question.component'; 
 import { QuestionService } from './teacher/service/question-service';
 import { QuestionListComponent } from './teacher/question-list/question-list.component';
-import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { ViewAssignmentsComponent } from './student/assignments/view-assignments/view-assignments.component';
+import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
+import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 
 
 @NgModule({
@@ -46,17 +51,22 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     TeacherComponent,
     StudentComponent,
     CompareValidatorDirective,
+    AssignmentsComponent,
+    AddAssignmentComponent,
     QuestionComponent,
-    QuestionListComponent
+    QuestionListComponent,
+    ViewAssignmentsComponent,
+    ViewQuestionsComponent,
+    SolveQuestionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
-    //AppRoutingModule,
     MatTableModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -66,16 +76,18 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatToolbarModule,
     MatIconModule,
     MatDialogModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     MatToolbarModule,
     MatButtonToggleModule
   ],
-  providers: [UserService, AuthGuard,
+  providers: [UserService, AssignmentService, AuthGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
       multi : true
     }, QuestionService],
   bootstrap: [AppComponent],
-  entryComponents: [QuestionComponent],
+  entryComponents: [AddAssignmentComponent, QuestionComponent],
 })
+
 export class AppModule { }

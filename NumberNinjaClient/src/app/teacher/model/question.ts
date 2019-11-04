@@ -1,6 +1,7 @@
 export class Question {
-    _id: string;
+    id: string;
     formula: string;
     formulaWithBlanks: string;
     formulaType: string;
+    answers : number[];
 }

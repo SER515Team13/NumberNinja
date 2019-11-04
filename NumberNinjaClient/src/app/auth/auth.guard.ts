@@ -1,3 +1,8 @@
+/*
+ * @project name: NumberNinja
+ * @author: Sukhpreet Singh Anand
+ */
+
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { UserService } from '../shared/user.service';
@@ -19,14 +24,12 @@ export class AuthGuard implements CanActivate {
         console.log("User token exists.");
         if (this.userService.validateToken()) {
           console.log("User token is valid.");
-          if (localStorage.getItem('userRole') == String(next.url)) {
+          if (String(next.url).startsWith(localStorage.getItem('userRole'))) {
             return true;
           } else {
             this.router.navigate(['/'+localStorage.getItem('userRole')]);
             return false;
           }
-          //console.log(next.url + " | " + state);
-          //return true;
         }
       }
       this.router.navigate(['/login']);

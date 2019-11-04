@@ -1,13 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionListComponent } from './question-list.component';
-
 import { MatDialog, MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionService } from '../service/question-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TeacherToolbarComponent } from './../../toolbars/teachertoolbar/teachertoolbar.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('QuestionListComponent', () => {
   let component: QuestionListComponent;
@@ -24,9 +25,10 @@ describe('QuestionListComponent', () => {
         FormsModule,
         BrowserAnimationsModule,
         MatDialogModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule,
       ],
-      declarations: [ QuestionListComponent ],
+      declarations: [ QuestionListComponent, TeacherToolbarComponent ],
       providers: [ QuestionService ]
     })
     .compileComponents();

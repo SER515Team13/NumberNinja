@@ -6,8 +6,8 @@ var Question = require('../models/question');
 
 router.get('/getquestions', function(req,res,next) {
     console.log("Inside question server api");
-    console.log(req.body);
-    let promise = Question.find({},{id:1,formula:1,formulaType:1}).exec();
+    console.log(req.query.id);
+    let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
      promise.then(function(doc) {
       console.log("insdie promise");
       console.log(doc);
@@ -27,8 +27,10 @@ router.post('/addquestion',  function(req,res,next){
   var questionToStore = new questions({
     formula: req.body.formula,
     formulaWithBlanks: req.body.formulaWithBlanks,
-    formulaType: req.body.formulaType
+    formulaType: req.body.formulaType,
+    answers:req.body.answers
   });
+  console.log(questionToStore);
 
   let questionPromise = questionToStore.save();
 
@@ -61,7 +63,17 @@ router.post('/editquestion',  function(req,res,next){
   questionPromise.catch(function (err) {
     return res.status(501).json({ message: err + 'Error Updating question.' })
   })
-
 })
+
+router.post('/deleterow',function(req,res,next) {
+  console.log("In server delete");
+  var assignments = mongoose.model("questions", Question.schema);
+  let promise = assignments.deleteOne({id: req.body._id}).exec();
+  promise.then(function(doc) {
+    if(doc) {
+      return res.status(200).json(doc);
+    }
+  })
+});
 
 module.exports = router;
