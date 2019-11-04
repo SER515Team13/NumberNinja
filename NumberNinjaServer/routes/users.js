@@ -10,13 +10,12 @@ var registrationSchema = new Schema({
   firstName: String,
   lastName: String,
   role: String,
+  grade: String,
   creationDate: Date,
   password: String
 })
 
-/* POST API to register user details to users collection of 
- * MongoDB database and also check whether the user's email
- * is registered before.
+/* Get API to get user details of users that are not accepted.
  */
 
 router.get('/getalldata', function(req,res,next) {
@@ -36,13 +35,32 @@ router.get('/getalldata', function(req,res,next) {
   })
 })
 
+/* GET API to fetch users that are approved by admin.
+ */
+
+router.get('/getExistingData', function(req,res,next) {
+  console.log(req.body);
+  let promise = User.find({role: {$ne:null}},{firstName:1,lastName:1,email:1,role:1,grade:1}).exec();
+  promise.then(function(doc) {
+    console.log("inside2 promise");
+    console.log(doc);
+    if(doc) {
+      return res.status(200).json(doc);
+    }
+  });
+
+  promise.catch(function(err){
+    return res.status(501).json({message:'Some internal error'});
+  })
+})
+
+
 router.post('/addRole',function(req,res,next){
   console.log("inside allrole");
   var data = req.body;  
-  console.log(data);
-  gradeNum = data.grade.substring(data.grade.length - 2);
+  console.log(data.grade);
   if(data['flag'] === true) {
-    let promise = User.updateOne({email:data.email},{$set:{role:data.role,grade:gradeNum}}).exec();
+    let promise = User.updateOne({email:data.email},{$set:{role:data.role,grade:data.grade}}).exec();
     promise.then(function(doc) {
       if(doc) {
         return res.status(200).json(doc);
@@ -57,7 +75,6 @@ router.post('/addRole',function(req,res,next){
     })
   }
 });
-
  
 router.post('/register',  function(req,res,next){
   console.log(req.body);
@@ -69,10 +86,10 @@ router.post('/register',  function(req,res,next){
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     role: null,
+    grade: null,
     creationDate: Date.now(),
     password: User.hashPassword(req.body.password)
   });
-  console.log("hi3");
 
   console.log(userToStore);
 

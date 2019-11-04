@@ -14,7 +14,7 @@ import { SignUpComponent } from './user/signup/signup.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { AdminComponent } from './admin/admin.component';
+import { AdminComponent } from './admin/pending/admin.component';
 import { MatTableModule, MatMenuModule, MatButtonModule, MatCardModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { StudentToolbarComponent } from './toolbars/studenttoolbar/studenttoolbar.component';
@@ -34,6 +34,7 @@ import { QuestionListComponent } from './teacher/question-list/question-list.com
 import { ViewAssignmentsComponent } from './student/assignments/view-assignments/view-assignments.component';
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
+import { ExistuserComponent } from './admin/existuser/existuser.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { SolveQuestionComponent } from './student/canvas/solve-question/solve-qu
     QuestionListComponent,
     ViewAssignmentsComponent,
     ViewQuestionsComponent,
-    SolveQuestionComponent
+    SolveQuestionComponent,
+    ExistuserComponent
   ],
   imports: [
     BrowserModule,
