@@ -34,6 +34,7 @@ export class QuestionComponent implements OnInit {
   // }
 
   ngOnInit() {
+    console.log("IDDDDDDDDDDDDDDDDD: " + this.data);
     this.questionForm = this.formBuilder.group({
       _id: [this.data._id],
       formula: [this.data.formula, [Validators.required]],
@@ -46,7 +47,8 @@ export class QuestionComponent implements OnInit {
     })
   }
   onSubmit() {
-    //console.log("Data Id" + this.data._id);
+    
+    console.log("Question form: " + this.questionForm.value);
     if (isUndefined(this.data._id)) {
       let question = new Question;
       question.formula= this.questionForm.value.formula.replace(/\s/g, "");

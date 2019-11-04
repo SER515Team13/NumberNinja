@@ -15,12 +15,15 @@ export interface User {
   grade: string;
 }
 
-const userRoles: String[] = ['student',
-  'teacher','admin'
+const userRoles: String[] = [
+  'student',
+  'teacher',
+  'admin'
 ];
 
-const grades: String[] = ['grade 2',
-'grade 7'
+const grades: String[] = [
+  'grade 2',
+  'grade 7'
 ];
 
 @Component({
@@ -35,11 +38,12 @@ export class AdminComponent implements OnInit {
 
   private roles: String[] = userRoles;
   private classes: String[] = grades;
+  private selectedRole: string = "";
   public allData: User[];
   public isDisabled = true;
   private responseFromAPi;
   private dataSource = null; // = new MatTableDataSource<User>(this.responseFromAPi);
-  private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'action'];
+  private displayedColumns: String[] = ['firstName', 'lastName', 'email', 'role', 'grade', 'action'];
   private roleControl = new FormControl('', [Validators.required]);
 
   constructor(public http: HttpClient, private userService:UserService) { }

@@ -4,5 +4,5 @@ export class Question {
     formulaWithBlanks: string;
     assignmentID:string;
     formulaType: string;
-    answers : number[];
+    answers: number[];
 }
