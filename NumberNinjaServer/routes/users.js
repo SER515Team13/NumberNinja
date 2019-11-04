@@ -17,8 +17,9 @@ var registrationSchema = new Schema({
   firstName: String,
   lastName: String,
   role: String,
+  grade: String,
   creationDate: Date,
-  password: String
+  password: String,
 })
 
 /* POST API to register user details to users collection of 
@@ -47,7 +48,7 @@ router.post('/addRole',function(req,res,next){
   console.log("inside allrole");
   var data = req.body;  
   console.log(data);
-  gradeNum = data.grade.substring(data.grade.length - 2);
+  gradeNum = data.grade.substring(data.grade.length - 1);
   if(data['flag'] === true) {
     let promise = User.updateOne({email:data.email},{$set:{role:data.role,grade:gradeNum}}).exec();
     promise.then(function(doc) {
@@ -76,6 +77,7 @@ router.post('/register',  function(req,res,next){
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     role: null,
+    grade: null,
     creationDate: Date.now(),
     password: User.hashPassword(req.body.password)
   });
