@@ -6,7 +6,7 @@
     <!-- Question Name column -->
     <ng-container matColumnDef="question">
         <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Question</mat-header-cell>
-        <mat-cell *matCellDef="let element" class="hyperlink"><a [routerLink]="element._id"> {{element.formula}} </a></mat-cell>
+        <mat-cell *matCellDef="let element" class="hyperlink"><a [routerLink]='["/student/canvas", element._id]'> {{element.formula}} </a></mat-cell>
     </ng-container>
       
     <!-- Question Type Column -->
