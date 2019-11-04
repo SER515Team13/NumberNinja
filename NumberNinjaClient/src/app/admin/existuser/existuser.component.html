@@ -1,0 +1,72 @@
+<div>
+        <app-admintoolbar></app-admintoolbar>
+</div>
+<ng-template
+  *ngIf="(dataSource && dataSource != null); then showBlock; else notShowBlock">
+</ng-template>
+<ng-template #showBlock>
+        <h4>
+                EXISTING ACCOUNTS
+        </h4>
+</ng-template>
+<ng-template #notShowBlock>
+        <h4>
+                NO APPROVED USERS
+        </h4>
+</ng-template>
+<section class='tableSection'>
+        <mat-table [dataSource]="dataSource" class="matTable" *ngIf='dataSource && dataSource != null'>
+
+                <!--First Name Column -->
+                <ng-container matColumnDef="firstName">
+                        <mat-header-cell *matHeaderCellDef>First Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+                </ng-container>
+
+                <!--Last Name Column -->
+                <ng-container matColumnDef="lastName">
+                        <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                </ng-container>
+
+                <!-- Role Column -->
+                <ng-container matColumnDef="role">
+                        <mat-header-cell *matHeaderCellDef>User Role*</mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.role.charAt(0).toUpperCase() + element.role.slice(1)}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="grade">
+                    <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <mat-form-field *ngIf="element.role == 'teacher' || element.role == 'student'">
+                            <mat-select [(ngModel)]="element.grade"  [disabled] = "!element.isEdit" (ngModelChange)="isAcceptDisabled(element)">
+                                <mat-option [value]="class" *ngFor="let class of classes">
+                                    {{class}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                                <button mat-button class="btn btn-primary" *ngIf="!element.isEdit" (click)="element.isEdit = true;element.isDisabled = true">Edit</button>
+                                <button mat-button class="btn btn-danger" *ngIf="!element.isEdit" (click)="delete(element)">Delete</button> 
+                                <button mat-button class="btn btn-primary" *ngIf="element.isEdit"  [disabled] = "element.isDisabled" (click)="editUser(element); element.isEdit = false">Save</button>
+                                <button mat-button class="btn btn-danger" *ngIf="element.isEdit" (click)="element.isEdit = false; refresh(element)">Cancel</button> 
+                        </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns; "></mat-row>
+
+        </mat-table>
+</section>

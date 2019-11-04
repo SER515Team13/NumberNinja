@@ -3,6 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { StudentComponent } from './student.component';
 import { StudentToolbarComponent } from './../toolbars/studenttoolbar/studenttoolbar.component';
+import { ViewAssignmentsComponent } from './assignments/view-assignments/view-assignments.component';
+import { MatTableModule, MatDialogModule } from '@angular/material';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('StudentComponent', () => {
   let component: StudentComponent;
@@ -11,11 +14,16 @@ describe('StudentComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule,
+        MatTableModule,
+        MatDialogModule,
+        HttpClientTestingModule, 
         RouterTestingModule
       ],
       declarations: [ 
         StudentComponent,
-        StudentToolbarComponent 
+        StudentToolbarComponent,
+        ViewAssignmentsComponent
       ]
     })
     .compileComponents();

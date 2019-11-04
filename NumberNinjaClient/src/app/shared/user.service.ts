@@ -20,13 +20,23 @@ export class UserService {
     });
   }
 
+  getAllExistingUsers(): Observable<{}> {
+    console.log("Inside client service.");
+    return this.http.get(this.rootUrl + '/users/getExistingData', {
+      observe: 'body',
+      params: new HttpParams()
+    });
+  }
+
   registerUser(user: User): Observable<{}> {
     const body: User = {
       userName: user.userName,
       password: user.password,
       email: user.email,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      role: null,
+      grade: null
     };
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/register', body, {headers: reqHeader });
@@ -35,6 +45,11 @@ export class UserService {
   addDelete(user : User) {
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/users/addRole', user, {headers: reqHeader });
+  }
+
+  delete(user : User) {
+    const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+    return this.http.post(this.rootUrl + '/users/deleteUser', user, {headers: reqHeader });
   }
 
   userAuthentication(email, password): Observable<{}> {

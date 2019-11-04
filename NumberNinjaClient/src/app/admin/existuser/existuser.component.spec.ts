@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AdminComponent } from './admin.component';
+import { ExistuserComponent } from './existuser.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AdminToolbarComponent } from './../toolbars/admintoolbar/admintoolbar.component';
+import { AdminToolbarComponent } from '../../toolbars/admintoolbar/admintoolbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../../shared/user.service';
 
 describe('AdminComponent', () => {
-  let component: AdminComponent;
-  let fixture: ComponentFixture<AdminComponent>;
+  let component: ExistuserComponent;
+  let fixture: ComponentFixture<ExistuserComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +26,7 @@ describe('AdminComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AdminComponent,
+        ExistuserComponent,
         AdminToolbarComponent
       ],
       providers: [
@@ -37,7 +37,7 @@ describe('AdminComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminComponent);
+    fixture = TestBed.createComponent(ExistuserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

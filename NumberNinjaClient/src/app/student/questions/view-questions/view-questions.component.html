@@ -1,0 +1,30 @@
+<div>
+    <app-studenttoolbar></app-studenttoolbar>
+</div>
+<mat-table [dataSource]="dataSource" class="matTable" >
+  
+    <!-- Question Name column -->
+    <ng-container matColumnDef="question">
+        <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Question</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="hyperlink"><a [routerLink]='["/student/canvas", element._id]'> {{element.formula}} </a></mat-cell>
+    </ng-container>
+      
+    <!-- Question Type Column -->
+    <ng-container matColumnDef="questiontype">
+        <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Question Type</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.formulaType}} </mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element"> 'NA' </mat-cell>
+    </ng-container>
+      
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      
+</mat-table>
+<div>
+    <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
+</div>
