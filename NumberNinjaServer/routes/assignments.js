@@ -12,6 +12,8 @@ var mongoose = require("mongoose");
 var express = require('express');
 var Assignment = require('../models/assignment');
 var router = express.Router();
+var StudentAssignment = require('../models/student-assignment');
+var StudentAssignmentQuestion = require('../models/student-assignment-question');
 
 
 router.get('/getassignments', function (req, res, next) {
@@ -35,16 +37,55 @@ router.get('/getassignments', function (req, res, next) {
   })
 })
 
+function getStatus(aname, sEmail) {
+  console.log(aname);
+  console.log(sEmail);
+  let promise = StudentAssignmentQuestion.find({}, {studentEmail: 1, assignmentName: 1, questionId: 1, isSolved: 1}).exec();
+  promise.then(function (doc) {
+      console.log("Got questions status list for given student-assignment");
+      console.log(doc);
+      if (doc) {
+      for(var each = 0; each < doc.length; each++) {
+        if(doc[each].isSolved == false) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  });
+}
 router.get('/getassignments-student', function (req, res, next) {
   console.log("Getting assignments for student");
   console.log(req.query.grade);
   console.log(req.query.email);
-  let promise = Assignment.find({ grade: req.query.grade },
-    { id: 1, name: 1, duedate: 1 }).sort({ id: -1 }).exec();
+  let promise = Assignment.aggregate([
+    {$match : {grade : req.query.grade}},
+    {$lookup: {from: "student-assignment", localField: "assignmentName", foreignField: "name", as: "studentAssignment"}},
+    {$project : {
+            studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentEmail' , req.query.email] } } },
+            name : 1,
+            duedate : 1
+      }
+    },
+    {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignment", 0 ] }, "$$ROOT" ] } }
+    }
+    ]).exec();
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
     if (doc) {
+      for(var each = 0; each < doc.length; each++) {
+        var status = getStatus(doc[each].name, doc[each].studentEmail);
+        if (status) {
+          doc[each]["status"] = true;
+        } else {
+          doc[each]["status"] = false;
+        }
+      }
+      console.log(doc);
       return res.status(200).json(doc);
     }
   });
