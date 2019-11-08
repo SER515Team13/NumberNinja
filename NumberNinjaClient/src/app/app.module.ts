@@ -36,6 +36,7 @@ import { ViewAssignmentsComponent } from './student/assignments/view-assignments
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 import { ExistuserComponent } from './admin/existuser/existuser.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { ExistuserComponent } from './admin/existuser/existuser.component';
     MatDialogModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     MatToolbarModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    DragDropModule
   ],
   providers: [UserService, AssignmentService, AuthGuard,
     {
