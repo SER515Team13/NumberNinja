@@ -1,1 +1,25 @@
-<p>solve-question works!</p>
+<div class="example-container">
+    <h2>Operators</h2>
+    <div
+      cdkDropList
+      #operatorsList="cdkDropList"
+      [cdkDropListData]="operators"
+      [cdkDropListConnectedTo]="[slotsList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let operator of operators" cdkDrag>{{operator.operatorName}}</div>
+    </div>
+  </div>
+  
+  <div class="example-container">
+    <h2>Canvas</h2>
+    <div
+      cdkDropList
+      #slotsList="cdkDropList"
+      [cdkDropListData]="slots"
+      [cdkDropListConnectedTo]="[operatorsList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let slot of slots" cdkDrag>{{slot.operatorName}}</div>
+  </div>
+</div>
