@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Blockly from 'blockly';
-//import 'blockly/javascript';
+declare var Blockly: any;
 
 @Component({
   selector: 'app-solve-question',
@@ -9,8 +8,6 @@ import Blockly from 'blockly';
 })
 export class SolveQuestionComponent implements OnInit {
 
-  private code;
-
   constructor() { }
 
   ngOnInit() {
@@ -18,6 +15,20 @@ export class SolveQuestionComponent implements OnInit {
 
     var workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
+      grid: {
+        spacing: 20,
+        length: 20,
+        colour: '#ccc',
+        snap: true
+      },
+      zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 1.0,
+        maxScale: 3,
+        minScale: 0.3,
+        scaleSpeed: 1.2
+      },
       move: {
         scrollbars: true,
         drag: true,
@@ -93,11 +104,12 @@ export class SolveQuestionComponent implements OnInit {
         
       </xml>
         `
-    } as Blockly.BlocklyOptions);
+    } /*as Blockly.BlocklyOptions*/);
 
     function myUpdateFunction(event) {
       var code = Blockly.JavaScript.workspaceToCode(workspace);
-      //document.getElementById('textarea').value = code;
+      console.log(code);
+      document.getElementById("textarea").innerText = code;
     }
     workspace.addChangeListener(myUpdateFunction);
   }
