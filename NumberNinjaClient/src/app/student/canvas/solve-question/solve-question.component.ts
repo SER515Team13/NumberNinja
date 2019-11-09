@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as Blockly from 'blockly';
-
+import Blockly from 'blockly';
+//import 'blockly/javascript';
 
 @Component({
   selector: 'app-solve-question',
@@ -9,12 +9,14 @@ import * as Blockly from 'blockly';
 })
 export class SolveQuestionComponent implements OnInit {
 
+  private code;
+
   constructor() { }
 
   ngOnInit() {
     const blocklyDiv = document.getElementById('blocklyDiv');
 
-    Blockly.inject(blocklyDiv, {
+    var workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
       move: {
         scrollbars: true,
@@ -23,43 +25,80 @@ export class SolveQuestionComponent implements OnInit {
       },
       toolbox: `
       <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
-        <block type="controls_ifelse"></block>
-        <block type="logic_compare"></block>
-        <block type="logic_operation"></block>
-        <block type="controls_repeat_ext">
-            <value name="TIMES">
-                <shadow type="math_number">
-                    <field name="NUM">10</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="logic_operation"></block>
-        <block type="logic_negate"></block>
-        <block type="logic_boolean"></block>
-        <block type="logic_null" disabled="true"></block>
-        <block type="logic_ternary"></block>
-        <block type="text_charAt">
-            <value name="VALUE">
-                <block type="variables_get">
-                    <field name="VAR">text</field>
-                </block>
-            </value>
-        </block>
-        <block type="math_arithmetic">
-        <field name="OP">ADD</field>
-        <value name="A">
-          <shadow type="math_number">
+        <category name="NUMBERS" colour="342">
+          <label text="Numbers"></label>
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
             <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="B">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-      </block>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">2</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">3</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">4</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">5</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">6</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">7</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">8</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">9</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+          <sep gap="32"></sep>
+        </category>
+        <category name="OPERATORS" colour="400">
+          <label text="Operators"></label>
+          <block type="math_arithmetic">
+            <field name="OP">ADD</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_arithmetic">
+            <field name="OP">MINUS</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_arithmetic">
+            <field name="OP">MULTIPLY</field>
+          </block>
+          <sep gap="5"></sep>
+          <block type="math_arithmetic">
+            <field name="OP">DIVIDE</field>
+          </block>
+        </category>
+        
       </xml>
         `
     } as Blockly.BlocklyOptions);
+
+    function myUpdateFunction(event) {
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      //document.getElementById('textarea').value = code;
+    }
+    workspace.addChangeListener(myUpdateFunction);
   }
 }
