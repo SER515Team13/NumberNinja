@@ -11,6 +11,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 import { ExistuserComponent } from './admin/existuser/existuser.component';
+import { TeachergradesComponent } from './teacher/grades/teachergrades/teachergrades.component';
 
 export const appRoutes: Routes = [
     {
@@ -23,6 +24,10 @@ export const appRoutes: Routes = [
     },
     {
         path: 'admin/existingusers', component: ExistuserComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'teacher/teachergrades', component: TeachergradesComponent,
         canActivate: [AuthGuard]
     },
     {
