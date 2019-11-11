@@ -26,18 +26,15 @@ export class ViewAssignmentsComponent implements OnInit {
     let grade = localStorage.getItem('userGrade');
     let email = localStorage.getItem('userEmail');
      this.assignmentService.getAssignmentStudent(grade, email).subscribe((data: any) => {
-      for (var each = 0; each < data.length; ) {
+      for (var each = 0; each < data.length; each++) {
        this.assignmentService.getAssignmentStatus(data[each].name, email).subscribe((data1: any) => {
-         console.log(data1.assignmentStatus);
-         console.log(each);
          if (data1.assignmentStatus == true) {
-           data[each]["status"] = "Completed";
+           data[each-1]["status"] = "Completed";
          } else {
-           data[each]["status"] = "Incompleted";
+           data[each-1]["status"] = "Incompleted";
          }
          console.log(data);
          this.dataSource = new MatTableDataSource<Assignment>(data);
-         each++;
        })
       }
     })
