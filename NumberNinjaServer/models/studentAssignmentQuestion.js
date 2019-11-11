@@ -9,4 +9,4 @@ var schema = new Schema({
     isSolved: {type:Boolean, require:false, default: false}
 });
 
-module.exports = mongoose.model('studentAssignmentQuestion', schema);
+module.exports = mongoose.model('StudentAssignmentQuestion', schema);

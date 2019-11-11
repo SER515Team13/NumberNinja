@@ -6,6 +6,7 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpService } from "../../../shared/http.services";
 import { AssignmentServiceService } from '../../../student/service/assignment-service.service';
 import { Assignment } from 'src/app/teacher/model/assignment';
+import { mergeMap } from 'rxjs-compat/operator/mergeMap';
 
 @Component({
   selector: 'app-view-assignments',
@@ -24,9 +25,21 @@ export class ViewAssignmentsComponent implements OnInit {
   ngOnInit() {
     let grade = localStorage.getItem('userGrade');
     let email = localStorage.getItem('userEmail');
-    this.assignmentService.getAssignmentStudent(grade, email).subscribe((data: any) => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource<Assignment>(data);
+     this.assignmentService.getAssignmentStudent(grade, email).subscribe((data: any) => {
+      for (var each = 0; each < data.length; ) {
+       this.assignmentService.getAssignmentStatus(data[each].name, email).subscribe((data1: any) => {
+         console.log(data1.assignmentStatus);
+         console.log(each);
+         if (data1.assignmentStatus == true) {
+           data[each]["status"] = "Completed";
+         } else {
+           data[each]["status"] = "Incompleted";
+         }
+         console.log(data);
+         this.dataSource = new MatTableDataSource<Assignment>(data);
+         each++;
+       })
+      }
     })
   }
 }

@@ -13,7 +13,7 @@ var express = require('express');
 var Assignment = require('../models/assignment');
 var router = express.Router();
 var StudentAssignment = require('../models/student-assignment');
-var StudentAssignmentQuestion = require('../models/student-assignment-question');
+var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
 
 
 router.get('/getassignments', function (req, res, next) {
@@ -37,25 +37,32 @@ router.get('/getassignments', function (req, res, next) {
   })
 })
 
-function getStatus(aname, sEmail) {
-  console.log(aname);
-  console.log(sEmail);
-  let promise = StudentAssignmentQuestion.find({}, {studentEmail: 1, assignmentName: 1, questionId: 1, isSolved: 1}).exec();
+
+router.get('/getassignments-status', function (req, res, next) {
+  console.log("Getting assignments status");
+  console.log(req.query.aName);
+  console.log(req.query.sEmail);
+  let promise = StudentAssignmentQuestion.find({assignmentName: req.query.aName, studentEmail: req.query.sEmail}, {})
   promise.then(function (doc) {
-      console.log("Got questions status list for given student-assignment");
-      console.log(doc);
-      if (doc) {
+    console.log("Got each question status for assignment.");
+    console.log(doc);
+    if (doc) {
       for(var each = 0; each < doc.length; each++) {
         if(doc[each].isSolved == false) {
-          return false;
+          return res.status(200).json({assignmentStatus: false});
         }
       }
-      return true;
-    } else {
-      return false;
+      return res.status(200).json({assignmentStatus: true});
     }
+    return res.status(200).json({assignmentStatus: false});
   });
-}
+  promise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in getting list of assignments for student.'
+    });
+  })
+})
 router.get('/getassignments-student', function (req, res, next) {
   console.log("Getting assignments for student");
   console.log(req.query.grade);
@@ -66,26 +73,13 @@ router.get('/getassignments-student', function (req, res, next) {
     {$project : {
             studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentEmail' , req.query.email] } } },
             name : 1,
-            duedate : 1
-      }
-    },
-    {
-      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignment", 0 ] }, "$$ROOT" ] } }
-    }
+            duedate : 1 }},
+    {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignment", 0 ] }, "$$ROOT" ] } }}
     ]).exec();
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
     if (doc) {
-      for(var each = 0; each < doc.length; each++) {
-        var status = getStatus(doc[each].name, doc[each].studentEmail);
-        if (status) {
-          doc[each]["status"] = true;
-        } else {
-          doc[each]["status"] = false;
-        }
-      }
-      console.log(doc);
       return res.status(200).json(doc);
     }
   });
