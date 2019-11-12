@@ -23,6 +23,14 @@ export class QuestionServiceService {
     });
   }
 
+  getQuestion(id: any): Observable<{}> {
+    console.log("Fetching question using questionID.");
+    return this.http.get(this.rootUrl + '/questions/getquestion', {
+      observe: 'body',
+      params: new HttpParams().append('id', id)
+    });
+  }
+
   getAllQuestion() {
     return this.questionList;
   }

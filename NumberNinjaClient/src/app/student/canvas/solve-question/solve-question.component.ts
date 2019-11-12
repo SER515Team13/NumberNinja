@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute} from "@angular/router";
+import { Location } from "@angular/common";
+import { QuestionServiceService } from '../../service/question-service.service';
 declare var Blockly: any;
 
 @Component({
@@ -8,9 +11,21 @@ declare var Blockly: any;
 })
 export class SolveQuestionComponent implements OnInit {
 
-  constructor() { }
+  questionID: any;
+
+  constructor(private location: Location,
+              private questionService: QuestionServiceService, 
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.questionID = this.route.snapshot.paramMap.get('id');
+    this.questionService.getQuestion(this.questionID).subscribe((data: any) => {
+      if (data && data != undefined && data.length) {
+        console.log(data);
+      }
+    });
+
+
     const blocklyDiv = document.getElementById('blocklyDiv');
 
     var workspace = Blockly.inject(blocklyDiv, {
@@ -106,11 +121,25 @@ export class SolveQuestionComponent implements OnInit {
         `
     } /*as Blockly.BlocklyOptions*/);
 
+    var xmlContent = `
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
+      <block type="math_number">
+        <field name="NUM">0</field>
+      </block>;
+    </xml>
+    `
+    var dom = Blockly.Xml.textToDom(xmlContent);
+    Blockly.Xml.domToWorkspace(workspace, dom);
+
     function myUpdateFunction(event) {
       var code = Blockly.JavaScript.workspaceToCode(workspace);
       console.log(code);
       document.getElementById("textarea").innerText = code;
     }
     workspace.addChangeListener(myUpdateFunction);
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
