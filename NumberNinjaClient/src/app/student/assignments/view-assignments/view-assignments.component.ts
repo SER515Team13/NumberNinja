@@ -29,9 +29,9 @@ export class ViewAssignmentsComponent implements OnInit {
       for (var each = 0; each < data.length; each++) {
        this.assignmentService.getAssignmentStatus(data[each].name, email).subscribe((data1: any) => {
          if (data1.assignmentStatus == true) {
-           data[each-1]["status"] = "Completed";
+           data[each-1]["status"] = "Complete";
          } else {
-           data[each-1]["status"] = "Incompleted";
+           data[each-1]["status"] = "Incomplete";
          }
          console.log(data);
          this.dataSource = new MatTableDataSource<Assignment>(data);
