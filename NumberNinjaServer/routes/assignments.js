@@ -18,8 +18,8 @@ var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
 
 router.get('/getassignments', function (req, res, next) {
   console.log("Getting assignments for teacher");
-  console.log(req.body);
-  let promise = Assignment.find({},
+  console.log(req.query.email);
+  let promise = Assignment.find({createdby: req.query.email},
     { id: 1, name: 1, grade: 1, duedate: 1 }).sort({ id: -1 }).exec();
   promise.then(function (doc) {
     console.log("Got assignments for teacher");
@@ -93,13 +93,14 @@ router.get('/getassignments-student', function (req, res, next) {
 })
 
 router.post('/addassignment', function (req, res, next) {
-  console.log("Storing assignment into database");
+  console.log("Storing assignment into database", req.query.email);
   var assignments = mongoose.model("assignments", Assignment.schema);
   var assignmentToStore = new assignments({
     name: req.body.name,
     description: req.body.description,
     duedate: req.body.duedate,
     grade: req.body.grade,
+    createdby: req.query.email,
   });
 
   let assignmentPromise = assignmentToStore.save();

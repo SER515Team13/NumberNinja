@@ -15,7 +15,8 @@ router.get('/getquestions', function(req,res,next) {
       {$project : {
               studentAssignmentQuestion : { $filter : {input : "$aq"  , as : "saq", cond : { $eq : ['$$saq.studentEmail' , req.query.email] } } },
               formulaWithBlanks: 1,
-              formulaType: 1
+              formulaType: 1,
+              formula: 1
             }},
       {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
       ]).exec();
