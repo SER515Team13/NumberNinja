@@ -40,7 +40,7 @@ router.get('/getassignments', function (req, res, next) {
 
 router.get('/getassignments-status', function (req, res, next) {
   console.log("Getting assignments status");
-  console.log(req.query.aName);
+  console.log(req.query.aName); 
   console.log(req.query.sEmail);
   let promise = StudentAssignmentQuestion.find({assignmentName: req.query.aName, studentEmail: req.query.sEmail}, {})
   promise.then(function (doc) {
@@ -79,7 +79,7 @@ router.get('/getassignments-student', function (req, res, next) {
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
-    if (doc) {
+    if (doc) { 
       return res.status(200).json(doc);
     }
   });
