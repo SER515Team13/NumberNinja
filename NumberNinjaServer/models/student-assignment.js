@@ -7,4 +7,4 @@ var schema = new Schema({
     gradeReceived: {type:String, require:false, default: ""},
 });
 
-module.exports = mongoose.model('student-assignment',schema);
+module.exports = mongoose.model('studentassignment',schema);

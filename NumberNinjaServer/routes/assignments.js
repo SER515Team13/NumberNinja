@@ -69,11 +69,30 @@ router.get('/getassignments-student', function (req, res, next) {
   console.log(req.query.email);
   let promise = Assignment.aggregate([
     {$match : {grade : req.query.grade}},
-    {$lookup: {from: "student-assignment", localField: "assignmentName", foreignField: "name", as: "studentAssignment"}},
+    //{$lookup: {
+    //  from: "studentassignments",
+    //  let: { assignmentId: "$_id"},
+    //  pipeline: [
+    //     { $match:
+    //        { $expr:
+    //           { $and:
+    //              [
+    //                { $eq: [ "$assignmentId",  "$$assignmentId" ] },
+    //                { $eq: [ "$studentEmail",  req.query.email ] }
+    //              ]
+    //           }
+    //        }
+    //     },
+    //     { $project: {gradeReceived: 1} }
+    //  ],
+    //  as: "studentAssignment"
+    //}}
+    {$lookup: {from: "studentassignments", localField: "_id", foreignField: "assignmentId", as: "studentAssignment"}},
     {$project : {
-            studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentEmail' , req.query.email] } } },
+            studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentId' , req.query.email] } } },
             name : 1,
-            duedate : 1 }},
+            duedate : 1,
+            }},
     {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignment", 0 ] }, "$$ROOT" ] } }}
     ]).exec();
   promise.then(function (doc) {
