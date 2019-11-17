@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QuestionService } from '../service/question-service';
 import { isNull, isUndefined } from 'util';
 import { Question } from '../model/question';
+import { MatTooltipModule} from '@angular/material';
+import {TooltipPosition} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-question',
@@ -124,6 +126,10 @@ export class QuestionComponent implements OnInit {
     this.checkbox = !this.checkbox;
     var element = <HTMLInputElement> document.getElementById("submitButton");
     element.disabled = false;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

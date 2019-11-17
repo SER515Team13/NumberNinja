@@ -210,3 +210,4 @@ export class SolveQuestionComponent implements OnInit {
     this.location.back();
   }
 }
+

@@ -1,6 +1,9 @@
 <div>
     <app-studenttoolbar></app-studenttoolbar>
 </div>
+<div>
+    <button mat-button class="btn btn-info" (click)="goBack()">Back</button>
+</div>
 <mat-table [dataSource]="dataSource" class="matTable" >
   
     <!-- Question Name column -->
@@ -25,6 +28,3 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       
 </mat-table>
-<div>
-    <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
-</div>

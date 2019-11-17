@@ -2,11 +2,11 @@
     <mat-toolbar class="toolbar">
         <mat-card-title>Question Information</mat-card-title>
         <span class="toolbar-spacer"></span>
-        <button mat-button><mat-icon (click)="onNoClick()">cancel</mat-icon></button>
+        <button mat-button (click)="onNoClick()"><mat-icon >cancel</mat-icon></button>
     </mat-toolbar>
 </mat-card-header>
 <mat-card-content>
-    <div class="container">
+    <div class="container"> 
         <form ngNativeValidate [formGroup]="questionForm" >
             <div class="form-group">
                 <div class="row">
@@ -18,12 +18,35 @@
                             <option>Random (Self verified)</option>
                         </select>
                     </div>
+                    <div class="col-md-4">
+                        <body>
+                            <h4><b>Instructions:</b></h4><br>
+                            <h5><b>Grade 2:</b></h5>
+                            <ul>
+                                <li>- Maximum computation upto 20</li>
+                                <li>- Only addition and subtraction</li>
+                            </ul>
+                        </body>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label style="font-family: 'Times New Roman', Times, serif ; font-size: 16px">Write Formula</label>
                         <input id="formula" type="text" formControlName="formula" class="form-control" required>
                     </div>
+                    <div class="col-md-4">
+                            <body>
+                                <h5><b>Grade 7:</b></h5>
+                                <ul>
+                                    <li>- Maximum computation upto 9999</li>
+                                    <li>- Addition, subtraction, Multiplication, Division, Power and Square root</li>
+                                    <li>- Square root shortcut keys:</li>
+                                    <li>  Windows: "alt + 2 + 5 + 1"</li>
+                                    <li>  Mac: "Option + V"</li>
+
+                                </ul>
+                            </body>
+                        </div>
                 </div>
 
                 <div class="row" *ngIf="checkbox && questionForm.value.formulaType == 'Find the Answer'">
