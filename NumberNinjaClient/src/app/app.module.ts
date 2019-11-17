@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -92,6 +92,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     }, QuestionService],
   bootstrap: [AppComponent],
   entryComponents: [AddAssignmentComponent, QuestionComponent],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 
 export class AppModule { }
