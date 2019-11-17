@@ -6,3 +6,7 @@
     font-family: lobster;
     font-style: italic; 
 }
+.glyphicon {
+    font-size: 18px;
+    padding-left: 5px;
+}
