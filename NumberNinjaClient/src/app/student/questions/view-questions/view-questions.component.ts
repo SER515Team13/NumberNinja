@@ -27,8 +27,16 @@ export class ViewQuestionsComponent implements OnInit {
   }
 
   getData() {
-    this.questionService.getQuestions(this.assignmentID).subscribe((data: any) => {
+    let email = localStorage.getItem('userEmail');
+    this.questionService.getQuestions(this.assignmentID, email).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
+        for (var each = 0; each < data.length; each++) {
+            if (data[each].isSolved == true) {
+              data[each]["status"] = "Complete";
+            } else {
+              data[each]["status"] = "Incomplete";
+            }
+         }
         this.dataSource = new MatTableDataSource<Question>(data);
       }
     });

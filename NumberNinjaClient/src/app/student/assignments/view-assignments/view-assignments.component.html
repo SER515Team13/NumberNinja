@@ -18,13 +18,13 @@
         <!--score Column -->
         <ng-container matColumnDef="score">
                 <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Score </mat-header-cell>
-                <mat-cell *matCellDef="let element"> 'NA' </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.gradeReceived}} </mat-cell>
         </ng-container>
 
         <!--status Column -->
         <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Status </mat-header-cell>
-                <mat-cell *matCellDef="let element"> 'NA' </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns "></mat-header-row>

@@ -15,11 +15,11 @@ export class QuestionServiceService {
 
   readonly rootUrl = 'http://localhost:3000';
 
-  getQuestions(id: any): Observable<{}> {
+  getQuestions(id: any, email: string): Observable<{}> {
     console.log("calling questions client service.");
     return this.http.get(this.rootUrl + '/questions/getquestions', {
       observe: 'body',
-      params: new HttpParams().append('id', id)
+      params: new HttpParams().append('id', id).append('email', email)
     });
   }
 
