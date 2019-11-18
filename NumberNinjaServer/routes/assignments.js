@@ -12,12 +12,14 @@ var mongoose = require("mongoose");
 var express = require('express');
 var Assignment = require('../models/assignment');
 var router = express.Router();
+var StudentAssignment = require('../models/student-assignment');
+var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
 
 
 router.get('/getassignments', function (req, res, next) {
   console.log("Getting assignments for teacher");
-  console.log(req.body);
-  let promise = Assignment.find({},
+  console.log(req.query.email);
+  let promise = Assignment.find({createdby: req.query.email},
     { id: 1, name: 1, grade: 1, duedate: 1 }).sort({ id: -1 }).exec();
   promise.then(function (doc) {
     console.log("Got assignments for teacher");
@@ -35,12 +37,64 @@ router.get('/getassignments', function (req, res, next) {
   })
 })
 
+
+router.get('/getassignments-status', function (req, res, next) {
+  console.log("Getting assignments status");
+  console.log(req.query.aName);
+  console.log(req.query.sEmail);
+  let promise = StudentAssignmentQuestion.find({assignmentName: req.query.aName, studentEmail: req.query.sEmail}, {})
+  promise.then(function (doc) {
+    console.log("Got each question status for assignment.");
+    console.log(doc);
+    if (doc) {
+      for(var each = 0; each < doc.length; each++) {
+        if(doc[each].isSolved == false) {
+          return res.status(200).json({assignmentStatus: false});
+        }
+      }
+      return res.status(200).json({assignmentStatus: true});
+    }
+    return res.status(200).json({assignmentStatus: false});
+  });
+  promise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in getting list of assignments for student.'
+    });
+  })
+})
 router.get('/getassignments-student', function (req, res, next) {
   console.log("Getting assignments for student");
   console.log(req.query.grade);
   console.log(req.query.email);
-  let promise = Assignment.find({ grade: req.query.grade },
-    { id: 1, name: 1, duedate: 1 }).sort({ id: -1 }).exec();
+  let promise = Assignment.aggregate([
+    {$match : {grade : req.query.grade}},
+    //{$lookup: {
+    //  from: "studentassignments",
+    //  let: { assignmentId: "$_id"},
+    //  pipeline: [
+    //     { $match:
+    //        { $expr:
+    //           { $and:
+    //              [
+    //                { $eq: [ "$assignmentId",  "$$assignmentId" ] },
+    //                { $eq: [ "$studentEmail",  req.query.email ] }
+    //              ]
+    //           }
+    //        }
+    //     },
+    //     { $project: {gradeReceived: 1} }
+    //  ],
+    //  as: "studentAssignment"
+    //}}
+    {$lookup: {from: "studentassignments", localField: "_id", foreignField: "assignmentId", as: "studentAssignment"}},
+    {$project : {
+            studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentId' , req.query.email] } } },
+            name : 1,
+            duedate : 1,
+            }},
+    {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignment", 0 ] }, "$$ROOT" ] } }}
+    ]).exec();
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
@@ -58,13 +112,14 @@ router.get('/getassignments-student', function (req, res, next) {
 })
 
 router.post('/addassignment', function (req, res, next) {
-  console.log("Storing assignment into database");
+  console.log("Storing assignment into database", req.query.email);
   var assignments = mongoose.model("assignments", Assignment.schema);
   var assignmentToStore = new assignments({
     name: req.body.name,
     description: req.body.description,
     duedate: req.body.duedate,
     grade: req.body.grade,
+    createdby: req.query.email,
   });
 
   let assignmentPromise = assignmentToStore.save();

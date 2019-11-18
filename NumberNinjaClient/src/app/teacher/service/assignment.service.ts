@@ -15,18 +15,19 @@ export class AssignmentService {
 
     constructor(private http: HttpClient) { }
 
-    getAssignments(): Observable<{}> {
+    getAssignments(email: string): Observable<{}> {
         console.log("Calling assignments client service.");
         return this.http.get(this.rootUrl + '/assignments/getassignments', {
         observe: 'body',
-        params: new HttpParams()
+        params: new HttpParams().append('email', email)
         });
     }
 
-    addAssignment(currentAssignment: Assignment): Observable<{}> {
+    addAssignment(currentAssignment: Assignment, email: string): Observable<{}> {
         console.log("Sending request to server to Add assignment");
-        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        return this.http.post(this.rootUrl + '/assignments/addassignment', currentAssignment, { headers: reqHeader });
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'}).append('email', email);
+        const params = new HttpParams().append('email', email);
+        return this.http.post(this.rootUrl + '/assignments/addassignment', currentAssignment, { headers: reqHeader, params: params });
     }
 
     editAssignment(currentAssignment: Assignment): Observable<{}> {

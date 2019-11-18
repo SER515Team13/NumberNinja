@@ -17,7 +17,19 @@ router.post('/evaluateEquation', function(req, res, next) {
 router.get('/getquestions', function(req,res,next) {
     console.log("Inside question server api");
     console.log(req.query.id);
-    let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
+    console.log(req.query.email);
+    //let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
+    let promise = Question.aggregate([
+      {$match : {assignmentID: req.query.id}},
+      {$lookup: {from: "studentassignmentquestions", localField: "_id", foreignField: "questionId", as: "aq"}},
+      {$project : {
+              studentAssignmentQuestion : { $filter : {input : "$aq"  , as : "saq", cond : { $eq : ['$$saq.studentEmail' , req.query.email] } } },
+              formulaWithBlanks: 1,
+              formulaType: 1,
+              formula: 1
+            }},
+      {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
+      ]).exec();
      promise.then(function(doc) {
       console.log("insdie promise");
       console.log(doc);

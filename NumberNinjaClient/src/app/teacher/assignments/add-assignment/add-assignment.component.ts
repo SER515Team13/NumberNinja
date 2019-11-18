@@ -40,7 +40,9 @@ export class AddAssignmentComponent implements OnInit {
 
   onSubmit() {
     if (isUndefined(this.data._id)) {
-      this.assignmentService.addAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
+      let email = localStorage.getItem('userEmail');
+      console.log(email);
+      this.assignmentService.addAssignment(this.addAssignmentForm.value, email).subscribe((data: any) => {
         console.log("Add assignment response" + data );
         if (data && data != undefined && data.length) {
           return data;
