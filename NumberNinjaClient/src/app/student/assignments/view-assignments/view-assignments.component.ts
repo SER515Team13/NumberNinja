@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';

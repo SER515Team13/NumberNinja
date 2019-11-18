@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Saksham Jhawar
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/user.service';
 import { HttpErrorResponse } from '@angular/common/http';

@@ -1,7 +1,8 @@
 /**
- * @author Abhinaw Sarang <asarang@augments.edu>
- *          Service added to get data from Server
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
  */
+
 import { Injectable } from '@angular/core';
 import { Assignment } from '../model/assignment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';

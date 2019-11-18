@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from "@angular/router";
 import { Location } from "@angular/common";
@@ -12,12 +17,16 @@ declare var Blockly: any;
 export class SolveQuestionComponent implements OnInit {
 
   questionID: any;
+  toolboxSource: any;
+  questionString: any;
 
   constructor(private location: Location,
               private questionService: QuestionServiceService, 
               private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    // Fetch question details from server
     this.questionID = this.route.snapshot.paramMap.get('id');
     this.questionService.getQuestion(this.questionID).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
@@ -25,9 +34,19 @@ export class SolveQuestionComponent implements OnInit {
       }
     });
 
+    // Initialize toolbox depending on student grade.
+    switch(localStorage.getItem('userGrade')) {
+      case '2': 
+        this.toolboxSource = document.getElementById('toolbox-grade-2')
+        break;
 
+      case '7':
+        this.toolboxSource = document.getElementById('toolbox-grade-7')
+        break;
+    }
+    
+    // Spawn blockly workspace
     const blocklyDiv = document.getElementById('blocklyDiv');
-
     var workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
       grid: {
@@ -49,87 +68,16 @@ export class SolveQuestionComponent implements OnInit {
         drag: true,
         wheel: true
       },
-      toolbox: `
-      <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
-        <category name="NUMBERS" colour="342">
-          <label text="Numbers"></label>
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">1</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">2</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">3</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">4</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">5</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">6</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">7</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">8</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">9</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_number">
-            <field name="NUM">10</field>
-          </block>
-          <sep gap="32"></sep>
-        </category>
-        <category name="OPERATORS" colour="400">
-          <label text="Operators"></label>
-          <block type="math_arithmetic">
-            <field name="OP">ADD</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_arithmetic">
-            <field name="OP">MINUS</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_arithmetic">
-            <field name="OP">MULTIPLY</field>
-          </block>
-          <sep gap="5"></sep>
-          <block type="math_arithmetic">
-            <field name="OP">DIVIDE</field>
-          </block>
-        </category>
-        
-      </xml>
-        `
+      toolbox: this.toolboxSource
     } /*as Blockly.BlocklyOptions*/);
 
-    var xmlContent = `
-    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
-      <block type="math_number">
-        <field name="NUM">0</field>
-      </block>;
-    </xml>
-    `
+    this.questionString = "(5 + (6 ^ 4))";
+    var xmlString = this.generateQuestionBlock(this.questionString);
+
+    var xmlContent = xmlString;
+    
     var dom = Blockly.Xml.textToDom(xmlContent);
-    Blockly.Xml.domToWorkspace(workspace, dom);
+    Blockly.Xml.domToWorkspace(dom, workspace);
 
     function myUpdateFunction(event) {
       var code = Blockly.JavaScript.workspaceToCode(workspace);
@@ -139,6 +87,106 @@ export class SolveQuestionComponent implements OnInit {
     workspace.addChangeListener(myUpdateFunction);
   }
 
+  /**
+   * 
+   * @param questionString "The equation to be converted into blockly parsable XML"
+   *
+   */
+  generateQuestionBlock(questionString: string): any {
+    var questionXml = ``;
+    questionXml += '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">';
+    
+    console.log(questionXml);
+    var stack = [];
+    var numberBuffer = '';
+    for (let i = 0; i < questionString.length; i++) {
+      console.log("Input: " + questionString[i]);
+      //console.log(questionString[i])
+      if (questionString[i] == ')') {
+
+        if (numberBuffer != '') {
+          stack.push(numberBuffer);
+          numberBuffer = '';
+        }
+
+        var rightOperand = stack.pop();
+        var operator = stack.pop();
+        var leftOperand = stack.pop();
+        var tripleLeft;
+        var tripleRight;
+        var tripleMiddle;
+
+        if (!isNaN(leftOperand)) {
+          tripleLeft = '<block type="math_number"><field name="NUM">' + leftOperand + '</field></block>';
+        } else {
+          tripleLeft = leftOperand;
+        }
+
+        if (!isNaN(rightOperand)) {
+          tripleRight = '<block type="math_number"><field name="NUM">' + rightOperand + '</field></block>';
+        } else {
+          tripleRight = rightOperand;
+        }
+
+        switch(operator) {
+          case '+':
+            tripleMiddle = '<block type="math_arithmetic"><field name="OP">ADD</field><value name="A">' + tripleLeft +
+            '</value><value name="B">' + tripleRight + '</value></block>';
+            break;
+
+          case '-':
+            tripleMiddle = '<block type="math_arithmetic"><field name="OP">MINUS</field><value name="A">' + tripleLeft +
+            '</value><value name="B">' + tripleRight + '</value></block>';
+            break;
+
+          case '*':
+            tripleMiddle = '<block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A">' + tripleLeft +
+            '</value><value name="B">' + tripleRight + '</value></block>';
+            break;
+
+          case '/':
+            tripleMiddle = '<block type="math_arithmetic"><field name="OP">DIVIDE</field><value name="A">' + tripleLeft +
+            '</value><value name="B">' + tripleRight + '</value></block>';
+            break;
+          
+          case '^':
+            tripleMiddle = '<block type="math_arithmetic"><field name="OP">POWER</field><value name="A">' + tripleLeft +
+            '</value><value name="B">' + tripleRight + '</value></block>';
+            break;
+        }
+
+        stack.pop();
+        stack.push(tripleMiddle);
+
+      } else if (questionString[i] == '(') {
+        stack.push(questionString[i]);
+      } else if (questionString[i] >= '0' && questionString[i] <= '9') {
+        numberBuffer += questionString[i];
+      } else if (questionString[i] == ' ' && numberBuffer != '') {
+        stack.push(numberBuffer);
+        numberBuffer = '';
+      } else if (questionString[i] == '+' || questionString[i] == '-' || 
+                 questionString[i] == '*' || questionString[i] == '/' ||
+                 questionString[i] == '^') {
+        if (numberBuffer != '') {
+          stack.push(numberBuffer);
+          numberBuffer = '';
+        }
+        stack.push(questionString[i]);
+      }
+
+      console.log("Stack: " + stack);
+    }
+
+    questionXml += stack.pop();
+    questionXml += '</xml>';
+    
+    return questionXml;
+  }
+
+  /**
+   * Go back to the student questions page
+   */
   goBack() {
     this.location.back();
   }

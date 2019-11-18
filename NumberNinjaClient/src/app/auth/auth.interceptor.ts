@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
+ */
+
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpUserEvent, HttpEvent } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/do';

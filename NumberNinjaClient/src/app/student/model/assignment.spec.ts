@@ -1,3 +1,8 @@
+/**
+ * Project: NumberNinja
+ * Authors: Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 import { Assignment } from './assignment';
 
 describe('Assignment', () => {

@@ -1,11 +1,14 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ */
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QuestionService } from '../service/question-service';
 import { isNull, isUndefined } from 'util';
 import { Question } from '../model/question';
-import { MatTooltipModule} from '@angular/material';
-import {TooltipPosition} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-question',
@@ -15,8 +18,6 @@ import {TooltipPosition} from '@angular/material/tooltip';
 
 export class QuestionComponent implements OnInit {
 
-  // private regex: RegExp = /\d+/g;
-  // private regexOp: RegExp = /(\+|\-|\(|\)|\*|\^|\/|√)/g;
   private regexOp1: RegExp = /(\d+)|(\+|\-|\(|\)|\*|\^|\/|√)|(\=)/gm;
   private regexOp2: RegExp = /(?<=\=).*/gm;
   public questionForm: FormGroup;
@@ -131,5 +132,4 @@ export class QuestionComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }

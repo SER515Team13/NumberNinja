@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Sagar Khar, Smit Shah
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';

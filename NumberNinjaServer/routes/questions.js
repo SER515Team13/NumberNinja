@@ -5,10 +5,10 @@ var jwt = require('jsonwebtoken');
 var Question = require('../models/question');
 
 router.get('/getquestions', function(req,res,next) {
-    console.log("Inside question server api");
+    console.log("Inside questions server api");
     console.log(req.query.id);
     let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
-     promise.then(function(doc) {
+    promise.then(function(doc) {
       console.log("insdie promise");
       console.log(doc);
       if(doc) {
@@ -19,6 +19,23 @@ router.get('/getquestions', function(req,res,next) {
     promise.catch(function(err){
       return res.status(501).json({message:'Some internal error'});
     })
+})
+
+router.get('/getquestion', function(req,res,next) {
+  console.log("Inside question server api");
+  console.log(req.query.id);
+  let promise = Question.findOne({id: req.query.id},{id:1, answers:1, formula:1, formulaWithBlanks:1, formulaType:1}).exec();
+  promise.then(function(doc) {
+    console.log("inside promise");
+    console.log(doc);
+    if(doc) {
+      return res.status(200).json(doc);
+    }
+  });
+
+  promise.catch(function(err){
+    return res.status(501).json({message:'Some internal error'});
+  })
 })
 
 router.post('/addquestion',  function(req,res,next){

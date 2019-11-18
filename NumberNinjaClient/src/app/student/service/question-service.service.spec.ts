@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler, HttpParams } from '@angular/common/http';
 import { QuestionServiceService } from './question-service.service';
