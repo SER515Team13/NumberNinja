@@ -3,12 +3,34 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var Question = require('../models/question');
+const { sqrt } = require('mathjs')
+const { create, all } = require('mathjs')
+const math = create(all)
+
+router.post('/evaluateEquation', function(req, res, next) {
+    const regex = /√/gm;
+    var dataJson = req.body.data;
+    dataJson = dataJson.replace(regex,'sqrt');
+    return res.status(200).json(math.evaluate(dataJson));
+})
 
 router.get('/getquestions', function(req,res,next) {
     console.log("Inside questions server api");
     console.log(req.query.id);
-    let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
-    promise.then(function(doc) {
+    console.log(req.query.email);
+    //let promise = Question.find({assignmentID: req.query.id},{id:1,formula:1,formulaType:1}).exec();
+    let promise = Question.aggregate([
+      {$match : {assignmentID: req.query.id}},
+      {$lookup: {from: "studentassignmentquestions", localField: "_id", foreignField: "questionId", as: "aq"}},
+      {$project : {
+              studentAssignmentQuestion : { $filter : {input : "$aq"  , as : "saq", cond : { $eq : ['$$saq.studentEmail' , req.query.email] } } },
+              formulaWithBlanks: 1,
+              formulaType: 1,
+              formula: 1
+            }},
+      {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
+      ]).exec();
+     promise.then(function(doc) {
       console.log("insdie promise");
       console.log(doc);
       if(doc) {
@@ -63,15 +85,17 @@ router.post('/addquestion',  function(req,res,next){
 })
 
 router.post('/editquestion',  function(req,res,next){
-  console.log("Updating question into Database");
+  console.log(req.body);
   var questions = mongoose.model("questions", Question.schema);
-  console.log("ID is" + req.body._id)
+  console.log("ID is" + req.body.id)
 
   let questionPromise = questions.updateOne(
-    {_id : req.body._id},
+    {_id : req.body.id},
     {$set:
       {formula: req.body.formula,
-      formulaType: req.body.formulaType}
+      formulaType: req.body.formulaType,
+      formulaWithBlanks: req.body.formulaWithBlanks,
+      answers: req.body.answers}
     }).exec();
 
   questionPromise.then(function (doc) {

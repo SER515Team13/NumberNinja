@@ -30,7 +30,8 @@ export class AssignmentsComponent implements OnInit {
 
   getData() {
     console.log('Inside the assignment component');
-    var userData = this.assignmentService.getAssignments().subscribe((data: any) => {
+    var email = localStorage.getItem('userEmail');
+    var userData = this.assignmentService.getAssignments(email).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
         this.dataSource = new MatTableDataSource<Assignment>(data);
       }

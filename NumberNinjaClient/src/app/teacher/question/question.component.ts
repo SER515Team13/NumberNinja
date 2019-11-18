@@ -25,7 +25,7 @@ export class QuestionComponent implements OnInit {
   private digitsArray1 = [];
   private selectedValue : Array<number>;
   private checkbox = false;
-
+  private grade = true;
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<QuestionComponent>,
@@ -38,6 +38,12 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {
     console.log("IDDDDDDDDDDDDDDDDD: " + this.data);
+    var grade1 = localStorage.getItem('userGrade');
+    if(grade1 == '2') {
+      this.grade = false;
+    } else {
+      this.grade = true;
+    }
     this.questionForm = this.formBuilder.group({
       _id: [this.data._id],
       formula: [this.data.formula, [Validators.required]],
@@ -52,32 +58,16 @@ export class QuestionComponent implements OnInit {
   onSubmit() {
     
     console.log("Question form: " + this.questionForm.value);
+    let question = new Question;
+    question.formula= this.questionForm.value.formula.replace(/\s/g, "");
+    question.formulaType = this.questionForm.value.formulaType;
+    question.assignmentID= this.data;
     if (isUndefined(this.data._id)) {
-      let question = new Question;
-      question.formula= this.questionForm.value.formula.replace(/\s/g, "");
-      question.formulaType = this.questionForm.value.formulaType;
-      question.assignmentID= this.data;
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
-        var stringWithQuestions : string;
-        stringWithQuestions = "";
-        for(var i = 0 ; i < this.digitsArray.length ; i ++) {
-            if(this.selectedValue.includes(i)) {
-              stringWithQuestions = stringWithQuestions + "?";
-            } else {
-              stringWithQuestions = stringWithQuestions + this.digitsArray[i];
-            }
-        }
-        question.formulaWithBlanks = stringWithQuestions;
-        question.answers = null;
-        console.log(stringWithQuestions);
+        this.addBlanksInString(question);
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
-        question.answers = [];
-        question.answers.push(this.questionForm.value.formula1)
-        question.answers.push(this.questionForm.value.formula2);
-        question.answers.push(this.questionForm.value.formula3);
-        question.answers.push(this.questionForm.value.formula4);
-        question.formulaWithBlanks = null;
+        this.addOptionsQuestion(question);
       }
       this.questionService.addQuestion(question).subscribe((data: any) => {
         console.log("Add question response" + data );
@@ -85,18 +75,50 @@ export class QuestionComponent implements OnInit {
           return data;
         }
     });
-      console.log(this.selectedValue);
-      this.dialogRef.close();
+    console.log(this.selectedValue);
+    this.dialogRef.close();
     } else {
+      question.id = this.questionForm.value._id;
       console.log("Question form" + this.questionForm.value);
-      this.questionService.editQuestion(this.questionForm.value).subscribe((data: any) => {
+      if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
+        this.addBlanksInString(question);
+      }
+      if(this.questionForm.value.formulaType == 'Find the Answer') {
+        this.addOptionsQuestion(question);
+      }
+      this.questionService.editQuestion(question).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
           return data;
         }
     });
-      this.dialogRef.close();
+    this.dialogRef.close();
     }
+  }
+
+  addBlanksInString(question:Question) {
+    var stringWithQuestions : string;
+    stringWithQuestions = "";
+    for(var i = 0 ; i < this.digitsArray.length ; i ++) {
+        if(this.selectedValue.includes(i)) {
+          stringWithQuestions = stringWithQuestions + "?";
+        } else {
+          stringWithQuestions = stringWithQuestions + this.digitsArray[i];
+        }
+    }
+    question.formulaWithBlanks = stringWithQuestions;
+    question.answers = null;
+    console.log(stringWithQuestions);
+    // return question;
+  }
+
+  addOptionsQuestion(question:Question) {
+    question.answers = [];
+    question.answers.push(this.questionForm.value.formula1)
+    question.answers.push(this.questionForm.value.formula2);
+    question.answers.push(this.questionForm.value.formula3);
+    question.answers.push(this.questionForm.value.formula4);
+    question.formulaWithBlanks = null;
   }
 
   myFunc() {

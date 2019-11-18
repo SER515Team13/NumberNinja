@@ -12,7 +12,7 @@ import { HttpService } from "../../../shared/http.services";
 import { AssignmentServiceService } from '../../../student/service/assignment-service.service';
 import { Assignment } from 'src/app/teacher/model/assignment';
 import { Router } from '@angular/router';
-
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-assignments',
@@ -23,6 +23,7 @@ export class ViewAssignmentsComponent implements OnInit {
 
   private displayedColumns: String[] = ['assignmentname', 'duedate', 'score', 'status'];
   private dataSource;
+  private list = []
   private isPopupOpened: boolean = false;
   readonly rootUrl = 'http://localhost:3000';
   
@@ -31,10 +32,29 @@ export class ViewAssignmentsComponent implements OnInit {
   ngOnInit() {
     let grade = localStorage.getItem('userGrade');
     let email = localStorage.getItem('userEmail');
-    this.assignmentService.getAssignmentStudent(grade, email).subscribe((data: any) => {
-      console.log(data);
-      this.dataSource = new MatTableDataSource<Assignment>(data);
-    })
+    this.assignmentService.getAssignmentStudent(grade, email)
+    .pipe(flatMap((assignments: any) => assignments)).subscribe((assignment: any) => {
+        this.assignmentService.getAssignmentStatus(assignment.name, email).subscribe((data:any) => {
+          if (data.assignmentStatus) {
+            assignment["status"] = "Complete"
+          } else {
+            assignment["status"] = "Incomplete"
+          }
+          this.list.push(assignment);
+          this.dataSource = new MatTableDataSource<Assignment>(this.list);
+        });
+      });
+  }
+
+  getStatus(assignmentName: string) {
+    let email = localStorage.getItem('userEmail');
+    this.assignmentService.getAssignmentStatus(assignmentName, email).subscribe((data1: any) => {
+       if (data1.assignmentStatus) {
+         return "Complete";
+       } else {
+         return "Incomplete";
+       }
+    });
   }
   
 }
