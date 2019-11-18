@@ -1,5 +1,9 @@
-import { TestBed, inject } from '@angular/core/testing';
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
 
+import { TestBed, inject } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpClient, HttpHandler, HttpParams } from '@angular/common/http';
 

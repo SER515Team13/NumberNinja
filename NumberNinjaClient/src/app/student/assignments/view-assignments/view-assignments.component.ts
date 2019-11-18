@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
@@ -6,6 +11,7 @@ import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpService } from "../../../shared/http.services";
 import { AssignmentServiceService } from '../../../student/service/assignment-service.service';
 import { Assignment } from 'src/app/teacher/model/assignment';
+import { Router } from '@angular/router';
 import { flatMap } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +27,7 @@ export class ViewAssignmentsComponent implements OnInit {
   private isPopupOpened: boolean = false;
   readonly rootUrl = 'http://localhost:3000';
   
-  constructor(private dialog: MatDialog, private assignmentService: AssignmentServiceService) { }
+  constructor(private dialog: MatDialog, private assignmentService: AssignmentServiceService,private router: Router) { }
 
   ngOnInit() {
     let grade = localStorage.getItem('userGrade');
@@ -50,4 +56,5 @@ export class ViewAssignmentsComponent implements OnInit {
        }
     });
   }
+  
 }

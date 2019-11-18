@@ -1,0 +1,14 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+
+#blocklyDiv {
+    height: 560px;
+    width: 100%;
+    position: relative;
+}
+
+#bottom {
+    width: 100%;
+}

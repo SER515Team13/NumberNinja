@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand
+ */
+
 import { Assignment } from './assignment';
 
 describe('Assignment', () => {

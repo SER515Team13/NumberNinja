@@ -1,7 +1,17 @@
+<!--
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Sagar Khar
+ */
+-->
+
 <div>
     <app-teachertoolbar></app-teachertoolbar>
 </div>
-      
+<div>
+    <button mat-button class="btn btn-info" (click)="addQuestion()">Add Question</button>
+    <button mat-button class="btn btn-info" (click)="goBack()">Back</button>
+  </div>
 <mat-table [dataSource]="dataSource" class="matTable" >
   
   <!-- Question Name column -->
@@ -20,16 +30,11 @@
   <ng-container matColumnDef="action">
     <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"></mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <button mat-button><mat-icon (click)="editQuestion(element)">edit</mat-icon></button>
-      <button mat-button><mat-icon (click)="deleteQuestion(element)">delete</mat-icon></button>
+      <button mat-button (click)="editQuestion(element)"><mat-icon>edit</mat-icon></button>
+      <button mat-button (click)="deleteQuestion(element)"><mat-icon>delete</mat-icon></button>
     </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
 </mat-table>
-<div>
-  <button mat-button class="btn btn-warning" (click)="addQuestion()">Add Question</button>
-  <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
-</div>

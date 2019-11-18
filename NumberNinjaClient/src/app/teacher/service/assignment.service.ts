@@ -1,11 +1,13 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar, Abhinaw Sarang
+ */
+
 import { Injectable } from '@angular/core';
 import { Assignment } from '../model/assignment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Response, XHRBackend } from "@angular/http";
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
-import { async, inject } from '@angular/core/testing';
-
 
 @Injectable()
 export class AssignmentService {

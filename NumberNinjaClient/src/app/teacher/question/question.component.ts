@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ */
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -13,8 +18,6 @@ import { Question } from '../model/question';
 
 export class QuestionComponent implements OnInit {
 
-  // private regex: RegExp = /\d+/g;
-  // private regexOp: RegExp = /(\+|\-|\(|\)|\*|\^|\/|√)/g;
   private regexOp1: RegExp = /(\d+)|(\+|\-|\(|\)|\*|\^|\/|√)|(\=)/gm;
   private regexOp2: RegExp = /(?<=\=).*/gm;
   public questionForm: FormGroup;
@@ -148,4 +151,7 @@ export class QuestionComponent implements OnInit {
     element.disabled = false;
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

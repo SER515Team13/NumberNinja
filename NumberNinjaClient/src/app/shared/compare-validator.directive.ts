@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+
 import { Directive, Input } from '@angular/core';
 import { Validator, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { Subscription } from 'rxjs';

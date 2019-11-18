@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({

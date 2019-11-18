@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
