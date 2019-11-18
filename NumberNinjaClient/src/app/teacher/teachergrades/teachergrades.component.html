@@ -2,26 +2,34 @@
     <app-teachertoolbar></app-teachertoolbar>
 </div>
 <div>
-Select the Assignment : 
-
+<h3><b>Grade Assignments</b></h3>
+Select the Assignment :
+<mat-form-field>
+<mat-select [(ngModel)]="assignment"  (ngModelChange)= onSelectAssignment()> 
+        <mat-option>-assignment-</mat-option>
+        <mat-option [value]="assign._id" *ngFor="let assign of assignmentData">
+                {{assign.name}}
+        </mat-option>
+</mat-select>
+</mat-form-field>
 <mat-table [dataSource]="dataSource" class="matTable">
     <!--Student Name Column -->
     <ng-container matColumnDef="studentname">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Student Name </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="hyperlink">{{element.name}}</mat-cell>
+            <mat-cell *matCellDef="let element" class="hyperlink">{{element.firstName}} {{element.lastName}}</mat-cell>
     </ng-container>
 
     <!--Marks Column -->
     <ng-container matColumnDef="marks">
-            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Marks </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.marks}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Answers Correct </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.correct}} </mat-cell>
     </ng-container>
 
     <!--Grade Column -->
     <ng-container matColumnDef="grade">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Grade </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <input matInput placeholder="Favorite food" [(ngModel)]="element.grade">
+                <input matInput placeholder="A, B, C.." [(ngModel)]="element.grade">
             </mat-cell>
     </ng-container>
 

@@ -47,4 +47,15 @@ export class AssignmentService {
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl +'/assignments/clickassignment', body, {headers : reqHeader});
     }
+
+    getAssignmentGrades(assignmentId: string): Observable<{}> {
+        console.log("Calling assignments-status service.");
+        /*const body: any = {grade : grade, email: email}
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        return this.http.post(this.rootUrl + '/assignments/getassignments-student', body, {headers : reqHeader});*/
+        return this.http.get(this.rootUrl + '/assignments/getassignmentsGrade', {
+          observe: 'body',
+          params: new HttpParams().append('aId', assignmentId)
+        });
+      } 
 }

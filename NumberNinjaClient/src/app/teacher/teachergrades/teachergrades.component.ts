@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
-import { HttpService } from "../../../shared/http.services";
+import { HttpService } from "../../shared/http.services";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Assignment } from '../../model/assignment';
-import { AssignmentService } from '../../service/assignment.service';
+import { Assignment } from '../model/assignment';
+import { AssignmentService } from '../service/assignment.service';
 import { MatDialog } from '@angular/material';
 
 @Component({
@@ -17,20 +17,29 @@ export class TeachergradesComponent implements OnInit {
  
   private displayedColumns: String[] = ['studentname', 'marks', 'grade', 'action'];
   private dataSource;
+  private assignmentData = [];
   private isPopupOpened: boolean = false;
+  private assignment;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private assignmentService: AssignmentService) { }
 
   ngOnInit() {
-    this.getData();
+    this.getAssignmentData();
   }
 
-  getData() {
-    // var userData = this.assignmentService.getAssignments().subscribe((data: any) => {
-    //   if (data && data != undefined && data.length) {
-    //     this.dataSource = new MatTableDataSource<Assignment>(data);
-    //   }
-    // });
+  getAssignmentData() {
+    this.assignmentService.getAssignments(localStorage.getItem('userEmail')).subscribe((data: any) => { 
+      this.assignmentData = data;
+      console.log(this.assignmentData)
+     });
+  }
+
+  onSelectAssignment() {
+    this.assignmentService.getAssignmentGrades(this.assignment).subscribe((data: any) => {
+      this.dataSource = new MatTableDataSource(data)
+      console.log(data)
+    })
+    console.log(this.assignment);
   }
 
   // editAssignment(selectedassignment : Assignment) {

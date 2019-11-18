@@ -68,5 +68,5 @@ export class AssignmentServiceService {
       observe: 'body',
       params: new HttpParams().append('aName', assignmentName).append('sEmail', email)
     });
-}
+} 
 }

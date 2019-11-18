@@ -37,6 +37,47 @@ router.get('/getassignments', function (req, res, next) {
   })
 })
 
+router.get('/getassignmentsGrade', function (req, res, next) {
+  console.log("Getting assignments with id");
+  console.log(req.query.aId);
+  let promise = StudentAssignmentQuestion.aggregate([
+    {$match : {assignmentId : req.query.aId}},
+    {$lookup: {from: "users", localField: "studentEmail", foreignField: "email", as: "studentDetails"}},
+    //{$project : {
+    //  studentDetails : { $filter : {input : "$studentDetails"  , as : "sa", cond : { $eq : ['$$sa.isCorrect' , 'false'] } } },
+    //  firstName : 1,
+    //  lastName : 1,
+    //  }},
+    {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentDetails", 0 ] }, "$$ROOT" ] } }}
+  ]).exec();
+  
+  //StudentAssignmentQuestion.find({assignmentId: "5dc45ee1ca41236f1b174641"}, {})
+  promise.then(function (doc) {4
+    console.log(doc);
+    return res.status(200).json(doc);
+  //   console.log("Got each question status for assignment.");
+  //   console.log(doc);
+     // StudentAssignmentQuestion.aggregate([
+    //   {
+    //       $group: {
+    //           _id: "$studentEmail",
+    //           total: {$sum: 1},
+    //           categoryId:{$max:"$categoryId"}
+    //       }
+      
+    //   },
+    //   {
+    //       $project: {
+    //           categoryId: 1, total: 1
+    //       }
+    //   }])
+  // promise.catch(function (err) {
+  //   return res.status(err.status).json({
+  //     message: err.message +
+  //       ' Error in getting list of assignments for student.'
+  //   });
+   })
+})
 
 router.get('/getassignments-status', function (req, res, next) {
   console.log("Getting assignments status");

@@ -37,7 +37,7 @@ import { ViewQuestionsComponent } from './student/questions/view-questions/view-
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 import { ExistuserComponent } from './admin/existuser/existuser.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TeachergradesComponent } from './teacher/grades/teachergrades/teachergrades.component';
+import { TeachergradesComponent } from './teacher/teachergrades/teachergrades.component';
 
 
 @NgModule({
