@@ -62,6 +62,7 @@ export class AddAssignmentComponent implements OnInit {
       this.assignmentService.editAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
+          // Doesn't required any update in student-assignment mapping.
           return data;
         }
       });

@@ -7,6 +7,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QuestionService } from '../service/question-service';
+import { AssignmentService } from '../service/assignment.service';
 import { isNull, isUndefined } from 'util';
 import { Question } from '../model/question';
 
@@ -30,6 +31,7 @@ export class QuestionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<QuestionComponent>,
     private questionService: QuestionService,
+    private assignmentService: AssignmentService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   // onNoClick(): void {
@@ -71,7 +73,8 @@ export class QuestionComponent implements OnInit {
       }
       this.questionService.addQuestion(question).subscribe((data: any) => {
         console.log("Add question response" + data );
-        if (data && data != undefined && data.length) {
+        if (data._id != null) {
+          this.assignToEachStudent(question.assignmentID, data._id)
           return data;
         }
     });
@@ -153,5 +156,19 @@ export class QuestionComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  assignToEachStudent(assignmentId: string, questionId: string) {
+    let userGrade = localStorage.getItem('userGrade');
+    let studentList = []
+    this.assignmentService.getAllStudents(userGrade).subscribe((studentList: any) => {
+      console.log("starting for looooopppppp");
+      for (var each = 0; each < studentList.length; each++) {
+        console.log(studentList[each].email);
+        this.questionService.addStudentQuestion(studentList[each].email, assignmentId, questionId).subscribe((data:any) => {
+          return data;
+        });
+      }
+    })
   }
 }

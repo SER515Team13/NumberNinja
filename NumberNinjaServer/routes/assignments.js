@@ -126,7 +126,7 @@ router.post('/addassignment', function (req, res, next) {
 
   let assignmentPromise = assignmentToStore.save((err, doc) => {
     const { _id } = doc;
-    console.log(`New doc id: ${_id}`);
+    console.log(`New assignment id: ${_id}`);
     return res.status(201).json(doc);
   });
 

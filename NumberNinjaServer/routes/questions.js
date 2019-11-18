@@ -3,9 +3,10 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var Question = require('../models/question');
-const { sqrt } = require('mathjs')
-const { create, all } = require('mathjs')
-const math = create(all)
+const { sqrt } = require('mathjs');
+const { create, all } = require('mathjs');
+const math = create(all);
+var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
 
 router.post('/evaluateEquation', function(req, res, next) {
     const regex = /√/gm;
@@ -71,15 +72,15 @@ router.post('/addquestion',  function(req,res,next){
   });
   console.log(questionToStore);
 
-  let questionPromise = questionToStore.save();
-
-  questionPromise.then(function (doc) {
+  let questionPromise = questionToStore.save((err, doc) => {
+    const { _id } = doc;
+    console.log(`New question id: ${_id}`);
     return res.status(201).json(doc);
-  })
+  });
 
-  questionPromise.catch(function (err) {
-    return res.status(501).json({ message: 'Error storing question.' })
-  })
+  //questionPromise.catch(function (err) {
+  //  return res.status(501).json({ message: 'Error storing question.' })
+  //})
 
 })
 
@@ -116,5 +117,23 @@ router.post('/deleterow',function(req,res,next) {
     }
   })
 });
+
+router.post('/addStudentQuestion', function (req, res, next) {
+  console.log("Storing question for student into database", req.query.email);
+  var StudentQuestion = mongoose.model("studentassignmentquestions", StudentAssignmentQuestion.schema);
+  var questionToStore = new StudentQuestion({
+    studentEmail : req.query.email,
+    assignmentId : req.query.assignmentId,
+    questionId: mongoose.Types.ObjectId(req.query.questionId),
+    isSolved: false,
+    isCorrect: false
+  });
+
+  questionToStore.save((err, doc) => {
+    console.log(doc);
+    console.log(err);
+    return res.status(201).json(doc);
+  });
+})
 
 module.exports = router;
