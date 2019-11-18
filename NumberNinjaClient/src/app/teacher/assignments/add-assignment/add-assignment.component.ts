@@ -30,7 +30,7 @@ export class AddAssignmentComponent implements OnInit {
       name: [this.data.name, [Validators.required]],
       description: [this.data.description, [Validators.required]],
       duedate: [this.data.duedate, [Validators.required]],
-      grade: [this.data.grade, [Validators.required]],
+      grade: [localStorage.getItem('userGrade'), [Validators.required]],
     })
   }
 

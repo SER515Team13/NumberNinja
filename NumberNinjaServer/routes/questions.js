@@ -3,6 +3,16 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var Question = require('../models/question');
+const { sqrt } = require('mathjs')
+const { create, all } = require('mathjs')
+const math = create(all)
+
+router.post('/evaluateEquation', function(req, res, next) {
+    const regex = /√/gm;
+    var dataJson = req.body.data;
+    dataJson = dataJson.replace(regex,'sqrt');
+    return res.status(200).json(math.evaluate(dataJson));
+})
 
 router.get('/getquestions', function(req,res,next) {
     console.log("Inside question server api");
@@ -46,15 +56,17 @@ router.post('/addquestion',  function(req,res,next){
 })
 
 router.post('/editquestion',  function(req,res,next){
-  console.log("Updating question into Database");
+  console.log(req.body);
   var questions = mongoose.model("questions", Question.schema);
-  console.log("ID is" + req.body._id)
+  console.log("ID is" + req.body.id)
 
   let questionPromise = questions.updateOne(
-    {_id : req.body._id},
+    {_id : req.body.id},
     {$set:
       {formula: req.body.formula,
-      formulaType: req.body.formulaType}
+      formulaType: req.body.formulaType,
+      formulaWithBlanks: req.body.formulaWithBlanks,
+      answers: req.body.answers}
     }).exec();
 
   questionPromise.then(function (doc) {

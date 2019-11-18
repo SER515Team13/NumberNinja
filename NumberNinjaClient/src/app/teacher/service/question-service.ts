@@ -32,7 +32,7 @@ export class QuestionService {
     }
 
     editQuestion(currentQuestion: Question): Observable<{}>  {
-        console.log("Sending request to server to Edit question");
+        console.log("Sending request to server to Edit question"+currentQuestion);
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         return this.http.post(this.rootUrl + '/questions/editquestion', currentQuestion, { headers: reqHeader });
     }
@@ -44,6 +44,13 @@ export class QuestionService {
         return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader });
         /*const currentQuestion = this.questionList.findIndex(index => index._id === id);
         this.questionList.splice(currentQuestion, 1);*/
+    }
+
+    evaluateExpression(expression: string): Observable<{}> {
+        const body : any = { data : expression};
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+        console.log("Inside expression evlaution service");
+        return this.http.post(this.rootUrl + '/questions/evaluateEquation', body, {headers: reqHeader });
     }
 
     getAllQuestion() {
