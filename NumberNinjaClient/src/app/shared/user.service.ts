@@ -5,9 +5,11 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Response, XHRBackend } from "@angular/http";
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { User } from './user.model';
+import { async, inject } from '@angular/core/testing';
 
 @Injectable()
 export class UserService {

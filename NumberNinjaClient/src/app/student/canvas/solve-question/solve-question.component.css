@@ -4,11 +4,11 @@
  */
 
 #blocklyDiv {
-    height: 600px;
+    height: 560px;
     width: 100%;
     position: relative;
 }
 
 #bottom {
-    position: relative;
+    width: 100%;
 }

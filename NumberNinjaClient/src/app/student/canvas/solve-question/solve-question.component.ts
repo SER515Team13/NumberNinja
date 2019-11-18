@@ -19,6 +19,7 @@ export class SolveQuestionComponent implements OnInit {
   questionID: any;
   toolboxSource: any;
   questionString: any;
+  isDisconnected: boolean = false;
 
   constructor(private location: Location,
               private questionService: QuestionServiceService, 
@@ -80,9 +81,14 @@ export class SolveQuestionComponent implements OnInit {
     Blockly.Xml.domToWorkspace(dom, workspace);
 
     function myUpdateFunction(event) {
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
-      console.log(code);
-      document.getElementById("textarea").innerText = code;
+      var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
+      generatedEquation = generatedEquation.replace("<br>", "");
+      if (generatedEquation.split(';').length - 1 != 1) {
+        document.getElementById("textarea").innerText = "Error: There are disconnected blocks on the canvas!";
+      } else {
+        generatedEquation = generatedEquation.replace(";", "");
+        document.getElementById("textarea").innerText = generatedEquation;
+      }
     }
     workspace.addChangeListener(myUpdateFunction);
   }
@@ -190,5 +196,14 @@ export class SolveQuestionComponent implements OnInit {
   goBack() {
     this.location.back();
   }
-}
 
+  submitSolution() {
+    var generatedEquation = document.getElementById("textarea").innerHTML
+    if (generatedEquation === "Error: There are disconnected blocks on the canvas!") {
+      this.isDisconnected = true;
+    } else {
+      this.isDisconnected = false;
+      // TODO: Write code for submitting solution here.
+    }
+  }
+}

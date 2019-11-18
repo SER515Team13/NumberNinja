@@ -12,8 +12,10 @@
     <div id="blocklyDiv"></div>
 </div>
 <div id="bottom">
-    <textarea id="textarea" style="height: 10;"></textarea>
+    <textarea id="textarea" style="height: 900;"></textarea>
     <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
+    <button mat-button class="btn btn-warning" (click)="submitSolution()">Submit</button>
+    <p *ngIf="isDisconnected">Remove disconnected blocks and try submitting again!</p>
 </div>
 
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-grade-2" style="display: none">
