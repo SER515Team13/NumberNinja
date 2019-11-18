@@ -8,6 +8,7 @@ const { create, all } = require('mathjs')
 const math = create(all)
 
 router.post('/evaluateEquation', function(req, res, next) {
+    console.log(req.body);
     const regex = /√/gm;
     var dataJson = req.body.data;
     dataJson = dataJson.replace(regex,'sqrt');
