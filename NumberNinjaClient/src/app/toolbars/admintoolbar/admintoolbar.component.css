@@ -8,5 +8,14 @@
 }
 .glyphicon {
     font-size: 18px;
-    padding-left: 5px;
+    padding-left: 8px;
+}
+.buttons{
+    padding-top: 6px;
+    margin-left: 70px;
+    margin-top: 2px;
+    border-radius: 25px;
+    border-color: orange;
+    background-color: bisque;
+    font-family: Arial, Helvetica, sans-serif
 }

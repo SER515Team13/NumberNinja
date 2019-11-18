@@ -27,3 +27,6 @@
     color: black;
     border-bottom: 1px solid;
 }
+.btn-info{
+    border-radius: 20px;
+}

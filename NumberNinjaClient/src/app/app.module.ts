@@ -60,7 +60,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ViewAssignmentsComponent,
     ViewQuestionsComponent,
     SolveQuestionComponent,
-    ExistuserComponent
+    ExistuserComponent,
   ],
   imports: [
     BrowserModule,

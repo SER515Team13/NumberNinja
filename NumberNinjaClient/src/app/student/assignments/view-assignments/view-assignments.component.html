@@ -5,25 +5,25 @@
 
         <!--Assignment Name Column -->
         <ng-container matColumnDef="assignmentname">
-                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Assignment </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="hyperlink"> <a [routerLink]="element._id">{{element.name}}</a></mat-cell>
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"><b>Assignment</b></mat-header-cell>
+                <mat-cell *matCellDef="let element" class="hyperlink"><a [routerLink]="element._id">{{element.name}}</a></mat-cell>
         </ng-container>
 
         <!--Duedate Column -->
         <ng-container matColumnDef="duedate">
-                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Due Date </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"><b>Due Date</b></mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.duedate}} </mat-cell>
         </ng-container>
 
         <!--score Column -->
         <ng-container matColumnDef="score">
-                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Score </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"><b>Score</b></mat-header-cell>
                 <mat-cell *matCellDef="let element"> 'NA' </mat-cell>
         </ng-container>
 
         <!--status Column -->
         <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Status </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"><b>Status</b></mat-header-cell>
                 <mat-cell *matCellDef="let element"> 'NA' </mat-cell>
         </ng-container>
 
