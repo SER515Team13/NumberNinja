@@ -1,6 +1,6 @@
 /**
- * Project: NumberNinja
- * Author: Sukhpreet Singh Anand
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
  */
 
 import { Component, OnInit } from '@angular/core';
@@ -71,30 +71,11 @@ export class SolveQuestionComponent implements OnInit {
       toolbox: this.toolboxSource
     } /*as Blockly.BlocklyOptions*/);
 
-    this.questionString = "(4+((2 + 5) +5))";
+    this.questionString = "(5 + (6 ^ 4))";
     var xmlString = this.generateQuestionBlock(this.questionString);
 
     var xmlContent = xmlString;
-    /*`
-    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
-      <block type="math_arithmetic">
-        <field name="OP">ADD</field>
-        <value name="A">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="B">
-          <block type="math_arithmetic">
-            <field name="OP">ADD</field>
-          </block>
-        </value>
-      </block>
-      <block type="math_number">
-        <field name="NUM">0</field>
-      </block>
-    </xml>
-    `*/
+    
     var dom = Blockly.Xml.textToDom(xmlContent);
     Blockly.Xml.domToWorkspace(dom, workspace);
 

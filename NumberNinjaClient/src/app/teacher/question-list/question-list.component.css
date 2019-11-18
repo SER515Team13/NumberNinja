@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
+
 .toolbar{
     background-color:  rgb(76, 76, 82);
     border-radius: 5px;
@@ -15,14 +20,17 @@
     color: white;
 
 }
+
 .matTable{
     background-color: whitesmoke;
     margin-top: 1px;
 }
+
 .mat-cell {
     color:black;
     border-bottom: 1px groove;
 }
+
 .mat-header-cell{
     color: black;
     border-bottom: 1px solid;

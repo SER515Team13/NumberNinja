@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SolveQuestionComponent } from './solve-question.component';

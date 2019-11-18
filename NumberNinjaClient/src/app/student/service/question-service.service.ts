@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
+ */
+
 import { Injectable } from '@angular/core';
 import { Question } from '../model/question';
 import { HttpClient, HttpParams } from '@angular/common/http';

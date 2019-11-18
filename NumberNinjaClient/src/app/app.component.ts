@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang, Sagar Khar
+ */
+
 import { Component } from '@angular/core';
 
 @Component({

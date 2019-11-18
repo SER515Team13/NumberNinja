@@ -1,11 +1,11 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Sagar Khar
+ */
+
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
 import { ActivatedRoute} from "@angular/router";
-import { HttpService } from "../../shared/http.services";
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { UserService } from '../../shared/user.service';
 import { QuestionService } from '../service/question-service';
 import { MatDialog } from '@angular/material';
 import { QuestionComponent } from '../question/question.component';

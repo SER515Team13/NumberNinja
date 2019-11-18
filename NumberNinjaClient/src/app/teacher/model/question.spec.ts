@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
+
 import { Question } from './question';
 
 describe('Question', () => {
