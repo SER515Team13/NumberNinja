@@ -48,13 +48,6 @@ export class QuestionService {
         this.questionList.splice(currentQuestion, 1);*/
     }
 
-    evaluateExpression(expression: string): Observable<{}> {
-        const body : any = { data : expression};
-        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        console.log("Inside expression evlaution service");
-        return this.http.post(this.rootUrl + '/questions/evaluateEquation', body, {headers: reqHeader });
-    }
-
     getAllQuestion() {
         return this.questionList;
     }

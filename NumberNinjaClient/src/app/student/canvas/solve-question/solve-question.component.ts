@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from "@angular/router";
 import { Location } from "@angular/common";
 import { QuestionServiceService } from '../../service/question-service.service';
+import { MathparserService } from 'src/app/shared/mathparser.service';
 declare var Blockly: any;
+var workspace;
 
 @Component({
   selector: 'app-solve-question',
@@ -20,9 +22,11 @@ export class SolveQuestionComponent implements OnInit {
   toolboxSource: any;
   questionString: any;
   isDisconnected: boolean = false;
+  hasError: boolean = false;
 
   constructor(private location: Location,
-              private questionService: QuestionServiceService, 
+              private questionService: QuestionServiceService,
+              private mathparserService: MathparserService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -48,7 +52,7 @@ export class SolveQuestionComponent implements OnInit {
     
     // Spawn blockly workspace
     const blocklyDiv = document.getElementById('blocklyDiv');
-    var workspace = Blockly.inject(blocklyDiv, {
+    /*var*/ workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
       grid: {
         spacing: 20,
@@ -72,25 +76,40 @@ export class SolveQuestionComponent implements OnInit {
       toolbox: this.toolboxSource
     } /*as Blockly.BlocklyOptions*/);
 
-    this.questionString = "(5 + (6 ^ 4))";
-    var xmlString = this.generateQuestionBlock(this.questionString);
-
-    var xmlContent = xmlString;
-    
+    this.questionString = "(5 + (6 + 4))";
+    var xmlContent = this.generateQuestionBlock(this.questionString);
     var dom = Blockly.Xml.textToDom(xmlContent);
     Blockly.Xml.domToWorkspace(dom, workspace);
 
+    // Bind workspace to change listener
     function myUpdateFunction(event) {
       var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
       generatedEquation = generatedEquation.replace("<br>", "");
-      if (generatedEquation.split(';').length - 1 != 1) {
+      if (generatedEquation.split(';').length - 1 > 1) {
+        this.hasError = true;
         document.getElementById("textarea").innerText = "Error: There are disconnected blocks on the canvas!";
+      } else if (generatedEquation.split(';').length - 1 == 0) {
+        this.hasError = true;
+        document.getElementById("textarea").innerText = "Error: The canvas is empty!";
       } else {
+        this.hasError = false;
         generatedEquation = generatedEquation.replace(";", "");
-        document.getElementById("textarea").innerText = generatedEquation;
+        generatedEquation = generatedEquation.replace(/(\r\n|\n|\r)/gm, "");
+        this.mathparserService.evaluateExpression(generatedEquation).subscribe((data: any) => {
+          console.log("IS DATA HERE: "+ data);
+          if (data == null) {
+            document.getElementById("textarea").innerText = "Math Error"
+          } else {
+            if (!(data % 1 === 0)) {
+              data = Number.parseFloat(data).toPrecision(3);
+            }
+            document.getElementById("textarea").innerText = data;
+          }
+        });
+        //document.getElementById("textarea").innerText = generatedEquation
       }
     }
-    workspace.addChangeListener(myUpdateFunction);
+    workspace.addChangeListener(myUpdateFunction.bind(this));
   }
 
   /**
