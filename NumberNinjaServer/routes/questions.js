@@ -13,6 +13,7 @@ router.post('/evaluateEquation', function(req, res, next) {
     const regex = /√/gm;
     var dataJson = req.body.data;
     dataJson = dataJson.replace(regex,'sqrt');
+    console.log("Answer: " + math.evaluate(dataJson));
     return res.status(200).json(math.evaluate(dataJson));
 })
 
