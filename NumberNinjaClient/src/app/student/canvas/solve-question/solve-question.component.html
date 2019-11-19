@@ -14,7 +14,7 @@
 <div id="bottom">
     <textarea id="textarea" style="height: 900;"></textarea>
     <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
-    <button mat-button class="btn btn-warning" (click)="submitSolution()">Submit</button>
+    <button mat-button class="btn btn-warning" (click)="submitSolution()" [disabled]="hasError">Submit</button>
     <p *ngIf="isDisconnected">Remove disconnected blocks and try submitting again!</p>
 </div>
 

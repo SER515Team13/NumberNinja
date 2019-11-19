@@ -24,7 +24,6 @@ export class StudentToolbarComponent implements OnInit {
     else{
       this.show= false
     }
-    console.log(this.show)
   }
 
   Logout() {
