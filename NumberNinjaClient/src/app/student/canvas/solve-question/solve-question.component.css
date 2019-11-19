@@ -11,4 +11,25 @@
 
 #bottom {
     width: 100%;
+    background-color: lightgray;
+    height: 50px;
+    padding-left: 715px;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 12px;
+    padding-top: 9px;
+    padding-bottom: 5px;
+}
+.canvasdiv{
+    padding-top:1px;
+}
+.btn-info{
+    border-radius: 20px;
+    background-color: lightskyblue;
+    margin-right:20px;
+    float:left;
+}
+.lol{
+    background-color: lightgray;
+    font-size: 30px;
+    padding-left: 680px;
 }
