@@ -51,4 +51,12 @@ export class QuestionService {
     getAllQuestion() {
         return this.questionList;
     }
+
+    addStudentQuestion(email: string, assignmentId: string, questionId: string) {
+        console.log("Sending request to add question for each students");
+        const body : any ={};
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'}).append('email', email)
+        const params = new HttpParams().append('email', email).append('assignmentId', assignmentId).append('questionId', questionId);
+        return this.http.post(this.rootUrl + '/questions/addStudentQuestion', body, { headers: reqHeader, params: params });
+    }
 }
