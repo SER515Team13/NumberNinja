@@ -52,7 +52,7 @@ export class SolveQuestionComponent implements OnInit {
     
     // Spawn blockly workspace
     const blocklyDiv = document.getElementById('blocklyDiv');
-    /*var*/ workspace = Blockly.inject(blocklyDiv, {
+    workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
       grid: {
         spacing: 20,
@@ -109,6 +109,8 @@ export class SolveQuestionComponent implements OnInit {
           }
         });
       }
+      // TODO: Uncomment the below line when saveSolution() and restoreSolution() are implemented
+      // this.saveSolution();
     }
     workspace.addChangeListener(myUpdateFunction.bind(this));
   }
@@ -284,6 +286,27 @@ export class SolveQuestionComponent implements OnInit {
     questionXml += '</xml>';
     
     return questionXml;
+  }
+
+  /**
+   * This function saves the student's solution progress so that it can 
+   * be resumed later from that position.
+   */
+  saveSolution() {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.workspace);
+    //TODO: Store Blockly.Xml.domToText(xml) in question database.
+    console.log("Progress saved!");
+  }
+
+  /**
+   * This function restores the student's solution on opening the workspace 
+   * if the student attempted to partly solve the question before.
+   */
+  restoreSolution() {
+    Blockly.workspace.clear();
+    var xml = Blockly.Xml.textToDom(/*TODO: Fetch solution progress from question database*/);
+    Blockly.Xml.domToWorkspace(xml, Blockly.workspace);
+    console.log("Progress restored!");
   }
 
   /**
