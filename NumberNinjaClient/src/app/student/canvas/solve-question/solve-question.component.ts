@@ -74,14 +74,16 @@ export class SolveQuestionComponent implements OnInit {
         wheel: true
       },
       toolbox: this.toolboxSource
-    } /*as Blockly.BlocklyOptions*/);
+    });
 
-    this.questionString = "(5 + (6 + 4))";
+    this.questionString = "(5 + (2 ^ (3 ^ 2)))";
+
+    // Generates blocks on the workspace from the equation string
     var xmlContent = this.generateQuestionBlock(this.questionString);
     var dom = Blockly.Xml.textToDom(xmlContent);
     Blockly.Xml.domToWorkspace(dom, workspace);
 
-    // Bind workspace to change listener
+    // Bind workspace to change listener which dynamically computes result of the equation
     function myUpdateFunction(event) {
       var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
       generatedEquation = generatedEquation.replace("<br>", "");
@@ -95,10 +97,10 @@ export class SolveQuestionComponent implements OnInit {
         this.hasError = false;
         generatedEquation = generatedEquation.replace(";", "");
         generatedEquation = generatedEquation.replace(/(\r\n|\n|\r)/gm, "");
+        generatedEquation = this.handlePower(generatedEquation);
         this.mathparserService.evaluateExpression(generatedEquation).subscribe((data: any) => {
-          console.log("IS DATA HERE: "+ data);
           if (data == null) {
-            document.getElementById("textarea").innerText = "Math Error"
+            document.getElementById("textarea").innerText = "Math Error";
           } else {
             if (!(data % 1 === 0)) {
               data = Number.parseFloat(data).toPrecision(3);
@@ -106,10 +108,85 @@ export class SolveQuestionComponent implements OnInit {
             document.getElementById("textarea").innerText = data;
           }
         });
-        //document.getElementById("textarea").innerText = generatedEquation
       }
     }
     workspace.addChangeListener(myUpdateFunction.bind(this));
+  }
+
+  /**
+   * 
+   * @param generatedEquation "The equation string which replaces all occurance of 
+   * substrings of the form Math.pow(x, y) where x and y are real numbers and replaces 
+   * them with (x ^ y)"
+   */
+  handlePower(generatedEquation: string) {
+    let index: number = generatedEquation.indexOf("Math.pow(");
+    console.log("Equation: " + generatedEquation);
+    console.log("Index: " + index);
+    while (index != -1) {
+      let startIndex: number = index + 9;
+      let endIndex: number;
+      let firstNumber: string = "";
+      let secondNumber: string = "";
+      let currentNumber: string = ""; 
+      var stack = [];
+      for (let i = startIndex; i < generatedEquation.length; i++) {
+        if (generatedEquation.charAt(i) == ',') {
+          if (stack.length == 0) {
+            firstNumber = currentNumber;
+            currentNumber = "";
+          } else {
+            currentNumber += generatedEquation.charAt(i);
+          }
+        } else if (generatedEquation.charAt(i) == '(') {
+          stack.push('(');
+          currentNumber += generatedEquation.charAt(i);
+        } else if (generatedEquation.charAt(i) == ')') {
+          if (stack.length == 0) {
+            secondNumber = currentNumber;
+            currentNumber = "";
+            endIndex = i;
+            break;
+          } else {
+            stack.pop();
+            currentNumber += generatedEquation.charAt(i);
+          }
+        } else {
+          currentNumber += generatedEquation.charAt(i);
+        }
+      }
+      firstNumber = firstNumber.trim();
+      secondNumber = secondNumber.trim();
+      if (this.needsBraces(firstNumber)) {
+        firstNumber = "(" + firstNumber + ")";
+      }
+      if (this.needsBraces(secondNumber)) {
+        secondNumber = "(" + secondNumber + ")";
+      }
+      currentNumber = firstNumber + " ^ " + secondNumber;
+      generatedEquation = generatedEquation.substring(0, index) +
+                          "(" + currentNumber + ")" +
+                          generatedEquation.substring(endIndex + 1);
+      index = generatedEquation.indexOf("Math.pow(");
+    }
+    return generatedEquation;
+  }
+
+  /**
+   *  
+   * @param num "The equation string which is scanned by the function to 
+   * determine whether brackets are needed to maintain precedence 
+   * safety during mathematical evaluation."
+   */
+  needsBraces(num: string) {
+    let needsBrace: boolean = false;
+    for (let i=0; i < num.length; i++) {
+      if (num.charAt(i) == '+' || num.charAt(i) == '-' || 
+          num.charAt(i) == '*' || num.charAt(i) == '/') {
+          needsBrace = true;
+      }
+    }
+    return needsBrace;
   }
 
   /**
@@ -216,6 +293,10 @@ export class SolveQuestionComponent implements OnInit {
     this.location.back();
   }
 
+  /**
+   * This function submits the solution provided by the student, updates the question 
+   * progress status and updates the percentage correctness of the assignment.
+   */
   submitSolution() {
     var generatedEquation = document.getElementById("textarea").innerHTML
     if (generatedEquation === "Error: There are disconnected blocks on the canvas!") {
