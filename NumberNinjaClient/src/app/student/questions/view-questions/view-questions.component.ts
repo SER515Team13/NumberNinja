@@ -36,7 +36,8 @@ export class ViewQuestionsComponent implements OnInit {
     this.questionService.getQuestions(this.assignmentID, email).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
         for (var each = 0; each < data.length; each++) {
-            if (data[each].isSolved == true) {
+          console.log(data[each].isSolved)
+            if (data[each].isSolved) {
               data[each]["status"] = "Complete";
             } else {
               data[each]["status"] = "Incomplete";
