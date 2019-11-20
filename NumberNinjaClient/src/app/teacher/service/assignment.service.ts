@@ -41,7 +41,8 @@ export class AssignmentService {
     deleteAssignment(id: string): Observable<{}> {
         const body : any = { Id : id};
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader });
+        const params = new HttpParams().append('assignmentId', id);
+        return this.http.post(this.rootUrl + '/assignments/deleterow', body, {headers: reqHeader, params:params });
     }
     
     describeAssignment(currentAssignment : Assignment) {

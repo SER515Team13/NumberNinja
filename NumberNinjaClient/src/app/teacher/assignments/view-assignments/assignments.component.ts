@@ -64,10 +64,11 @@ export class AssignmentsComponent implements OnInit {
     });
   }
 
-  deleteAssignment(selectedassignment : Assignment) {
+  deleteAssignment(selectedassignment : any) {
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedassignment);
-    this.assignmentService.deleteAssignment(selectedassignment.id).subscribe((abc : any) => {
+    console.log(selectedassignment)
+    this.assignmentService.deleteAssignment(selectedassignment._id).subscribe((abc : any) => {
       data.splice(index, 1);
       this.dataSource.data=data;
     })
