@@ -41,11 +41,12 @@ export class QuestionService {
 
     deleteQuestion(id: string): Observable<{}> {
         const body : any = { Id : id};
+        console.log(id)
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         console.log("Inside delete service");
-        return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader });
-        /*const currentQuestion = this.questionList.findIndex(index => index._id === id);
-        this.questionList.splice(currentQuestion, 1);*/
+        const params = new HttpParams().append('questionId', id);
+        return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader ,params:params});
+    
     }
 
     getAllQuestion() {

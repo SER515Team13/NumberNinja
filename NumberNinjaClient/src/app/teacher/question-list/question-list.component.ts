@@ -36,6 +36,20 @@ export class QuestionListComponent implements OnInit {
   getData() {
     var userData = this.questionService.getQuestions(this.assignmentID).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
+        for (var each = 0; each < data.length; each++) {
+          console.log(data[each].isSolved)
+            if (data[each].isSolved) {
+              data[each]["status"] = "Complete";
+            } else {
+              data[each]["status"] = "Incomplete";
+            }
+            if (data[each].formulaWithBlanks==null) {
+              data[each].formulaWithBlanks = "Choose the correct answer for ".concat(data[each].formula.split('=')[0]);
+            }
+            else{
+              data[each].formulaWithBlanks = "Fill in the blank in equation ".concat(data[each].formulaWithBlanks.replace("?", " _____ "));
+            }
+         }
         this.dataSource = new MatTableDataSource<Question>(data);
       }
     });
@@ -65,10 +79,11 @@ export class QuestionListComponent implements OnInit {
     });
   }
 
-  deleteQuestion(selectedQuestion: Question) {
+  deleteQuestion(selectedQuestion: any) {
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedQuestion);
-    this.questionService.deleteQuestion(selectedQuestion.id).subscribe((abc : any) => {
+    console.log(selectedQuestion)
+    this.questionService.deleteQuestion(selectedQuestion._id).subscribe((abc : any) => {
       data.splice(index, 1);
       this.dataSource.data=data;
     });

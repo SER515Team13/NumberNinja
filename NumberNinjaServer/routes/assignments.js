@@ -168,8 +168,9 @@ router.post('/editassignment', function (req, res, next) {
 });
 
 router.post('/deleterow', function (req, res, next) {
+  console.log("In server delete"+ req.query.assignmentId);
   var assignments = mongoose.model("assignments", Assignment.schema);
-  let promise = assignments.deleteOne({ id: req.body.Id }).exec();
+  let promise = assignments.deleteOne({ _id: mongoose.Types.ObjectId(req.query.assignmentId)}).exec();
   promise.then(function (doc) {
     if (doc) {
       return res.status(200).json(doc);
