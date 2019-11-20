@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 button.btn-submit{
-    background-color: #38547b;
+    background-color: #80cbc4;
     color: #fff;
     width: 25%;
 }
 button.btn-submit:focus,button.btn-submit:hover{
-    background-color: #38547b;
+    background-color: lightseagreen;
+    border-radius: 25px;
 }
 
 input.ng-invalid.ng-dirty{
@@ -28,9 +29,10 @@ div.error-message i{
 }
 .tabs .tab a{
     font-size: 25px;
-    color: grey !important;
+    color: whitesmoke !important;
 }
 
 .tabs .tab a.active{
-    background-color: #fff !important;
+    background-color:lightseagreen !important;
+    border-radius: 40px;
 }

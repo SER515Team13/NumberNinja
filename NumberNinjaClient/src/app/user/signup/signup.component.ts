@@ -3,7 +3,7 @@
  * @author Sukhpreet Singh Anand, Abhinaw Sarang, Sagar Khar, Smit Shah
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../shared/user.model';
@@ -51,5 +51,8 @@ export class SignUpComponent implements OnInit {
           this.toastr.error(data.message);
         }
       });
+  }
+  register(ref: TemplateRef<any>){
+    this.dialog.open(ref);
   }
 }

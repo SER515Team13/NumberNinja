@@ -4,37 +4,38 @@
  */
 
 #blocklyDiv {
-    height: 560px;
+    height: 480px;
     width: 100%;
     position: relative;
 }
 
-#bottom {
+.submitline {
     width: 100%;
-    background-color: lightgray;
-    height: 50px;
     padding-left: 715px;
     font-family:'Courier New', Courier, monospace;
-    font-size: 12px;
-    padding-top: 9px;
-    padding-bottom: 5px;
+    margin-top: 8px;
+    background-color: black;
+    z-index: 1;
 }
 .canvasdiv{
     padding-top:1px;
 }
 .btn-info{
     border-radius: 20px;
-    background-color: lightskyblue;
+    background-color: lightgoldenrodyellow;
     margin-right:20px;
     float:left;
+}
+.btn-info:hover{
+    background-color:lightcoral;
 }
 .lol{
     background-color: lightgray;
     font-size: 30px;
-    padding-left: 680px;
+    padding-left: 730px;
 }
 .upper{
-    padding-left: 720px ;
+    padding-left: 600px ;
     font-family:Arial, Helvetica, sans-serif;
     font-size: 25px;
     background-color: white;

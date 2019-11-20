@@ -27,6 +27,7 @@ export class SolveQuestionComponent implements OnInit {
   questionType: string;
   solution: string;
   isCorrectSolution: boolean = false;
+  formulaDisplay: string;
 
   constructor(private location: Location,
               private questionService: QuestionServiceService,
@@ -41,7 +42,15 @@ export class SolveQuestionComponent implements OnInit {
     this.questionService.getQuestionCanvas(this.questionID, localStorage.getItem('userEmail')).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
         console.log("Fetched data is--------->>", data[0].formulaWithBlanks);
-        this.questionString = data[0].formulaWithBlanks;
+        console.log(data[0].formulaWithBlanks);
+        if (data[0].formulaWithBlanks==null) {
+          //this.questionString = data[0].formula;//todo
+          this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
+        }
+        else{
+          this.questionString = data[0].formulaWithBlanks;
+          this.formulaDisplay = "Fill in the blank in equation ".concat(data[0].formulaWithBlanks.replace("?", " _____ "));
+        }
         console.log(this.questionString);
         this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
         this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
@@ -115,7 +124,7 @@ export class SolveQuestionComponent implements OnInit {
             if (!(data % 1 === 0)) {
               data = Number.parseFloat(data).toPrecision(3);
             }
-            document.getElementById("textarea").innerText = data;
+            document.getElementById("textarea").innerText = "Result: "+data;
           }
         });
       }
