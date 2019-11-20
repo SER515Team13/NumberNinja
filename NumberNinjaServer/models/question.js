@@ -6,6 +6,7 @@ var schema = new Schema({
     formula : {type:String, require:true},
     formulaWithBlanks : {type:String, require:true},
     formulaType: {type:String, require:true},
+    formulaForBlockly: {type:String, require:true},
     assignmentID: {type:String, require:true},
     answers:{type:Array}
 });

@@ -4,5 +4,6 @@ export class Question {
     formulaWithBlanks: string;
     assignmentID:string;
     formulaType: string;
+    formulaForBlockly: string
     answers: number[];
 }

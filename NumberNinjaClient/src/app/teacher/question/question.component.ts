@@ -57,14 +57,20 @@ export class QuestionComponent implements OnInit {
     console.log("Question form: " + this.questionForm.value);
     let question = new Question;
     question.formula= this.questionForm.value.formula.replace(/\s/g, "");
+    // var nas = this.convertToCnvasFormat(this.infixGenrator(question.formula));
+    // console.log(this.infixGenrator(question.formula));
+    console.log(this.infixGenrator(question.formula.split('=')[0]));
+    console.log(this.convertToCnvasFormat(this.infixGenrator(question.formula.split('=')[0])));
     question.formulaType = this.questionForm.value.formulaType;
     question.assignmentID= this.data;
     if (isUndefined(this.data._id)) {
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
         this.addBlanksInString(question);
+        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
         this.addOptionsQuestion(question);
+        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
       }
       this.questionService.addQuestion(question).subscribe((data: any) => {
         console.log("Add question response" + data );
@@ -79,9 +85,11 @@ export class QuestionComponent implements OnInit {
       console.log("Question form" + this.questionForm.value);
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
         this.addBlanksInString(question);
+        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
         this.addOptionsQuestion(question);
+        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
       }
       this.questionService.editQuestion(question).subscribe((data: any) => {
         console.log("Edit question response" + data );
@@ -148,4 +156,99 @@ export class QuestionComponent implements OnInit {
     element.disabled = false;
   }
 
+  infixGenrator(equation: String) {
+
+    var answerToreturn = "";
+    var stack = [];
+    for(let i = 0; i < equation.length; i++) {
+      var tmpchr = equation.charAt(i);
+      if(!isNaN(Number(tmpchr))) {
+        answerToreturn = answerToreturn + tmpchr;
+      }
+      else if(tmpchr === '(') {
+        stack.push(tmpchr);
+      }
+      else if(tmpchr === ')') {
+        while(stack.length > 0 && stack[stack.length - 1] !== '(') {
+          answerToreturn = answerToreturn + ',';
+          answerToreturn = answerToreturn + stack.pop();
+        }
+        stack.pop(); 
+      }
+      else {
+        while(stack.length > 0 && this.getOpValue(tmpchr) <= this.getOpValue(stack[stack.length - 1])) {
+          if(stack[stack.length - 1] === '(') {
+            break;
+          }
+          answerToreturn = answerToreturn + ',';
+          answerToreturn = answerToreturn + stack.pop();
+        }
+        answerToreturn = answerToreturn + ',';
+        stack.push(tmpchr);
+      }
+    }
+    while(stack.length > 0) {
+      answerToreturn = answerToreturn + ',';
+      answerToreturn = answerToreturn + stack.pop();
+    }
+    return answerToreturn;
+  }
+
+  getOpValue(c:any) {
+    switch(c) { 
+      case '+':
+      case '-':
+      { 
+         return 1; 
+      } 
+      case '*': 
+      case '/':
+      { 
+         return 2; 
+      }
+      case '^':
+        return 3; 
+   }
+   return -1; 
+  }
+
+  convertToCnvasFormat(postfixEquation: string) : String {
+    var stack = [];
+    var valuees = [];
+    valuees = postfixEquation.split(',');
+    for (let i = 0; i < valuees.length; i++) {
+      var tmpchr = valuees[i];
+      if(!isNaN(Number(tmpchr))) {
+        stack.push(tmpchr);
+      } else {
+        var no1 = stack.pop();
+        var no2 = stack.pop();
+        var no3 = '('+no2+tmpchr+no1+')';
+        stack.push(no3);
+      }
+    }
+    return stack.pop();
+  }
 }
+
+// for (let i = 0; i < valuees.length; i++) {
+//   var tmpchr = valuees[i];
+//   if(!isNaN(Number(tmpchr))) {
+//     if(this.selectedValue.includes(i)) {
+//       stack.push("?");;
+//     } else {
+//       stack.push(tmpchr);
+//     }
+//   } else {
+//     if(this.selectedValue.includes(i)) {
+//       var no1 = stack.pop();
+//       var no2 = stack.pop();
+//       var no3 = '('+no2+'?'+no1+')';
+//     } else {
+//       var no1 = stack.pop();
+//       var no2 = stack.pop();
+//       var no3 = '('+no2+tmpchr+no1+')';
+//     }
+//     stack.push(no3);
+//   }
+// }

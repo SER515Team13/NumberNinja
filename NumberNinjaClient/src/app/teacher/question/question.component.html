@@ -13,6 +13,7 @@
                     <div class="col-md-6">
                         <label for="formulaType" style="font-family: 'Times New Roman', Times, serif ; font-size: 16px">Select Type:</label>
                         <select class="form-control" id="formulaType" width='50%' formControlName="formulaType" required>
+                                <option>-</option>
                             <option>Fill in the Blanks</option>
                             <option *ngIf="grade">Find the Answer</option>
                         </select>
