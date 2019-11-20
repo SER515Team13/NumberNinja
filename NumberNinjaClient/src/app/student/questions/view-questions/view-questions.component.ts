@@ -42,6 +42,12 @@ export class ViewQuestionsComponent implements OnInit {
             } else {
               data[each]["status"] = "Incomplete";
             }
+            if (data[each].formulaWithBlanks==null) {
+              data[each].formulaWithBlanks = "Choose the correct answer for ".concat(data[each].formula.split('=')[0]);
+            }
+            else{
+              data[each].formulaWithBlanks = "Fill in the blank in equation ".concat(data[each].formulaWithBlanks.replace("?", " _____ "));
+            }
          }
         this.dataSource = new MatTableDataSource<Question>(data);
       }
