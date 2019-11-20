@@ -16,31 +16,31 @@ Select the Assignment :
     <!--Student Name Column -->
     <ng-container matColumnDef="studentname">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Student Name </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="hyperlink">{{element.firstName}} {{element.lastName}}</mat-cell>
+            <mat-cell *matCellDef="let element" class="hyperlink">{{element._id.firstName}} {{element._id.lastName}}</mat-cell>
     </ng-container>
 
     <!--Marks Column -->
     <ng-container matColumnDef="marks">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Answers Correct </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.correct}} </mat-cell>
+            <mat-cell *matCellDef="let element" type ="number">{{calc(totalQuestions,element.correctAns)}}/{{totalQuestions}} </mat-cell>
     </ng-container>
 
     <!--Grade Column -->
     <ng-container matColumnDef="grade">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Grade </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <input matInput placeholder="A, B, C.." [(ngModel)]="element.grade">
+                <input matInput placeholder="A, B, C.." [(ngModel)]="element.assignedGrade">
             </mat-cell>
     </ng-container>
 
     <!-- Update Column -->
     <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Action </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"></mat-header-cell>
             <mat-cell *matCellDef="let element">
-                    <button mat-button><mat-icon (click)="updateGrade(element)">Update</mat-icon></button>
+                    <button mat-button (click)="updateGrade(element)"><mat-icon>create</mat-icon></button>
             </mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns "></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
 </div>

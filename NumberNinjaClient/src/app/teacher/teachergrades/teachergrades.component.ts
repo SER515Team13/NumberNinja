@@ -20,6 +20,7 @@ export class TeachergradesComponent implements OnInit {
   private assignmentData = [];
   private isPopupOpened: boolean = false;
   private assignment;
+  private totalQuestions;
 
   constructor(private dialog: MatDialog, private assignmentService: AssignmentService) { }
 
@@ -37,9 +38,19 @@ export class TeachergradesComponent implements OnInit {
   onSelectAssignment() {
     this.assignmentService.getAssignmentGrades(this.assignment).subscribe((data: any) => {
       this.dataSource = new MatTableDataSource(data)
+      console.log("data below")
       console.log(data)
     })
-    console.log(this.assignment);
+    console.log("sample test")
+    this.assignmentService.getTotalQuestions(this.assignment).subscribe((data: any) => {
+      this.totalQuestions = data[0].totalQues;
+      console.log(data)
+    })
+  }
+
+
+  calc(totalQuestions : number,falseAns : number){
+    return totalQuestions - falseAns;
   }
 
   // editAssignment(selectedassignment : Assignment) {

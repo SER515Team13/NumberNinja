@@ -50,12 +50,23 @@ export class AssignmentService {
 
     getAssignmentGrades(assignmentId: string): Observable<{}> {
         console.log("Calling assignments-status service.");
-        /*const body: any = {grade : grade, email: email}
-        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        return this.http.post(this.rootUrl + '/assignments/getassignments-student', body, {headers : reqHeader});*/
-        return this.http.get(this.rootUrl + '/assignments/getassignmentsGrade', {
+        return this.http.get(this.rootUrl + '/assignments/getassignmentsgrade', {
           observe: 'body',
           params: new HttpParams().append('aId', assignmentId)
         });
       } 
+
+      getTotalQuestions(assignmentId: string): Observable<{}> {
+        console.log("Calling assignment questions.");
+        return this.http.get(this.rootUrl + '/questions/gettotalquestions', {
+          observe: 'body',
+          params: new HttpParams().append('aId', assignmentId)
+        });
+      } 
+
+      updateGrade(element : any) {
+          const body : any = { element };
+          const reqHeader = new HttpHeaders({'No-Auth': 'True'});
+          return this.http.post(this.rootUrl + '/', body, {headers : reqHeader});
+      }
 }
