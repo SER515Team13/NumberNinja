@@ -5,6 +5,11 @@
 
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
+ */
+
 import { UserService } from '../shared/user.service';
 // import { Observable } from 'rxjs/Observable';
 

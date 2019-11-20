@@ -1,3 +1,8 @@
+/**
+ * Project: NumberNinja
+ * Author: Sukhpreet Singh Anand
+ */
+
 import { Question } from './question';
 
 describe('Question', () => {

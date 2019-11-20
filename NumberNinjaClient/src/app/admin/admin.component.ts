@@ -1,7 +1,11 @@
+/**
+ * Project: NumberNinja
+ * Authors: Sukhpreet Singh Anand, Sagar Khar, Abhinaw Sarang, Smit Shah
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
-import { HttpService } from "../shared/http.services";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserService } from '../shared/user.service';
@@ -35,7 +39,6 @@ const grades: String[] = [
 export class AdminComponent implements OnInit {
   private taskMessage: string = "ASSIGN ROLES FOR PENDING ACCOUNTS";
   private noUsersMessage: string = "NO PENDING TASKS FOR ADMIN";
-
   private roles: String[] = userRoles;
   private classes: String[] = grades;
   private selectedRole: string = "";
@@ -60,8 +63,6 @@ export class AdminComponent implements OnInit {
     this.responseFromAPi = userData;
   }
   readonly rootUrl = 'http://localhost:3000';
-
-  
 
   public acceptUser(selectedUser: User) {
     const data = this.dataSource.data;
@@ -132,7 +133,6 @@ export class AdminComponent implements OnInit {
     }
     console.log(selectedUser);
   }
-
 
   triggerEmail(currentUser: User, requestAccepted: boolean): Observable<{}> {
     console.log("Sending email to the User.");

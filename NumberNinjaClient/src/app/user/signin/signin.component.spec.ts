@@ -1,5 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
 
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignInComponent } from './signin.component';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../shared/user.service';

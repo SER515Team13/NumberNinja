@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
+ */
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TeacherComponent } from './teacher.component';
@@ -51,4 +56,3 @@ describe('TeacherComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

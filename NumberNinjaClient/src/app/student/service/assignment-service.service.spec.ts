@@ -1,7 +1,8 @@
 /**
- * @author Abhinaw Sarang <asarang@augments.edu>
- *          Unit test added
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
  */
+
 import { TestBed } from '@angular/core/testing';
 import { AssignmentServiceService } from './assignment-service.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

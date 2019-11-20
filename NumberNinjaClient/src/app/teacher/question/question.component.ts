@@ -1,7 +1,13 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ */
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QuestionService } from '../service/question-service';
+import { AssignmentService } from '../service/assignment.service';
 import { isNull, isUndefined } from 'util';
 import { Question } from '../model/question';
 
@@ -13,8 +19,6 @@ import { Question } from '../model/question';
 
 export class QuestionComponent implements OnInit {
 
-  // private regex: RegExp = /\d+/g;
-  // private regexOp: RegExp = /(\+|\-|\(|\)|\*|\^|\/|√)/g;
   private regexOp1: RegExp = /(\d+)|(\+|\-|\(|\)|\*|\^|\/|√)|(\=)/gm;
   private regexOp2: RegExp = /(?<=\=).*/gm;
   public questionForm: FormGroup;
@@ -22,11 +26,12 @@ export class QuestionComponent implements OnInit {
   private digitsArray1 = [];
   private selectedValue : Array<number>;
   private checkbox = false;
-
+  private grade = true;
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<QuestionComponent>,
     private questionService: QuestionService,
+    private assignmentService: AssignmentService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   // onNoClick(): void {
@@ -35,6 +40,12 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {
     console.log("IDDDDDDDDDDDDDDDDD: " + this.data);
+    var grade1 = localStorage.getItem('userGrade');
+    if(grade1 == '2') {
+      this.grade = false;
+    } else {
+      this.grade = true;
+    }
     this.questionForm = this.formBuilder.group({
       _id: [this.data._id],
       formula: [this.data.formula, [Validators.required]],
@@ -49,51 +60,68 @@ export class QuestionComponent implements OnInit {
   onSubmit() {
     
     console.log("Question form: " + this.questionForm.value);
+    let question = new Question;
+    question.formula= this.questionForm.value.formula.replace(/\s/g, "");
+    question.formulaType = this.questionForm.value.formulaType;
+    question.assignmentID= this.data;
     if (isUndefined(this.data._id)) {
-      let question = new Question;
-      question.formula= this.questionForm.value.formula.replace(/\s/g, "");
-      question.formulaType = this.questionForm.value.formulaType;
-      question.assignmentID= this.data;
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
-        var stringWithQuestions : string;
-        stringWithQuestions = "";
-        for(var i = 0 ; i < this.digitsArray.length ; i ++) {
-            if(this.selectedValue.includes(i)) {
-              stringWithQuestions = stringWithQuestions + "?";
-            } else {
-              stringWithQuestions = stringWithQuestions + this.digitsArray[i];
-            }
-        }
-        question.formulaWithBlanks = stringWithQuestions;
-        question.answers = null;
-        console.log(stringWithQuestions);
+        this.addBlanksInString(question);
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
-        question.answers = [];
-        question.answers.push(this.questionForm.value.formula1)
-        question.answers.push(this.questionForm.value.formula2);
-        question.answers.push(this.questionForm.value.formula3);
-        question.answers.push(this.questionForm.value.formula4);
-        question.formulaWithBlanks = null;
+        this.addOptionsQuestion(question);
       }
       this.questionService.addQuestion(question).subscribe((data: any) => {
         console.log("Add question response" + data );
-        if (data && data != undefined && data.length) {
+        if (data._id != null) {
+          this.assignToEachStudent(question.assignmentID, data._id)
           return data;
         }
     });
-      console.log(this.selectedValue);
-      this.dialogRef.close();
+    console.log(this.selectedValue);
+    this.dialogRef.close();
     } else {
+      question.id = this.questionForm.value._id;
       console.log("Question form" + this.questionForm.value);
-      this.questionService.editQuestion(this.questionForm.value).subscribe((data: any) => {
+      if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
+        this.addBlanksInString(question);
+      }
+      if(this.questionForm.value.formulaType == 'Find the Answer') {
+        this.addOptionsQuestion(question);
+      }
+      this.questionService.editQuestion(question).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
           return data;
         }
     });
-      this.dialogRef.close();
+    this.dialogRef.close();
     }
+  }
+
+  addBlanksInString(question:Question) {
+    var stringWithQuestions : string;
+    stringWithQuestions = "";
+    for(var i = 0 ; i < this.digitsArray.length ; i ++) {
+        if(this.selectedValue.includes(i)) {
+          stringWithQuestions = stringWithQuestions + "?";
+        } else {
+          stringWithQuestions = stringWithQuestions + this.digitsArray[i];
+        }
+    }
+    question.formulaWithBlanks = stringWithQuestions;
+    question.answers = null;
+    console.log(stringWithQuestions);
+    // return question;
+  }
+
+  addOptionsQuestion(question:Question) {
+    question.answers = [];
+    question.answers.push(this.questionForm.value.formula1)
+    question.answers.push(this.questionForm.value.formula2);
+    question.answers.push(this.questionForm.value.formula3);
+    question.answers.push(this.questionForm.value.formula4);
+    question.formulaWithBlanks = null;
   }
 
   myFunc() {
@@ -126,4 +154,21 @@ export class QuestionComponent implements OnInit {
     element.disabled = false;
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  assignToEachStudent(assignmentId: string, questionId: string) {
+    let userGrade = localStorage.getItem('userGrade');
+    let studentList = []
+    this.assignmentService.getAllStudents(userGrade).subscribe((studentList: any) => {
+      console.log("starting for looooopppppp");
+      for (var each = 0; each < studentList.length; each++) {
+        console.log(studentList[each].email);
+        this.questionService.addStudentQuestion(studentList[each].email, assignmentId, questionId).subscribe((data:any) => {
+          return data;
+        });
+      }
+    })
+  }
 }

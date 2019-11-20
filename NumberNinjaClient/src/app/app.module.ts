@@ -1,5 +1,10 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Saksham Jhawar, Smit Shah, Sagar Khar
+ */
+
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -94,6 +99,7 @@ import { TeachergradesComponent } from './teacher/teachergrades/teachergrades.co
     }, QuestionService],
   bootstrap: [AppComponent],
   entryComponents: [AddAssignmentComponent, QuestionComponent],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 
 export class AppModule { }
