@@ -41,21 +41,23 @@ export class QuestionService {
 
     deleteQuestion(id: string): Observable<{}> {
         const body : any = { Id : id};
+        console.log(id)
         const reqHeader = new HttpHeaders({'No-Auth': 'True'});
         console.log("Inside delete service");
-        return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader });
-        /*const currentQuestion = this.questionList.findIndex(index => index._id === id);
-        this.questionList.splice(currentQuestion, 1);*/
-    }
-
-    evaluateExpression(expression: string): Observable<{}> {
-        const body : any = { data : expression};
-        const reqHeader = new HttpHeaders({'No-Auth': 'True'});
-        console.log("Inside expression evlaution service");
-        return this.http.post(this.rootUrl + '/questions/evaluateEquation', body, {headers: reqHeader });
+        const params = new HttpParams().append('questionId', id);
+        return this.http.post(this.rootUrl + '/questions/deleterow', body, {headers: reqHeader ,params:params});
+    
     }
 
     getAllQuestion() {
         return this.questionList;
+    }
+
+    addStudentQuestion(email: string, assignmentId: string, questionId: string) {
+        console.log("Sending request to add question for each students");
+        const body : any ={};
+        const reqHeader = new HttpHeaders({'No-Auth': 'True'}).append('email', email)
+        const params = new HttpParams().append('email', email).append('assignmentId', assignmentId).append('questionId', questionId);
+        return this.http.post(this.rootUrl + '/questions/addStudentQuestion', body, { headers: reqHeader, params: params });
     }
 }

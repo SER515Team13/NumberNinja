@@ -34,7 +34,9 @@ export class ViewAssignmentsComponent implements OnInit {
     let email = localStorage.getItem('userEmail');
     this.assignmentService.getAssignmentStudent(grade, email)
     .pipe(flatMap((assignments: any) => assignments)).subscribe((assignment: any) => {
-        this.assignmentService.getAssignmentStatus(assignment.name, email).subscribe((data:any) => {
+        console.log(assignment._id);
+        this.assignmentService.getAssignmentStatus(assignment._id, email).subscribe((data:any) => {
+          console.log(data.assignmentStatus)
           if (data.assignmentStatus) {
             assignment["status"] = "Complete"
           } else {
@@ -46,15 +48,14 @@ export class ViewAssignmentsComponent implements OnInit {
       });
   }
 
-  getStatus(assignmentName: string) {
-    let email = localStorage.getItem('userEmail');
-    this.assignmentService.getAssignmentStatus(assignmentName, email).subscribe((data1: any) => {
-       if (data1.assignmentStatus) {
-         return "Complete";
-       } else {
-         return "Incomplete";
-       }
-    });
-  }
-  
+  // getStatus(assignmentName: string) {
+  //   let email = localStorage.getItem('userEmail');
+  //   this.assignmentService.getAssignmentStatus(assignmentName, email).subscribe((data1: any) => {
+  //      if (data1.assignmentStatus) {
+  //        return "Complete";
+  //      } else {
+  //        return "Incomplete";
+  //      }
+  //   });
+  // }
 }

@@ -8,7 +8,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AssignmentService } from '../../service/assignment.service';
 import { isNull, isUndefined } from 'util';
-import { Pipe, PipeTransform } from '@angular/core'
+//import { Pipe, PipeTransform } from '@angular/core'
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-assignment',
@@ -48,8 +49,10 @@ export class AddAssignmentComponent implements OnInit {
       let email = localStorage.getItem('userEmail');
       console.log(email);
       this.assignmentService.addAssignment(this.addAssignmentForm.value, email).subscribe((data: any) => {
-        console.log("Add assignment response" + data );
-        if (data && data != undefined && data.length) {
+        console.log("Add assignment response" + data._id );
+        if (data._id != null) {
+          console.log("calling assignToEachStudent==========")
+          this.assignToEachStudent(data._id);
           return data;
         }
       });
@@ -59,11 +62,26 @@ export class AddAssignmentComponent implements OnInit {
       this.assignmentService.editAssignment(this.addAssignmentForm.value).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
+          // Doesn't required any update in student-assignment mapping.
           return data;
         }
       });
       this.dialogRef.close();
     }
+  }
+
+  assignToEachStudent(assignId: string) {
+    let userGrade = localStorage.getItem('userGrade');
+    let studentList = []
+    this.assignmentService.getAllStudents(userGrade).subscribe((studentList: any) => {
+      console.log("starting for looooopppppp");
+      for (var each = 0; each < studentList.length; each++) {
+        console.log(studentList[each].email);
+        this.assignmentService.addStudentAssignment(studentList[each].email, assignId).subscribe((data:any) => {
+          return data;
+        });
+      }
+    })
   }
 
 }

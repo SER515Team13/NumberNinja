@@ -3,11 +3,14 @@
  * @author Sukhpreet Singh Anand
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute} from "@angular/router";
 import { Location } from "@angular/common";
 import { QuestionServiceService } from '../../service/question-service.service';
+import { MathparserService } from 'src/app/shared/mathparser.service';
+import { MatDialog } from '@angular/material/dialog';
 declare var Blockly: any;
+var workspace;
 
 @Component({
   selector: 'app-solve-question',
@@ -20,10 +23,16 @@ export class SolveQuestionComponent implements OnInit {
   toolboxSource: any;
   questionString: any;
   isDisconnected: boolean = false;
+  hasError: boolean = false;
+  questionType: string;
+  solution: string;
+  isCorrectSolution: boolean = false;
 
   constructor(private location: Location,
-              private questionService: QuestionServiceService, 
-              private route: ActivatedRoute) { }
+              private questionService: QuestionServiceService,
+              private mathparserService: MathparserService,
+              private route: ActivatedRoute,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
 
@@ -48,7 +57,7 @@ export class SolveQuestionComponent implements OnInit {
     
     // Spawn blockly workspace
     const blocklyDiv = document.getElementById('blocklyDiv');
-    var workspace = Blockly.inject(blocklyDiv, {
+    workspace = Blockly.inject(blocklyDiv, {
       readOnly: false,
       grid: {
         spacing: 20,
@@ -70,27 +79,130 @@ export class SolveQuestionComponent implements OnInit {
         wheel: true
       },
       toolbox: this.toolboxSource
-    } /*as Blockly.BlocklyOptions*/);
+    });
 
-    this.questionString = "(5 + (6 ^ 4))";
-    var xmlString = this.generateQuestionBlock(this.questionString);
+    this.questionString = "(15 + ?) = 22";
+    this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
+    this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
+    //console.log ("Solution: " + this.solution);
+    //console.log ("Question: " + this.questionString);
+    /*if (this.questionType == 'Fill in the Blanks') {
+      
+    } else if (this.questionType == 'Find the Answer') {
 
-    var xmlContent = xmlString;
-    
+    }*/
+
+    // Generates blocks on the workspace from the equation string
+    var xmlContent = this.generateQuestionBlock(this.questionString);
     var dom = Blockly.Xml.textToDom(xmlContent);
     Blockly.Xml.domToWorkspace(dom, workspace);
 
+    // Bind workspace to change listener which dynamically computes result of the equation
     function myUpdateFunction(event) {
       var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
       generatedEquation = generatedEquation.replace("<br>", "");
-      if (generatedEquation.split(';').length - 1 != 1) {
+      if (generatedEquation.split(';').length - 1 > 1) {
+        this.hasError = true;
         document.getElementById("textarea").innerText = "Error: There are disconnected blocks on the canvas!";
+      } else if (generatedEquation.split(';').length - 1 == 0) {
+        this.hasError = true;
+        document.getElementById("textarea").innerText = "Error: The canvas is empty!";
       } else {
+        this.hasError = false;
         generatedEquation = generatedEquation.replace(";", "");
-        document.getElementById("textarea").innerText = generatedEquation;
+        generatedEquation = generatedEquation.replace(/(\r\n|\n|\r)/gm, "");
+        generatedEquation = this.handlePower(generatedEquation);
+        this.mathparserService.evaluateExpression(generatedEquation).subscribe((data: any) => {
+          if (data == null) {
+            document.getElementById("textarea").innerText = "Math Error";
+          } else {
+            if (!(data % 1 === 0)) {
+              data = Number.parseFloat(data).toPrecision(3);
+            }
+            document.getElementById("textarea").innerText = data;
+          }
+        });
+      }
+      // TODO: Uncomment the below line when saveSolution() and restoreSolution() are implemented
+      // this.saveSolution();
+    }
+    workspace.addChangeListener(myUpdateFunction.bind(this));
+  }
+
+  /**
+   * 
+   * @param generatedEquation "The equation string which replaces all occurance of 
+   * substrings of the form Math.pow(x, y) where x and y are real numbers and replaces 
+   * them with (x ^ y)"
+   */
+  handlePower(generatedEquation: string) {
+    let index: number = generatedEquation.indexOf("Math.pow(");
+    console.log("Equation: " + generatedEquation);
+    console.log("Index: " + index);
+    while (index != -1) {
+      let startIndex: number = index + 9;
+      let endIndex: number;
+      let firstNumber: string = "";
+      let secondNumber: string = "";
+      let currentNumber: string = ""; 
+      var stack = [];
+      for (let i = startIndex; i < generatedEquation.length; i++) {
+        if (generatedEquation.charAt(i) == ',') {
+          if (stack.length == 0) {
+            firstNumber = currentNumber;
+            currentNumber = "";
+          } else {
+            currentNumber += generatedEquation.charAt(i);
+          }
+        } else if (generatedEquation.charAt(i) == '(') {
+          stack.push('(');
+          currentNumber += generatedEquation.charAt(i);
+        } else if (generatedEquation.charAt(i) == ')') {
+          if (stack.length == 0) {
+            secondNumber = currentNumber;
+            currentNumber = "";
+            endIndex = i;
+            break;
+          } else {
+            stack.pop();
+            currentNumber += generatedEquation.charAt(i);
+          }
+        } else {
+          currentNumber += generatedEquation.charAt(i);
+        }
+      }
+      firstNumber = firstNumber.trim();
+      secondNumber = secondNumber.trim();
+      if (this.needsBraces(firstNumber)) {
+        firstNumber = "(" + firstNumber + ")";
+      }
+      if (this.needsBraces(secondNumber)) {
+        secondNumber = "(" + secondNumber + ")";
+      }
+      currentNumber = firstNumber + " ^ " + secondNumber;
+      generatedEquation = generatedEquation.substring(0, index) +
+                          "(" + currentNumber + ")" +
+                          generatedEquation.substring(endIndex + 1);
+      index = generatedEquation.indexOf("Math.pow(");
+    }
+    return generatedEquation;
+  }
+
+  /**
+   *  
+   * @param num "The equation string which is scanned by the function to 
+   * determine whether brackets are needed to maintain precedence 
+   * safety during mathematical evaluation."
+   */
+  needsBraces(num: string) {
+    let needsBrace: boolean = false;
+    for (let i=0; i < num.length; i++) {
+      if (num.charAt(i) == '+' || num.charAt(i) == '-' || 
+          num.charAt(i) == '*' || num.charAt(i) == '/') {
+          needsBrace = true;
       }
     }
-    workspace.addChangeListener(myUpdateFunction);
+    return needsBrace;
   }
 
   /**
@@ -105,6 +217,7 @@ export class SolveQuestionComponent implements OnInit {
     console.log(questionXml);
     var stack = [];
     var numberBuffer = '';
+    var disconnectedComponents = [];
     for (let i = 0; i < questionString.length; i++) {
       console.log("Input: " + questionString[i]);
       //console.log(questionString[i])
@@ -122,43 +235,60 @@ export class SolveQuestionComponent implements OnInit {
         var tripleRight;
         var tripleMiddle;
 
-        if (!isNaN(leftOperand)) {
-          tripleLeft = '<block type="math_number"><field name="NUM">' + leftOperand + '</field></block>';
+        if (leftOperand == '?' || leftOperand == '') {
+          tripleLeft = '';
+        } else if (!isNaN(leftOperand)) {
+          tripleLeft = '<block type="math_number" deletable="false"><field name="NUM">' + leftOperand + '</field></block>';
         } else {
           tripleLeft = leftOperand;
         }
 
-        if (!isNaN(rightOperand)) {
-          tripleRight = '<block type="math_number"><field name="NUM">' + rightOperand + '</field></block>';
+        if (rightOperand == '?' || rightOperand == '') {
+          tripleRight = '';
+        } else if (!isNaN(rightOperand)) {
+          tripleRight = '<block type="math_number" deletable="false"><field name="NUM">' + rightOperand + '</field></block>';
         } else {
           tripleRight = rightOperand;
         }
 
         switch(operator) {
           case '+':
-            tripleMiddle = '<block type="math_arithmetic"><field name="OP">ADD</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">ADD</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
           case '-':
-            tripleMiddle = '<block type="math_arithmetic"><field name="OP">MINUS</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">MINUS</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
           case '*':
-            tripleMiddle = '<block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">MULTIPLY</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
           case '/':
-            tripleMiddle = '<block type="math_arithmetic"><field name="OP">DIVIDE</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">DIVIDE</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
           
           case '^':
-            tripleMiddle = '<block type="math_arithmetic"><field name="OP">POWER</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">POWER</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
+
+          case '?':
+            tripleMiddle = '';
+            break;
+        }
+
+        if (tripleMiddle == '') {
+          if (tripleLeft != '') {
+            disconnectedComponents.push(tripleLeft);
+          }
+          if (tripleRight != '') {
+            disconnectedComponents.push(tripleRight);
+          }
         }
 
         stack.pop();
@@ -173,7 +303,7 @@ export class SolveQuestionComponent implements OnInit {
         numberBuffer = '';
       } else if (questionString[i] == '+' || questionString[i] == '-' || 
                  questionString[i] == '*' || questionString[i] == '/' ||
-                 questionString[i] == '^') {
+                 questionString[i] == '^' || questionString[i] == '?') {
         if (numberBuffer != '') {
           stack.push(numberBuffer);
           numberBuffer = '';
@@ -185,9 +315,33 @@ export class SolveQuestionComponent implements OnInit {
     }
 
     questionXml += stack.pop();
+    for (let i=0; i<disconnectedComponents.length; i++) {
+      questionXml += disconnectedComponents[i];
+    }
     questionXml += '</xml>';
     
     return questionXml;
+  }
+
+  /**
+   * This function saves the student's solution progress so that it can 
+   * be resumed later from that position.
+   */
+  saveSolution() {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.workspace);
+    //TODO: Store Blockly.Xml.domToText(xml) in question database.
+    console.log("Progress saved!");
+  }
+
+  /**
+   * This function restores the student's solution on opening the workspace 
+   * if the student attempted to partly solve the question before.
+   */
+  restoreSolution() {
+    Blockly.workspace.clear();
+    var xml = Blockly.Xml.textToDom(/*TODO: Fetch solution progress from question database*/);
+    Blockly.Xml.domToWorkspace(xml, Blockly.workspace);
+    console.log("Progress restored!");
   }
 
   /**
@@ -197,12 +351,21 @@ export class SolveQuestionComponent implements OnInit {
     this.location.back();
   }
 
-  submitSolution() {
+  /**
+   * This function submits the solution provided by the student, updates the question 
+   * progress status and updates the percentage correctness of the assignment.
+   */
+  submitSolution(ref: TemplateRef<any>) {
     var generatedEquation = document.getElementById("textarea").innerHTML
     if (generatedEquation === "Error: There are disconnected blocks on the canvas!") {
       this.isDisconnected = true;
     } else {
       this.isDisconnected = false;
+      console.log("SOLUTION:"+this.solution+"|EQUATED:"+generatedEquation);
+      if (this.solution === generatedEquation) {
+        this.isCorrectSolution = true;
+      }
+      this.dialog.open(ref);
       // TODO: Write code for submitting solution here.
     }
   }

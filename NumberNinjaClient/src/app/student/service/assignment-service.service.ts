@@ -60,14 +60,14 @@ export class AssignmentServiceService {
         params: new HttpParams().append('grade', grade).append('email', email)
       });
   }
-  getAssignmentStatus(assignmentName: string, email: string): Observable<{}> {
+  getAssignmentStatus(assignmentId: string, email: string): Observable<{}> {
     console.log("Calling assignments-status service.");
     /*const body: any = {grade : grade, email: email}
     const reqHeader = new HttpHeaders({'No-Auth': 'True'});
     return this.http.post(this.rootUrl + '/assignments/getassignments-student', body, {headers : reqHeader});*/
     return this.http.get(this.rootUrl + '/assignments/getassignments-status', {
       observe: 'body',
-      params: new HttpParams().append('aName', assignmentName).append('sEmail', email)
+      params: new HttpParams().append('aId', assignmentId).append('sEmail', email)
     });
 }
 }
