@@ -30,6 +30,7 @@ router.get('/getquestions', function(req,res,next) {
               formulaWithBlanks: 1,
               formulaType: 1,
               formula: 1,
+              formulaForBlockly: 1
             }},
       {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
       ]).exec();
@@ -68,11 +69,13 @@ router.get('/getquestionscanvas', function(req,res,next) {
             formulaWithBlanks: 1,
             formulaType: 1,
             formula: 1,
+            formulaForBlockly: 1
           }},
     {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
     ]).exec();
    promise.then(function(doc) {
     if(doc) {
+      console.log(doc)
       return res.status(200).json(doc);
     }
   });

@@ -47,7 +47,7 @@ export class QuestionListComponent implements OnInit {
               data[each].formulaWithBlanks = "Choose the correct answer for ".concat(data[each].formula.split('=')[0]);
             }
             else{
-              data[each].formulaWithBlanks = "Fill in the blank in equation ".concat(data[each].formulaWithBlanks.replace("?", " _____ "));
+              data[each].formulaWithBlanks = "Fill in the blank in equation ".concat(data[each].formulaWithBlanks.replace(/\?/g, " _____ "));
             }
          }
         this.dataSource = new MatTableDataSource<Question>(data);
