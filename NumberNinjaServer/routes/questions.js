@@ -102,6 +102,7 @@ router.post('/addquestion',  function(req,res,next){
     formula: req.body.formula,
     formulaWithBlanks: req.body.formulaWithBlanks,
     formulaType: req.body.formulaType,
+    formulaForBlockly: req.body.formulaForBlockly,
     answers: req.body.answers,
     assignmentID: req.body.assignmentID
   });
@@ -124,6 +125,7 @@ router.post('/editquestion',  function(req,res,next){
       {formula: req.body.formula,
       formulaType: req.body.formulaType,
       formulaWithBlanks: req.body.formulaWithBlanks,
+      formulaForBlockly: req.body.formulaForBlockly,
       answers: req.body.answers}
     }).exec();
 
