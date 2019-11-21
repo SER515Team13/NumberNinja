@@ -28,6 +28,7 @@ export class SolveQuestionComponent implements OnInit {
   solution: string;
   isCorrectSolution: boolean = false;
   formulaDisplay: string;
+  resultString: string = "Result: "
 
   constructor(private location: Location,
               private questionService: QuestionServiceService,
@@ -43,7 +44,7 @@ export class SolveQuestionComponent implements OnInit {
       if (data && data != undefined && data.length) {
         console.log("Fetched data is--------->>", data[0].formulaWithBlanks);
         console.log(data[0].formulaWithBlanks);
-        if (data[0].formulaWithBlanks==null) {
+        if (data[0].formulaWithBlanks == null) {
           //this.questionString = data[0].formula;//todo
           this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
         }
@@ -124,7 +125,7 @@ export class SolveQuestionComponent implements OnInit {
             if (!(data % 1 === 0)) {
               data = Number.parseFloat(data).toPrecision(3);
             }
-            document.getElementById("textarea").innerText = "Result: "+data;
+            document.getElementById("textarea").innerText = this.resultString + data;
           }
         });
       }
@@ -355,7 +356,7 @@ export class SolveQuestionComponent implements OnInit {
    * progress status and updates the percentage correctness of the assignment.
    */
   submitSolution(ref: TemplateRef<any>) {
-    var generatedEquation = document.getElementById("textarea").innerHTML
+    var generatedEquation = document.getElementById("textarea").innerHTML.substring(this.resultString.length);
     if (generatedEquation === "Error: There are disconnected blocks on the canvas!") {
       this.isDisconnected = true;
     } else {
