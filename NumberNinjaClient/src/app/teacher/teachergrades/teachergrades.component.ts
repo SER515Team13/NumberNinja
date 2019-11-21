@@ -38,6 +38,7 @@ export class TeachergradesComponent implements OnInit {
   }
 
   onSelectAssignment() {
+    this.list = []
     this.assignmentService.getAssignmentGrades(this.assignment)
     .pipe(flatMap((allgrades: any) => allgrades)).subscribe((grade: any) => {
       console.log(grade._id,"belore the issue");
