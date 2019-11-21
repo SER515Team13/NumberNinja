@@ -42,20 +42,25 @@ export class SolveQuestionComponent implements OnInit {
     this.questionID = this.route.snapshot.paramMap.get('id');
     this.questionService.getQuestionCanvas(this.questionID, localStorage.getItem('userEmail')).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
-        console.log("Fetched data is--------->>", data[0].formulaWithBlanks);
-        console.log(data[0].formulaWithBlanks);
-        if (data[0].formulaWithBlanks == null) {
+        console.log("DATA: " + data);
+        console.log("Fetched data is--------->>", data[0].formulaForBlockly);
+        console.log(data[0].formulaForBlockly);
+        if (data[0].formulaForBlockly == null) {
           //this.questionString = data[0].formula;//todo
           this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
         }
         else{
-          this.questionString = data[0].formulaWithBlanks;
-          this.formulaDisplay = "Fill in the blank in equation ".concat(data[0].formulaWithBlanks.replace("?", " _____ "));
+          this.questionString = data[0].formulaForBlockly;
+          this.solution = data[0].formula.substring(data[0].formula.indexOf('=') + 1).trim();
+          //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
+          console.log("QUESTION STRING: " + this.questionString);
+          this.formulaDisplay = "Fill in the blank(s) in ".concat(data[0].formulaWithBlanks.replace(/\?/g, " _____ "));
         }
         console.log(this.questionString);
-        this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
-        this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
+        //this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
+        //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
         var xmlContent = this.generateQuestionBlock(this.questionString);
+        console.log("XML CONTENT: " + xmlContent);
         var dom = Blockly.Xml.textToDom(xmlContent);
         Blockly.Xml.domToWorkspace(dom, workspace);
       }
@@ -364,6 +369,8 @@ export class SolveQuestionComponent implements OnInit {
       console.log("SOLUTION:"+this.solution+"|EQUATED:"+generatedEquation);
       if (this.solution === generatedEquation) {
         this.isCorrectSolution = true;
+      } else {
+        this.isCorrectSolution = false;
       }
       this.dialog.open(ref);
       this.questionService.submitSolutionCanvas(this.questionID, localStorage.getItem('userEmail'), this.isCorrectSolution).subscribe((data: any) => {
