@@ -93,11 +93,6 @@ router.post('/addquestion',  function(req,res,next){
     console.log(`New question id: ${_id}`);
     return res.status(201).json(doc);
   });
-
-  //questionPromise.catch(function (err) {
-  //  return res.status(501).json({ message: 'Error storing question.' })
-  //})
-
 })
 
 router.post('/editquestion',  function(req,res,next){

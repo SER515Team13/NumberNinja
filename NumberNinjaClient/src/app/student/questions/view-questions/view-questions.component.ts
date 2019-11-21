@@ -1,7 +1,7 @@
 /**
  * @project NumberNinja
- * @authors Sukhpreet Singh Anand, Abhinaw Sarang
- */
+ * @authors Sagar Khar
+**/
 
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';

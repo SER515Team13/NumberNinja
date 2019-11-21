@@ -96,6 +96,7 @@ export class SolveQuestionComponent implements OnInit {
     var xmlContent = this.generateQuestionBlock(this.questionString);
     var dom = Blockly.Xml.textToDom(xmlContent);
     Blockly.Xml.domToWorkspace(dom, workspace);
+    
 
     // Bind workspace to change listener which dynamically computes result of the equation
     function myUpdateFunction(event) {

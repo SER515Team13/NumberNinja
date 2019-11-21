@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Assignment } from '../model/assignment';
 import { AssignmentService } from '../service/assignment.service';
 import { MatDialog } from '@angular/material';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-teachergrades',
@@ -17,6 +18,7 @@ export class TeachergradesComponent implements OnInit {
  
   private displayedColumns: String[] = ['studentname', 'marks', 'grade', 'action'];
   private dataSource;
+  private list = [];
   private assignmentData = [];
   private isPopupOpened: boolean = false;
   private assignment;
@@ -36,34 +38,34 @@ export class TeachergradesComponent implements OnInit {
   }
 
   onSelectAssignment() {
-    this.assignmentService.getAssignmentGrades(this.assignment).subscribe((data: any) => {
-      this.dataSource = new MatTableDataSource(data)
-      console.log("data below")
-      console.log(data)
-    })
-    console.log("sample test")
+    this.assignmentService.getAssignmentGrades(this.assignment)
+    .pipe(flatMap((allgrades: any) => allgrades)).subscribe((grade: any) => {
+      console.log(grade._id,"belore the issue");
+      console.log(this.assignment," is correct")
+      this.assignmentService.studentAssignmentGrade(grade._id.studentEmail, this.assignment).subscribe((data:any) => {
+        console.log(data)
+          grade["assignedGrade"] = data[0].gradeReceived;
+        this.list.push(grade);
+        this.dataSource = new MatTableDataSource(this.list);
+      });
+    });
+    // .subscribe((data: any) => {
+    //   this.dataSource = new MatTableDataSource(data)
+    //   console.log(data)
+
     this.assignmentService.getTotalQuestions(this.assignment).subscribe((data: any) => {
       this.totalQuestions = data[0].totalQues;
       console.log(data)
     })
   }
 
-
   calc(totalQuestions : number,falseAns : number){
     return totalQuestions - falseAns;
   }
 
-  // editAssignment(selectedassignment : Assignment) {
-  //   console.log(selectedassignment);
-  //   this.isPopupOpened = true;
-  // }
-
-  // deleteAssignment(selectedassignment : Assignment) {
-  //   const data = this.dataSource.data;
-  //   const index: number = data.indexOf(selectedassignment);
-  //   this.assignmentService.deleteAssignment(selectedassignment.id).subscribe((abc : any) => {
-  //     data.splice(index, 1);
-  //     this.dataSource.data=data;
-  //   })
-  // }
+  updateGrade(element: any){
+    this.assignmentService.updateAssignedGrade(this.assignment, element).subscribe((data: any) => {
+      console.log(data);
+    })
+  }
 }

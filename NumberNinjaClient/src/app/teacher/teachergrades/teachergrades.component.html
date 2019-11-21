@@ -29,7 +29,7 @@ Select the Assignment :
     <ng-container matColumnDef="grade">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Grade </mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <input matInput placeholder="A, B, C.." [(ngModel)]="element.assignedGrade">
+                <input matInput placeholder="-Enter Grade here-" [(ngModel)]="element.assignedGrade">
             </mat-cell>
     </ng-container>
 
