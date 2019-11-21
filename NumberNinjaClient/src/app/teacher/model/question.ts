@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ */
+
 export class Question {
     id: string;
     formula: string;

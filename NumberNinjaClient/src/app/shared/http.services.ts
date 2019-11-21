@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Abhinaw Sarang
+ */
+
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 

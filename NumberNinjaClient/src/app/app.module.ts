@@ -1,5 +1,10 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Saksham Jhawar, Smit Shah, Sagar Khar
+ */
+
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -36,6 +41,7 @@ import { ViewAssignmentsComponent } from './student/assignments/view-assignments
 import { ViewQuestionsComponent } from './student/questions/view-questions/view-questions.component';
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 import { ExistuserComponent } from './admin/existuser/existuser.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -59,7 +65,7 @@ import { ExistuserComponent } from './admin/existuser/existuser.component';
     ViewAssignmentsComponent,
     ViewQuestionsComponent,
     SolveQuestionComponent,
-    ExistuserComponent
+    ExistuserComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,7 +86,8 @@ import { ExistuserComponent } from './admin/existuser/existuser.component';
     MatDialogModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     MatToolbarModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    DragDropModule
   ],
   providers: [UserService, AssignmentService, AuthGuard,
     {
@@ -90,6 +97,7 @@ import { ExistuserComponent } from './admin/existuser/existuser.component';
     }, QuestionService],
   bootstrap: [AppComponent],
   entryComponents: [AddAssignmentComponent, QuestionComponent],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 
 export class AppModule { }

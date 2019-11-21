@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sagar Khar, Abhinaw Sarang, Smit Shah
+ */
+
 export class User {
     userName: string;
     password: string;

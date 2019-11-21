@@ -1,9 +1,10 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar, Abhinaw Sarang
+ */
+
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
-import { HttpService } from "../../../shared/http.services";
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { Assignment } from '../../model/assignment';
 import { AssignmentService } from '../../service/assignment.service';
 import { AddAssignmentComponent } from '../add-assignment/add-assignment.component'
@@ -63,10 +64,11 @@ export class AssignmentsComponent implements OnInit {
     });
   }
 
-  deleteAssignment(selectedassignment : Assignment) {
+  deleteAssignment(selectedassignment : any) {
     const data = this.dataSource.data;
     const index: number = data.indexOf(selectedassignment);
-    this.assignmentService.deleteAssignment(selectedassignment.id).subscribe((abc : any) => {
+    console.log(selectedassignment)
+    this.assignmentService.deleteAssignment(selectedassignment._id).subscribe((abc : any) => {
       data.splice(index, 1);
       this.dataSource.data=data;
     })

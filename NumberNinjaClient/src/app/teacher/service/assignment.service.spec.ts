@@ -1,5 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+/**
+ * @project NumberNinja
+ * @authors Saksham Jhawar, Abhinaw Sarang
+ */
 
+import { TestBed } from '@angular/core/testing';
 import { AssignmentService } from './assignment.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

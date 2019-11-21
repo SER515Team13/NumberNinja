@@ -1,5 +1,15 @@
+<!--
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang
+ */
+-->
+
 <div>
     <app-studenttoolbar></app-studenttoolbar>
+</div>
+<div>
+    <button mat-button class="btn btn-info" (click)="goBack()">Back</button>
 </div>
 <mat-table [dataSource]="dataSource" class="matTable" >
   
@@ -7,6 +17,7 @@
     <ng-container matColumnDef="question">
         <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px">Question</mat-header-cell>
         <mat-cell *matCellDef="let element" class="hyperlink"><a [routerLink]='["/student/canvas", element._id]'> {{element.formulaWithBlanks}} </a></mat-cell>
+        <!-- <mat-cell ngIf*= "!element.formulaWithBlanks.length>0" *matCellDef="let element" class="hyperlink"><a [routerLink]='["/student/canvas", element._id]'> {{element.formula}} </a></mat-cell> -->
     </ng-container>
       
     <!-- Question Type Column -->
@@ -25,6 +36,3 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       
 </mat-table>
-<div>
-    <button mat-button class="btn btn-warning" (click)="goBack()">Back</button>
-</div>

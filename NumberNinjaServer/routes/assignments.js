@@ -14,6 +14,7 @@ var Assignment = require('../models/assignment');
 var router = express.Router();
 var StudentAssignment = require('../models/student-assignment');
 var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
+var User = require('../models/user');
 
 
 router.get('/getassignments', function (req, res, next) {
@@ -40,13 +41,14 @@ router.get('/getassignments', function (req, res, next) {
 
 router.get('/getassignments-status', function (req, res, next) {
   console.log("Getting assignments status");
-  console.log(req.query.aName);
+  console.log(req.query.aId);
   console.log(req.query.sEmail);
-  let promise = StudentAssignmentQuestion.find({assignmentName: req.query.aName, studentEmail: req.query.sEmail}, {})
+
+  let promise = StudentAssignmentQuestion.find({assignmentId: req.query.aId, studentEmail: req.query.sEmail}).exec();
   promise.then(function (doc) {
     console.log("Got each question status for assignment.");
     console.log(doc);
-    if (doc) {
+    if (doc && doc != undefined && doc.length != 0) {
       for(var each = 0; each < doc.length; each++) {
         if(doc[each].isSolved == false) {
           return res.status(200).json({assignmentStatus: false});
@@ -122,18 +124,18 @@ router.post('/addassignment', function (req, res, next) {
     createdby: req.query.email,
   });
 
-  let assignmentPromise = assignmentToStore.save();
-
-  assignmentPromise.then(function (doc) {
+  let assignmentPromise = assignmentToStore.save((err, doc) => {
+    const { _id } = doc;
+    console.log(`New assignment id: ${_id}`);
     return res.status(201).json(doc);
-  })
+  });
 
-  assignmentPromise.catch(function (err) {
-    return res.status(err.status).json({
-      message: err.message +
-        ' Error in storing assignment.'
-    })
-  })
+  // assignmentPromise.catch(function (err) {
+  //   return res.status(err.status).json({
+  //     message: err.message +
+  //       ' Error in storing assignment.'
+  //   })
+  // })
 })
 
 router.post('/editassignment', function (req, res, next) {
@@ -166,8 +168,9 @@ router.post('/editassignment', function (req, res, next) {
 });
 
 router.post('/deleterow', function (req, res, next) {
+  console.log("In server delete"+ req.query.assignmentId);
   var assignments = mongoose.model("assignments", Assignment.schema);
-  let promise = assignments.deleteOne({ id: req.body.Id }).exec();
+  let promise = assignments.deleteOne({ _id: mongoose.Types.ObjectId(req.query.assignmentId)}).exec();
   promise.then(function (doc) {
     if (doc) {
       return res.status(200).json(doc);
@@ -190,6 +193,37 @@ router.post('/getquestions', function (req, res, next) {
 
     })
   })
+})
+
+router.get('/getAllStudents', function (req, res, next) {
+  console.log("Getting all student list");
+  console.log(req.query.userGrade);
+
+  let promise = User.find({grade: req.query.userGrade, role: "student"}).exec();
+  promise.then(function (doc) {
+    console.log(doc);
+    return res.status(200).json(doc);
+  });
+  promise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in getting list of student.'
+    });
+  })
+})
+
+router.post('/addStudentAssignment', function (req, res, next) {
+  console.log("Storing assignment for student into database", req.query.email);
+  var studentassignments = mongoose.model("studentassignments", StudentAssignment.schema);
+  var assignmentToStore = new studentassignments({
+    studentId : req.query.email,
+    assignmentId : mongoose.Types.ObjectId(req.query.assignmentId),
+    gradeReceived: ""
+  });
+
+  assignmentToStore.save((err, doc) => {
+    return res.status(201).json(doc);
+  });
 })
 
 module.exports = router;
