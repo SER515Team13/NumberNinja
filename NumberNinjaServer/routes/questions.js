@@ -1,3 +1,7 @@
+/**
+ * @project NumberNinja
+ * @authors Abhinaw Sarang
+ */
 var mongoose = require("mongoose");
 var express = require('express');
 var router = express.Router();
@@ -9,7 +13,6 @@ const math = create(all);
 var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
 
 router.post('/evaluateEquation', function(req, res, next) {
-    console.log(req.body);
     const regex = /√/gm;
     var dataJson = req.body.data;
     dataJson = dataJson.replace(regex,'sqrt');
@@ -19,8 +22,6 @@ router.post('/evaluateEquation', function(req, res, next) {
 
 router.get('/getquestions', function(req,res,next) {
     console.log("Inside questions server api");
-    console.log(req.query.id);
-    console.log(req.query.email);
     let promise = Question.aggregate([
       {$match : {assignmentID: req.query.id}},
       {$lookup: {from: "studentassignmentquestions", localField: "_id", foreignField: "questionId", as: "aq"}},
@@ -33,7 +34,6 @@ router.get('/getquestions', function(req,res,next) {
       {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
       ]).exec();
      promise.then(function(doc) {
-      console.log("insdie promise");
       console.log(doc);
       if(doc) {
         return res.status(200).json(doc);
@@ -44,7 +44,6 @@ router.get('/getquestions', function(req,res,next) {
       return res.status(501).json({message:'Some internal error'});
     })
 })
-
 
 router.get('/gettotalquestions', function (req, res, next) {
   console.log("Getting total questions with id");
@@ -59,13 +58,20 @@ router.get('/gettotalquestions', function (req, res, next) {
    })
   });
 
-router.get('/getquestion', function(req,res,next) {
-  console.log("Inside question server api");
-  console.log(req.query.id);
-  let promise = Question.findOne({id: req.query.id},{id:1, answers:1, formula:1, formulaWithBlanks:1, formulaType:1}).exec();
-  promise.then(function(doc) {
-    console.log("inside promise");
-    console.log(doc);
+router.get('/getquestionscanvas', function(req,res,next) {
+  console.log("Inside questions server api");
+  let promise = Question.aggregate([
+    {$match : {_id: mongoose.Types.ObjectId(req.query.id)}},
+    {$lookup: {from: "studentassignmentquestions", localField: "_id", foreignField: "questionId", as: "aq"}},
+    {$project : {
+            studentAssignmentQuestion : { $filter : {input : "$aq"  , as : "saq", cond : { $eq : ['$$saq.studentEmail' , req.query.email] } } },
+            formulaWithBlanks: 1,
+            formulaType: 1,
+            formula: 1,
+          }},
+    {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
+    ]).exec();
+   promise.then(function(doc) {
     if(doc) {
       return res.status(200).json(doc);
     }
@@ -76,6 +82,32 @@ router.get('/getquestion', function(req,res,next) {
   })
 })
 
+router.get('/submitsolution', function (req, res, next) {
+  console.log("Updating solution status to the database");
+  var studentquestions = mongoose.model("studentassignmentquestion", StudentAssignmentQuestion.schema);
+
+  let questionPromise = studentquestions.updateOne(
+    { questionId: mongoose.Types.ObjectId(req.query.id), studentEmail: req.query.email},
+    {
+      $set:
+      {
+        isSolved : true,
+        isCorrect : req.query.isCorrect
+      }
+    }).exec();
+
+    questionPromise.then(function (doc) {
+    return res.status(201).json(doc);
+  })
+
+  questionPromise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in updating solution status.'
+    })
+  })
+});
+
 router.post('/addquestion',  function(req,res,next){
   console.log("Storing question into Database");
   var questions = mongoose.model("questions", Question.schema);
@@ -83,10 +115,10 @@ router.post('/addquestion',  function(req,res,next){
     formula: req.body.formula,
     formulaWithBlanks: req.body.formulaWithBlanks,
     formulaType: req.body.formulaType,
+    formulaForBlockly: req.body.formulaForBlockly,
     answers: req.body.answers,
     assignmentID: req.body.assignmentID
   });
-  console.log(questionToStore);
 
   let questionPromise = questionToStore.save((err, doc) => {
     const { _id } = doc;
@@ -96,7 +128,6 @@ router.post('/addquestion',  function(req,res,next){
 })
 
 router.post('/editquestion',  function(req,res,next){
-  console.log(req.body);
   var questions = mongoose.model("questions", Question.schema);
   console.log("ID is" + req.body.id)
 
@@ -106,6 +137,7 @@ router.post('/editquestion',  function(req,res,next){
       {formula: req.body.formula,
       formulaType: req.body.formulaType,
       formulaWithBlanks: req.body.formulaWithBlanks,
+      formulaForBlockly: req.body.formulaForBlockly,
       answers: req.body.answers}
     }).exec();
 
@@ -141,8 +173,6 @@ router.post('/addStudentQuestion', function (req, res, next) {
   });
 
   questionToStore.save((err, doc) => {
-    console.log(doc);
-    console.log(err);
     return res.status(201).json(doc);
   });
 })
