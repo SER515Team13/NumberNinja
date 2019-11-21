@@ -38,7 +38,13 @@
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <button [disabled]="!userRegistrationForm.valid" class="btn btn-submit" type="submit">Register</button>
+            <button [disabled]="!userRegistrationForm.valid" class="btn btn-submit" type="submit" (click)="register(firstDialog)">Register</button>
         </div>
     </div>
 </form>
+<ng-template #firstDialog>
+    <h2 matDialogTitle><h3>Successfully registered</h3><br>You will be contacted by email once you are approved</h2>
+    <mat-dialog-actions align="end">
+    <button mat-button matDialogClose>OK</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang
  */
 
 import { Component, OnInit, TemplateRef } from '@angular/core';
@@ -27,6 +27,8 @@ export class SolveQuestionComponent implements OnInit {
   questionType: string;
   solution: string;
   isCorrectSolution: boolean = false;
+  formulaDisplay: string;
+  resultString: string = "Result: "
 
   constructor(private location: Location,
               private questionService: QuestionServiceService,
@@ -38,9 +40,29 @@ export class SolveQuestionComponent implements OnInit {
 
     // Fetch question details from server
     this.questionID = this.route.snapshot.paramMap.get('id');
-    this.questionService.getQuestion(this.questionID).subscribe((data: any) => {
+    this.questionService.getQuestionCanvas(this.questionID, localStorage.getItem('userEmail')).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
-        console.log(data);
+        console.log("DATA: " + data);
+        console.log("Fetched data is--------->>", data[0].formulaForBlockly);
+        console.log(data[0].formulaForBlockly);
+        if (data[0].formulaForBlockly == null) {
+          //this.questionString = data[0].formula;//todo
+          this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
+        }
+        else{
+          this.questionString = data[0].formulaForBlockly;
+          this.solution = data[0].formula.substring(data[0].formula.indexOf('=') + 1).trim();
+          //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
+          console.log("QUESTION STRING: " + this.questionString);
+          this.formulaDisplay = "Fill in the blank(s) in ".concat(data[0].formulaWithBlanks.replace(/\?/g, " _____ "));
+        }
+        console.log(this.questionString);
+        //this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
+        //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
+        var xmlContent = this.generateQuestionBlock(this.questionString);
+        console.log("XML CONTENT: " + xmlContent);
+        var dom = Blockly.Xml.textToDom(xmlContent);
+        Blockly.Xml.domToWorkspace(dom, workspace);
       }
     });
 
@@ -81,24 +103,12 @@ export class SolveQuestionComponent implements OnInit {
       toolbox: this.toolboxSource
     });
 
-    this.questionString = "(15 + ?) = 22";
-    this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
-    this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
-    //console.log ("Solution: " + this.solution);
-    //console.log ("Question: " + this.questionString);
-    /*if (this.questionType == 'Fill in the Blanks') {
+    // /*if (this.questionType == 'Fill in the Blanks') {
       
-    } else if (this.questionType == 'Find the Answer') {
+    // } else if (this.questionType == 'Find the Answer') {
 
-    }*/
+    // }*/
 
-    // Generates blocks on the workspace from the equation string
-    var xmlContent = this.generateQuestionBlock(this.questionString);
-    var dom = Blockly.Xml.textToDom(xmlContent);
-    Blockly.Xml.domToWorkspace(dom, workspace);
-    
-
-    // Bind workspace to change listener which dynamically computes result of the equation
     function myUpdateFunction(event) {
       var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
       generatedEquation = generatedEquation.replace("<br>", "");
@@ -120,7 +130,7 @@ export class SolveQuestionComponent implements OnInit {
             if (!(data % 1 === 0)) {
               data = Number.parseFloat(data).toPrecision(3);
             }
-            document.getElementById("textarea").innerText = data;
+            document.getElementById("textarea").innerText = this.resultString + data;
           }
         });
       }
@@ -138,8 +148,6 @@ export class SolveQuestionComponent implements OnInit {
    */
   handlePower(generatedEquation: string) {
     let index: number = generatedEquation.indexOf("Math.pow(");
-    console.log("Equation: " + generatedEquation);
-    console.log("Index: " + index);
     while (index != -1) {
       let startIndex: number = index + 9;
       let endIndex: number;
@@ -220,8 +228,6 @@ export class SolveQuestionComponent implements OnInit {
     var numberBuffer = '';
     var disconnectedComponents = [];
     for (let i = 0; i < questionString.length; i++) {
-      console.log("Input: " + questionString[i]);
-      //console.log(questionString[i])
       if (questionString[i] == ')') {
 
         if (numberBuffer != '') {
@@ -311,8 +317,6 @@ export class SolveQuestionComponent implements OnInit {
         }
         stack.push(questionString[i]);
       }
-
-      console.log("Stack: " + stack);
     }
 
     questionXml += stack.pop();
@@ -357,7 +361,7 @@ export class SolveQuestionComponent implements OnInit {
    * progress status and updates the percentage correctness of the assignment.
    */
   submitSolution(ref: TemplateRef<any>) {
-    var generatedEquation = document.getElementById("textarea").innerHTML
+    var generatedEquation = document.getElementById("textarea").innerHTML.substring(this.resultString.length);
     if (generatedEquation === "Error: There are disconnected blocks on the canvas!") {
       this.isDisconnected = true;
     } else {
@@ -365,9 +369,13 @@ export class SolveQuestionComponent implements OnInit {
       console.log("SOLUTION:"+this.solution+"|EQUATED:"+generatedEquation);
       if (this.solution === generatedEquation) {
         this.isCorrectSolution = true;
+      } else {
+        this.isCorrectSolution = false;
       }
       this.dialog.open(ref);
-      // TODO: Write code for submitting solution here.
+      this.questionService.submitSolutionCanvas(this.questionID, localStorage.getItem('userEmail'), this.isCorrectSolution).subscribe((data: any) => {
+        console.log(data);
+      });
     }
   }
 }

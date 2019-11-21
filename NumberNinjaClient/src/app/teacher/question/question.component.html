@@ -1,7 +1,7 @@
 <!--
 /**
  * @project NumberNinja
- * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah, Saksham Jhawar, Sagar Khar
  */
 -->
 
@@ -20,6 +20,7 @@
                     <div class="col-md-6">
                         <label for="formulaType" style="font-family: 'Times New Roman', Times, serif ; font-size: 16px">Select Type:</label>
                         <select class="form-control" id="formulaType" width='50%' formControlName="formulaType" required>
+                                <option>-</option>
                             <option>Fill in the Blanks</option>
                             <option *ngIf="grade">Find the Answer</option>
                         </select>
@@ -46,10 +47,6 @@
                                 <ul>
                                     <li>- Maximum computation upto 9999</li>
                                     <li>- Addition, subtraction, Multiplication, Division, Power and Square root</li>
-                                    <li>- Square root shortcut keys:</li>
-                                    <li>  Windows: "alt + 2 + 5 + 1"</li>
-                                    <li>  Mac: "Option + V"</li>
-
                                 </ul>
                             </body>
                         </div>
