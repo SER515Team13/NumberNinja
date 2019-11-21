@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand
+ * @author Sagar Khar
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';

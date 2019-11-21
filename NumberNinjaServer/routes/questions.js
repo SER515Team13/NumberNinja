@@ -46,6 +46,19 @@ router.get('/getquestions', function(req,res,next) {
     })
 })
 
+router.get('/gettotalquestions', function (req, res, next) {
+  console.log("Getting total questions with id");
+  console.log(req.query.aId);
+  let prom = Question.aggregate([
+    {$match : {assignmentID : req.query.aId}},
+    {$group: {_id: {assignmentID: "$assignmentID"}, totalQues: {$sum: 1 }}},
+  ]).exec();
+  prom.then(function (doc) {4
+    console.log(doc);
+    return res.status(200).json(doc);
+   })
+  });
+
 router.get('/getquestionscanvas', function(req,res,next) {
   console.log("Inside questions server api");
   let promise = Question.aggregate([
@@ -115,7 +128,6 @@ router.post('/addquestion',  function(req,res,next){
     console.log(`New question id: ${_id}`);
     return res.status(201).json(doc);
   });
-
 })
 
 router.post('/editquestion',  function(req,res,next){
