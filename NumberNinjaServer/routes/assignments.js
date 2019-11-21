@@ -38,9 +38,45 @@ router.get('/getassignments', function (req, res, next) {
   })
 })
 
+router.get('/getassignmentsgrade', function (req, res, next) {
+  console.log("Getting assignments with id");
+  console.log(req.query.aId);
+  let promise = StudentAssignmentQuestion.aggregate([
+    {$match : {assignmentId : req.query.aId, isCorrect : false}},
+    {$lookup: {from: "users", localField: "studentEmail", foreignField: "email", as: "studentDetails"}},
+    {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentDetails", 0 ] }, "$$ROOT" ] } }},
+    {$group: {_id: {studentEmail: "$studentEmail", firstName: "$firstName", lastName: "$lastName", isCorrect: "$isCorrect"}, correctAns: {$sum: 1 }}},
+  ]).exec();
+  promise.then(function (doc) {
+    console.log(doc);
+    return res.status(200).json(doc);
+   })
+})
+
+router.get('/getgrade', function (req, res, next) {
+  console.log("Getting assignments for student");
+  console.log(req.query.studentEmail+req.query.assignmentId);
+  let promise = StudentAssignment.find({studentId: req.query.studentEmail, assignmentId: mongoose.Types.ObjectId(req.query.assignmentId)},
+    { gradeReceived:1, studentId:1, assignmentId:1 }).exec();
+  promise.then(function (doc) {
+    console.log("Got grades for 1 student");
+    console.log(doc);
+    if (doc) {
+      return res.status(200).json(doc);
+    }
+  });
+
+  promise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in getting list of assignments for teacher'
+    });
+  })
+})
+
 
 router.get('/getassignments-status', function (req, res, next) {
-  console.log("Getting assignments status");
+  console.log("Getting assignments status"); 
   console.log(req.query.aId);
   console.log(req.query.sEmail);
 
@@ -71,24 +107,6 @@ router.get('/getassignments-student', function (req, res, next) {
   console.log(req.query.email);
   let promise = Assignment.aggregate([
     {$match : {grade : req.query.grade}},
-    //{$lookup: {
-    //  from: "studentassignments",
-    //  let: { assignmentId: "$_id"},
-    //  pipeline: [
-    //     { $match:
-    //        { $expr:
-    //           { $and:
-    //              [
-    //                { $eq: [ "$assignmentId",  "$$assignmentId" ] },
-    //                { $eq: [ "$studentEmail",  req.query.email ] }
-    //              ]
-    //           }
-    //        }
-    //     },
-    //     { $project: {gradeReceived: 1} }
-    //  ],
-    //  as: "studentAssignment"
-    //}}
     {$lookup: {from: "studentassignments", localField: "_id", foreignField: "assignmentId", as: "studentAssignment"}},
     {$project : {
             studentAssignment : { $filter : {input : "$studentAssignment"  , as : "sa", cond : { $eq : ['$$sa.studentId' , req.query.email] } } },
@@ -100,7 +118,7 @@ router.get('/getassignments-student', function (req, res, next) {
   promise.then(function (doc) {
     console.log("Got assignments for student");
     console.log(doc);
-    if (doc) {
+    if (doc) { 
       return res.status(200).json(doc);
     }
   });
@@ -225,5 +243,17 @@ router.post('/addStudentAssignment', function (req, res, next) {
     return res.status(201).json(doc);
   });
 })
+
+router.post('/upgradegrades', function (req, res, next) {
+  console.log("hello in server");
+  console.log("updating grade after teacher updates"+ req.body.Element._id.studentEmail+" -- "+ req.body.AssignmentId+"--->>"+req.body.Element.assignedGrade);
+  var studentassignments = mongoose.model("studentassignments", StudentAssignment.schema);
+  let promise = studentassignments.updateOne({studentId: req.body.Element._id.studentEmail, assignmentId: req.body.AssignmentId}, {$set:{ gradeReceived: req.body.Element.assignedGrade}}).exec();
+    promise.then(function(doc) {
+      if(doc) {
+        return res.status(200).json(doc);
+      }
+    })
+}) 
 
 module.exports = router;
