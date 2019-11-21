@@ -66,7 +66,9 @@ export class QuestionComponent implements OnInit {
     if (isUndefined(this.data._id)) {
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
         this.addBlanksInString(question);
-        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
+        question.formulaForBlockly = this.addBlanksInCanvasFormat( question.formulaWithBlanks,
+          this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString());
+        // console.log(question.formulaForBlockly);
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
         this.addOptionsQuestion(question);
@@ -85,7 +87,8 @@ export class QuestionComponent implements OnInit {
       console.log("Question form" + this.questionForm.value);
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
         this.addBlanksInString(question);
-        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
+        question.formulaForBlockly = this.addBlanksInCanvasFormat( question.formulaWithBlanks,
+          this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString());
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
         this.addOptionsQuestion(question);
@@ -228,6 +231,50 @@ export class QuestionComponent implements OnInit {
       }
     }
     return stack.pop();
+  }
+
+  addBlanksInCanvasFormat(stringWithQuestion: string, canvasFormatQuestion: string) {
+
+    let j = 0;
+    var flag1 = false;
+    for(let i = 0 ; i < stringWithQuestion.length; i++) {
+      var c = stringWithQuestion.charAt(i);
+      if(c === '(' || c === ')') {
+        continue;
+      }
+      for( ; j < canvasFormatQuestion.length ; j++) {
+        var d = canvasFormatQuestion.charAt(j);
+        if(flag1) {
+          if(!isNaN(Number(d))) {
+            canvasFormatQuestion = canvasFormatQuestion.substr(0, j) + '' + canvasFormatQuestion.substr(j + 1);
+            j--;
+            continue;
+          } else {
+            flag1 = false;
+            break;
+          }
+        }
+        else if(d === '(' || d === ')') {
+          continue;
+        }
+        else if(d === c) {
+          j++;
+          break;
+        }
+        else if(c === '?') {
+          if(!isNaN(Number(d))) {
+            flag1 = true;
+            canvasFormatQuestion = canvasFormatQuestion.substr(0, j) + '?' + canvasFormatQuestion.substr(j + 1);
+          } else {
+            canvasFormatQuestion = canvasFormatQuestion.substr(0, j) + '?' + canvasFormatQuestion.substr(j + 1);
+            j++;
+            break;
+          }
+        }
+
+      }
+    }
+    return canvasFormatQuestion;
   }
 }
 
