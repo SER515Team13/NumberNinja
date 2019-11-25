@@ -30,7 +30,7 @@
         <h2 matDialogTitle *ngIf='isCorrectSolution'>Congratulations! Your answer is correct!</h2>
         <h2 matDialogTitle *ngIf='!isCorrectSolution'>Sorry! Your answer is not correct! :(</h2>
         <mat-dialog-actions align="end">
-        <button mat-button matDialogClose>OK</button>
+        <button mat-button matDialogClose (click)="isCorrectSolution && goBack()">OK</button>
         </mat-dialog-actions>
     </ng-template>
 
