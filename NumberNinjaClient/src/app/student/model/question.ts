@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand
+ * @author Abhinaw Sarang
  */
 
 export class Question {

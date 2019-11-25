@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @authors Abhinaw Sarang
+ * @authors Abhinaw Sarang, Sukhpreet Singh Anand, Smit Shah, Sagar Khar
  */
 var mongoose = require("mongoose");
 var express = require('express');
@@ -155,6 +155,8 @@ router.post('/editquestion',  function(req,res,next){
 
 router.post('/deleterow',function(req,res,next) {
   console.log("In server delete"+ req.query.questionId);
+  var saq = mongoose.model("studentassignmentquestions", StudentAssignmentQuestion.schema);
+  saq.deleteMany({ questionId: mongoose.Types.ObjectId(req.query.questionId)}).exec();
   var assignments = mongoose.model("questions", Question.schema);
   let promise = assignments.deleteOne({_id: mongoose.Types.ObjectId(req.query.questionId)}).exec();
   promise.then(function(doc) {
