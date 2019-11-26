@@ -42,7 +42,7 @@ router.get('/getassignmentsgrade', function (req, res, next) {
   console.log("Getting assignments with id");
   console.log(req.query.aId);
   let promise = StudentAssignmentQuestion.aggregate([
-    {$match : {assignmentId : req.query.aId, isCorrect : false}},
+    {$match : {assignmentId : req.query.aId}},
     {$lookup: {from: "users", localField: "studentEmail", foreignField: "email", as: "studentDetails"}},
     {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentDetails", 0 ] }, "$$ROOT" ] } }},
     {$group: {_id: {studentEmail: "$studentEmail", firstName: "$firstName", lastName: "$lastName", isCorrect: "$isCorrect"}, correctAns: {$sum: 1 }}},
@@ -54,12 +54,10 @@ router.get('/getassignmentsgrade', function (req, res, next) {
 })
 
 router.get('/getgrade', function (req, res, next) {
-  console.log("Getting assignments for student");
   console.log(req.query.studentEmail+req.query.assignmentId);
   let promise = StudentAssignment.find({studentId: req.query.studentEmail, assignmentId: mongoose.Types.ObjectId(req.query.assignmentId)},
     { gradeReceived:1, studentId:1, assignmentId:1 }).exec();
   promise.then(function (doc) {
-    console.log("Got grades for 1 student");
     console.log(doc);
     if (doc) {
       return res.status(200).json(doc);
@@ -69,7 +67,7 @@ router.get('/getgrade', function (req, res, next) {
   promise.catch(function (err) {
     return res.status(err.status).json({
       message: err.message +
-        ' Error in getting list of assignments for teacher'
+        'Error in getting list of assignments for teacher'
     });
   })
 })
