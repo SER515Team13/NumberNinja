@@ -32,7 +32,7 @@
     position: absolute;
     z-index: -1;
     background: url('../../../assets/images/instructor.jpg') center center;
-    opacity: .3;
+    opacity: .4;
     width: 110%;
     height: 650px;
 }

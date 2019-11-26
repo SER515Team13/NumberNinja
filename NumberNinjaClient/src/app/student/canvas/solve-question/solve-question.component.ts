@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand, Abhinaw Sarang
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Saksham Jhawar
  */
 
 import { Component, OnInit, TemplateRef } from '@angular/core';
@@ -90,7 +90,7 @@ export class SolveQuestionComponent implements OnInit {
       zoom: {
         controls: true,
         wheel: true,
-        startScale: 1.0,
+        startScale: 1.4,
         maxScale: 3,
         minScale: 0.3,
         scaleSpeed: 1.2
@@ -245,7 +245,7 @@ export class SolveQuestionComponent implements OnInit {
         if (leftOperand == '?' || leftOperand == '') {
           tripleLeft = '';
         } else if (!isNaN(leftOperand)) {
-          tripleLeft = '<block type="math_number" deletable="false"><field name="NUM">' + leftOperand + '</field></block>';
+          tripleLeft = '<block editable="false" type="math_number" deletable="false"><field name="NUM">' + leftOperand + '</field></block>';
         } else {
           tripleLeft = leftOperand;
         }
@@ -253,19 +253,19 @@ export class SolveQuestionComponent implements OnInit {
         if (rightOperand == '?' || rightOperand == '') {
           tripleRight = '';
         } else if (!isNaN(rightOperand)) {
-          tripleRight = '<block type="math_number" deletable="false"><field name="NUM">' + rightOperand + '</field></block>';
+          tripleRight = '<block editable="false" type="math_number" deletable="false"><field name="NUM">' + rightOperand + '</field></block>';
         } else {
           tripleRight = rightOperand;
         }
 
         switch(operator) {
           case '+':
-            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">ADD</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block editable="false" type="math_arithmetic" deletable="false"><field name="OP">ADD</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
           case '-':
-            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">MINUS</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block editable="false" type="math_arithmetic" deletable="false"><field name="OP">MINUS</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 

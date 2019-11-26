@@ -152,7 +152,7 @@ export class QuestionComponent implements OnInit {
           data = Number.parseFloat(data).toPrecision(3);
         }
         let grade = localStorage.getItem('userGrade')
-        if(data <= 0 && grade == '2') {
+        if(data < 0 && grade == '2') {
           return;
         }
         stringWithAnswer = this.questionForm.value.formula + '=' + data;
