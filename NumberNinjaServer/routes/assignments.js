@@ -185,6 +185,16 @@ router.post('/editassignment', function (req, res, next) {
 
 router.post('/deleterow', function (req, res, next) {
   console.log("In server delete"+ req.query.assignmentId);
+
+  var sa = mongoose.model("studentassignments", StudentAssignment.schema);
+  sa.deleteMany({ assignmentId: mongoose.Types.ObjectId(req.query.assignmentId)}).exec();
+
+  var saq = mongoose.model("studentassignmentquestions", StudentAssignmentQuestion.schema);
+  saq.deleteMany({ assignmentId: req.query.assignmentId}).exec();
+  
+  var question = mongoose.model("questions", Question.schema);
+  question.deleteMany({ assignmentID: req.query.assignmentId}).exec();
+
   var assignments = mongoose.model("assignments", Assignment.schema);
   let promise = assignments.deleteOne({ _id: mongoose.Types.ObjectId(req.query.assignmentId)}).exec();
   promise.then(function (doc) {
