@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Abhinaw Sarang
+ */
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

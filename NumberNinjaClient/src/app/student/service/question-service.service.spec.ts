@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang
  */
 
 import { TestBed } from '@angular/core/testing';

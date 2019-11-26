@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
