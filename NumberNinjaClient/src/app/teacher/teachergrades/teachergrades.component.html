@@ -3,7 +3,7 @@
 </div>
 <div>
 <h3><b>Grade Assignments</b></h3>
-Select the Assignment :
+<p class="select"><b>Select the Assignment :</b>
 <mat-form-field>
 <mat-select [(ngModel)]="assignment"  (ngModelChange)= onSelectAssignment()> 
         <mat-option>-assignment-</mat-option>
@@ -12,6 +12,7 @@ Select the Assignment :
         </mat-option>
 </mat-select>
 </mat-form-field>
+</p>
 <mat-table [dataSource]="dataSource" class="matTable">
     <!--Student Name Column -->
     <ng-container matColumnDef="studentname">
@@ -37,7 +38,7 @@ Select the Assignment :
     <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"></mat-header-cell>
             <mat-cell *matCellDef="let element">
-                    <button mat-button (click)="updateGrade(element)"><mat-icon>create</mat-icon></button>
+                    <button mat-button (click)="updateGrade(element)"><mat-icon>check_circle</mat-icon></button>
             </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
