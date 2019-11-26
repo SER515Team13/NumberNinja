@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Abhinaw Sarang
+ */
+
 /*
  Below the the server code to control email sending to user
 */

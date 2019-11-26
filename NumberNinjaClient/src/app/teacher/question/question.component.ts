@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @authors Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ * @authors Abhinaw Sarang, Smit Shah
  */
 
 import { Component, OnInit, Inject } from '@angular/core';
@@ -10,6 +10,7 @@ import { QuestionService } from '../service/question-service';
 import { AssignmentService } from '../service/assignment.service';
 import { isNull, isUndefined } from 'util';
 import { Question } from '../model/question';
+import { MathparserService } from 'src/app/shared/mathparser.service';
 
 @Component({
   selector: 'app-question',
@@ -27,11 +28,13 @@ export class QuestionComponent implements OnInit {
   private selectedValue : Array<number>;
   private checkbox = false;
   private grade = true;
+  private question : Question;
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<QuestionComponent>,
     private questionService: QuestionService,
     private assignmentService: AssignmentService,
+    private mathparserService: MathparserService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   // onNoClick(): void {
@@ -60,47 +63,51 @@ export class QuestionComponent implements OnInit {
   onSubmit() {
     
     console.log("Question form: " + this.questionForm.value);
-    let question = new Question;
-    question.formula= this.questionForm.value.formula.replace(/\s/g, "");
+    // let question = new Question;
+    if(this.question === undefined) {
+      this.question = new Question;
+      this.question.formula= this.questionForm.value.formula.replace(/\s/g, "");
+    }
+    this.question.formula= this.question.formula.replace(/\s/g, "");
     // var nas = this.convertToCnvasFormat(this.infixGenrator(question.formula));
     // console.log(this.infixGenrator(question.formula));
-    console.log(this.infixGenrator(question.formula.split('=')[0]));
-    console.log(this.convertToCnvasFormat(this.infixGenrator(question.formula.split('=')[0])));
-    question.formulaType = this.questionForm.value.formulaType;
-    question.assignmentID= this.data;
+    console.log(this.infixGenrator(this.question.formula.split('=')[0]));
+    console.log(this.convertToCnvasFormat(this.infixGenrator(this.question.formula.split('=')[0])));
+    this.question.formulaType = this.questionForm.value.formulaType;
+    this.question.assignmentID= this.data;
     if (isUndefined(this.data._id)) {
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
-        this.addBlanksInString(question);
-        question.formulaForBlockly = this.addBlanksInCanvasFormat( question.formulaWithBlanks,
-          this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString());
+        this.addBlanksInString(this.question);
+        this.question.formulaForBlockly = this.addBlanksInCanvasFormat( this.question.formulaWithBlanks,
+          this.convertToCnvasFormat(this.infixGenrator(this.question.formula.split("=")[0])).toString());
         // console.log(question.formulaForBlockly);
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
-        this.addOptionsQuestion(question);
-        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
+        this.addOptionsQuestion(this.question);
+        this.question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(this.question.formula.split("=")[0])).toString();
       }
-      this.questionService.addQuestion(question).subscribe((data: any) => {
+      this.questionService.addQuestion(this.question).subscribe((data: any) => {
         console.log("Add question response" + data );
         if (data._id != null) {
-          this.assignToEachStudent(question.assignmentID, data._id)
+          this.assignToEachStudent(this.question.assignmentID, data._id)
           return data;
         }
     });
     console.log(this.selectedValue);
     this.dialogRef.close();
     } else {
-      question.id = this.questionForm.value._id;
+      this.question.id = this.questionForm.value._id;
       console.log("Question form" + this.questionForm.value);
       if(this.questionForm.value.formulaType == 'Fill in the Blanks') {
-        this.addBlanksInString(question);
-        question.formulaForBlockly = this.addBlanksInCanvasFormat( question.formulaWithBlanks,
-          this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString());
+        this.addBlanksInString(this.question);
+        this.question.formulaForBlockly = this.addBlanksInCanvasFormat(this.question.formulaWithBlanks,
+          this.convertToCnvasFormat(this.infixGenrator(this.question.formula.split("=")[0])).toString());
       }
       if(this.questionForm.value.formulaType == 'Find the Answer') {
-        this.addOptionsQuestion(question);
-        question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(question.formula.split("=")[0])).toString();
+        this.addOptionsQuestion(this.question);
+        this.question.formulaForBlockly = this.convertToCnvasFormat(this.infixGenrator(this.question.formula.split("=")[0])).toString();
       }
-      this.questionService.editQuestion(question).subscribe((data: any) => {
+      this.questionService.editQuestion(this.question).subscribe((data: any) => {
         console.log("Edit question response" + data );
         if (data && data != undefined && data.length) {
           return data;
@@ -136,9 +143,26 @@ export class QuestionComponent implements OnInit {
   }
 
   myFunc() {
-    this.digitsArray = this.questionForm.value.formula.match(this.regexOp1);
-    this.selectedValue = [];
-    console.log(this.digitsArray);
+    var stringWithAnswer = '';
+    this.mathparserService.evaluateExpression(this.questionForm.value.formula).subscribe((data: any) => {
+      if (data == null) {
+        document.getElementById("textarea").innerText = "Math Error";
+      } else {
+        if (!(data % 1 === 0)) {
+          data = Number.parseFloat(data).toPrecision(3);
+        }
+        let grade = localStorage.getItem('userGrade')
+        if(data <= 0 && grade == '2') {
+          return;
+        }
+        stringWithAnswer = this.questionForm.value.formula + '=' + data;
+        this.digitsArray = stringWithAnswer.match(this.regexOp1);
+        this.selectedValue = [];
+        this.question = new Question;
+        this.question.formula = stringWithAnswer;
+      }
+    });
+    // console.log(this.digitsArray);
   }
 
   addinarr(i:number) {

@@ -15,7 +15,7 @@
 </p>
 <mat-table [dataSource]="dataSource" class="matTable">
     <!--Student Name Column -->
-    <ng-container matColumnDef="studentname">
+    <ng-container matColumnDef="studentname" >
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Student Name </mat-header-cell>
             <mat-cell *matCellDef="let element" class="hyperlink">{{element._id.firstName}} {{element._id.lastName}}</mat-cell>
     </ng-container>
@@ -23,7 +23,7 @@
     <!--Marks Column -->
     <ng-container matColumnDef="marks">
             <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Answers Correct </mat-header-cell>
-            <mat-cell *matCellDef="let element" type ="number">{{calc(totalQuestions,element.correctAns)}}/{{totalQuestions}} </mat-cell>
+            <mat-cell *matCellDef="let element" type ="number">{{calc(totalQuestions,element.correctAns,element._id.isCorrect)}}/{{totalQuestions}} </mat-cell>
     </ng-container>
 
     <!--Grade Column -->
@@ -41,7 +41,7 @@
                     <button mat-button (click)="updateGrade(element)"><mat-icon>check_circle</mat-icon></button>
             </mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
 </div>

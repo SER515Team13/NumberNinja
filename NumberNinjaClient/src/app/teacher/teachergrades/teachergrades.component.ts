@@ -39,14 +39,23 @@ export class TeachergradesComponent implements OnInit {
 
   onSelectAssignment() {
     this.list = []
+
+    this.assignmentService.getTotalQuestions(this.assignment).subscribe((data: any) => {
+      this.totalQuestions = data[0].totalQues;
+      console.log(data);
+    });
+
+
     this.assignmentService.getAssignmentGrades(this.assignment)
     .pipe(flatMap((allgrades: any) => allgrades)).subscribe((grade: any) => {
-      console.log(grade._id,"belore the issue");
-      console.log(this.assignment," is correct")
+
+      console.log(grade,"before the issue");
       this.assignmentService.studentAssignmentGrade(grade._id.studentEmail, this.assignment).subscribe((data:any) => {
-        console.log(data)
           grade["assignedGrade"] = data[0].gradeReceived;
-        this.list.push(grade);
+        if(grade._id.isCorrect == true && grade.correctAns == this.totalQuestions)
+          this.list.push(grade);
+        else if (grade._id.isCorrect == false)
+          this.list.push(grade);
         this.dataSource = new MatTableDataSource(this.list);
       });
     });
@@ -54,19 +63,26 @@ export class TeachergradesComponent implements OnInit {
     //   this.dataSource = new MatTableDataSource(data)
     //   console.log(data)
 
-    this.assignmentService.getTotalQuestions(this.assignment).subscribe((data: any) => {
-      this.totalQuestions = data[0].totalQues;
-      console.log(data)
-    })
+
   }
 
-  calc(totalQuestions : number,falseAns : number){
-    return totalQuestions - falseAns;
+  calc(totalQuestions : number,falseAns : number,answer : boolean){
+    if(answer)
+    {
+      return falseAns;
+    }
+    else {
+      return totalQuestions - falseAns;
+    }
   }
 
   updateGrade(element: any){
     this.assignmentService.updateAssignedGrade(this.assignment, element).subscribe((data: any) => {
       console.log(data);
     })
+  }
+
+  showrow(row : any){
+    console.log(row, "-- this is the row");
   }
 }
