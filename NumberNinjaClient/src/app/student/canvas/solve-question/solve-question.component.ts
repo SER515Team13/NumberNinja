@@ -22,7 +22,6 @@ var dom;
 export class SolveQuestionComponent implements OnInit {
 
   questionID: any;
-  //toolboxSource: any;
   questionString: any;
   isDisconnected: boolean = false;
   hasError: boolean = false;
@@ -33,6 +32,7 @@ export class SolveQuestionComponent implements OnInit {
   questionType: String;
   questionTypes: String[] = ['Fill in the Blanks', 'Find the Answer'];
   solutionOptions: String[];
+  history: any;
 
   constructor(private location: Location,
               private questionService: QuestionServiceService,
@@ -62,11 +62,8 @@ export class SolveQuestionComponent implements OnInit {
             break;
         }
         console.log(this.questionString);
-        
-        var xmlContent = this.generateQuestionBlock(this.questionString);
-        console.log("XML CONTENT: " + xmlContent);
-        dom = Blockly.Xml.textToDom(xmlContent);
-        //Blockly.Xml.domToWorkspace(dom, workspace);
+        console.log("HISTORY: " + data[0].history);
+        this.history = data[0].history;
       }
 
       // Initialize toolbox depending on student grade and question type.
@@ -90,6 +87,7 @@ export class SolveQuestionComponent implements OnInit {
           }
           break;
       }
+
       const blocklyDiv = document.getElementById('blocklyDiv');
       workspace = Blockly.inject(blocklyDiv, {
         readOnly: false,
@@ -114,7 +112,15 @@ export class SolveQuestionComponent implements OnInit {
         },
         toolbox: toolboxSource
       });
-      Blockly.Xml.domToWorkspace(dom, workspace);
+
+      if (this.history == null) {
+        var xmlContent = this.generateQuestionBlock(this.questionString);
+        dom = Blockly.Xml.textToDom(xmlContent);
+        Blockly.Xml.domToWorkspace(dom, workspace);
+      } else {
+        this.restoreHistory(this.history);
+      }
+      
       workspace.addChangeListener(myUpdateFunction.bind(this));
     });
     
@@ -144,10 +150,14 @@ export class SolveQuestionComponent implements OnInit {
         });
       }
       // TODO: Uncomment the below line when saveSolution() and restoreSolution() are implemented
-      // this.saveSolution();
+      this.saveHistory();
     }
   }
 
+  /**
+   * This function generated the blocks in toolbar for 'Fill in the Answer' type
+   * questions depending on the possible answer options provided by the teacher.
+   */
   getFindTheCorrectAnswerToolbar() {
     var xmlForToolbar = `
     <xml xmlns="https://developers.google.com/blockly/xml" style="display: none">
@@ -375,9 +385,12 @@ export class SolveQuestionComponent implements OnInit {
    * This function saves the student's solution progress so that it can 
    * be resumed later from that position.
    */
-  saveSolution() {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.workspace);
-    //TODO: Store Blockly.Xml.domToText(xml) in question database.
+  saveHistory() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    //console.log("SAVED XML: " + Blockly.Xml.domToText(xml));
+    this.questionService.saveCanvasHistory(this.questionID, localStorage.getItem('userEmail'), Blockly.Xml.domToText(xml)).subscribe((data: any) => {
+      console.log("Response from client service submitSolutionCanvas: " + data);
+    });
     console.log("Progress saved!");
   }
 
@@ -385,10 +398,9 @@ export class SolveQuestionComponent implements OnInit {
    * This function restores the student's solution on opening the workspace 
    * if the student attempted to partly solve the question before.
    */
-  restoreSolution() {
-    Blockly.workspace.clear();
-    var xml = Blockly.Xml.textToDom(/*TODO: Fetch solution progress from question database*/);
-    Blockly.Xml.domToWorkspace(xml, Blockly.workspace);
+  restoreHistory(retrievedHistory: any) {
+    var xml = Blockly.Xml.textToDom(retrievedHistory);
+    Blockly.Xml.domToWorkspace(xml, workspace);
     console.log("Progress restored!");
   }
 

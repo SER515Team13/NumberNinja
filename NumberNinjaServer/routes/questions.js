@@ -71,6 +71,7 @@ router.get('/getquestionscanvas', function(req,res,next) {
             formula: 1,
             formulaForBlockly: 1,
             answers: 1,
+            history: 1,
           }},
     {$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$studentAssignmentQuestion", 0 ] }, "$$ROOT" ] } }}
     ]).exec();
@@ -97,6 +98,31 @@ router.get('/submitsolution', function (req, res, next) {
       {
         isSolved : true,
         isCorrect : req.query.isCorrect
+      }
+    }).exec();
+
+    questionPromise.then(function (doc) {
+    return res.status(201).json(doc);
+  })
+
+  questionPromise.catch(function (err) {
+    return res.status(err.status).json({
+      message: err.message +
+        ' Error in updating solution status.'
+    })
+  })
+});
+
+router.get('/saveCanvasHistory', function (req, res, next) {
+  console.log("Saving history to the database");
+  var studentquestions = mongoose.model("studentassignmentquestion", StudentAssignmentQuestion.schema);
+
+  let questionPromise = studentquestions.updateOne(
+    { questionId: mongoose.Types.ObjectId(req.query.id), studentEmail: req.query.email},
+    {
+      $set:
+      {
+        history : req.query.history
       }
     }).exec();
 
