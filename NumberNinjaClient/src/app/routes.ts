@@ -17,6 +17,7 @@ import { ViewQuestionsComponent } from './student/questions/view-questions/view-
 import { SolveQuestionComponent } from './student/canvas/solve-question/solve-question.component';
 import { ExistuserComponent } from './admin/existuser/existuser.component';
 import { TeachergradesComponent } from './teacher/teachergrades/teachergrades.component';
+import { PlaygroundComponent } from './student/canvas/playground/playground.component';
 
 export const appRoutes: Routes = [
     {
@@ -41,6 +42,10 @@ export const appRoutes: Routes = [
     },
     { 
         path: 'teacher/:id', component: QuestionListComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'student/canvas/playground', component: PlaygroundComponent,
         canActivate: [AuthGuard]
     },
     {
