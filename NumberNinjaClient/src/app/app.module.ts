@@ -43,6 +43,7 @@ import { SolveQuestionComponent } from './student/canvas/solve-question/solve-qu
 import { ExistuserComponent } from './admin/existuser/existuser.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TeachergradesComponent } from './teacher/teachergrades/teachergrades.component';
+import { PlaygroundComponent } from './student/canvas/playground/playground.component';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import { TeachergradesComponent } from './teacher/teachergrades/teachergrades.co
     ViewQuestionsComponent,
     SolveQuestionComponent,
     ExistuserComponent,
-    TeachergradesComponent
+    TeachergradesComponent,
+    PlaygroundComponent
   ],
   imports: [
     BrowserModule,

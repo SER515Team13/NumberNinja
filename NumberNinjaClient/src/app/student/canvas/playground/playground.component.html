@@ -1,0 +1,157 @@
+<!--
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand
+ */
+-->
+
+<div>
+    <app-studenttoolbar></app-studenttoolbar>
+</div>
+
+<div class="canvasdiv">
+    <div class="upper">
+        <span>{{titleMessage}}</span>
+    </div>
+    <div>
+        <div id="blocklyDiv"></div>
+    </div>
+    <!-- <div id="bottom"> -->
+    <b><div class="lol" id="textarea"></div></b>
+        <!--Removed id="bottom" from next div-->
+        <div class="submitline">
+            <button mat-button class="btn btn-info" (click)="goBack()">Back</button>
+        </div>
+</div>
+
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-grade-2" style="display: none">
+    <!-- <category name="NUMBERS" colour="342"> -->
+        <label text="Numbers"></label>
+        <block editable="false" type="math_number">
+            <field name="NUM">0</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">1</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">2</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">3</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">4</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">5</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">6</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">7</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">8</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">9</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">10</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">11</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">12</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">13</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">14</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">15</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">16</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">17</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">18</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">19</field>
+        </block>
+        <sep gap="2"></sep>
+        <block editable="false" type="math_number">
+            <field name="NUM">20</field>
+        </block>
+        <sep gap="25"></sep>
+    <!-- </category> -->
+    <!-- <category name="OPERATORS" colour="400"> -->
+        <label text="Operators"></label>
+        <block editable="false" type="math_arithmetic">
+            <field name="OP">ADD</field>
+        </block>
+        <sep gap="5"></sep>
+        <block editable="false" type="math_arithmetic">
+            <field name="OP">MINUS</field>
+        </block>
+    <!-- </category> -->
+</xml>
+
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-grade-7" style="display: none">
+    <category name="NUMBERS" colour="342">
+        <label text="Numbers"></label>
+        <block type="math_number">
+            <field name="NUM"></field>
+        </block>
+        <sep gap="32"></sep>
+    </category>
+    <category name="OPERATORS" colour="400">
+        <label text="Operators"></label>
+        <block type="math_arithmetic">
+            <field name="OP">ADD</field>
+        </block>
+        <sep gap="5"></sep>
+        <block type="math_arithmetic">
+            <field name="OP">MINUS</field>
+        </block>
+        <sep gap="5"></sep>
+        <block type="math_arithmetic">
+            <field name="OP">MULTIPLY</field>
+        </block>
+        <sep gap="5"></sep>
+        <block type="math_arithmetic">
+            <field name="OP">DIVIDE</field>
+        </block>
+        <sep gap="5"></sep>
+        <block type="math_arithmetic">
+            <field name="OP">POWER</field>
+        </block>
+    </category>
+</xml>
