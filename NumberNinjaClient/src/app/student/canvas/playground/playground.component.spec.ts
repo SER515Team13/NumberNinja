@@ -8,17 +8,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StudentToolbarComponent } from 'src/app/toolbars/studenttoolbar/studenttoolbar.component';
-import { SolveQuestionComponent } from './solve-question.component';
+import { PlaygroundComponent } from './playground.component';
 declare var Blockly: any;
 
-describe('SolveQuestionComponent', () => {
-  let component: SolveQuestionComponent;
-  let fixture: ComponentFixture<SolveQuestionComponent>;
+describe('PlaygroundComponent', () => {
+  let component: PlaygroundComponent;
+  let fixture: ComponentFixture<PlaygroundComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],
-      declarations: [ SolveQuestionComponent, StudentToolbarComponent, Blockly ],
+      declarations: [ PlaygroundComponent, StudentToolbarComponent, Blockly ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ HttpClient, HttpHandler ]
     })
@@ -26,7 +26,7 @@ describe('SolveQuestionComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SolveQuestionComponent);
+    fixture = TestBed.createComponent(PlaygroundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
