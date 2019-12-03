@@ -6,7 +6,7 @@
  * @author Abhinaw Sarang <asarang@augments.edu>
  *          Fetch assignment for logged in student.
  *          Fetch assignment for teacher based on the class he is assigned.
- * @author Sagar Khar <skhar@augments.edu>
+ * @author Sagar Khar <skhar@asu.edu>
  *          Fetch assignments and the grades for those assignments
  */
 

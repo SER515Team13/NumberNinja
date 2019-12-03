@@ -3,7 +3,7 @@
  *          Login, signin API added
  * @author Abhinaw Sarang <asarang@augments.edu>
  *          Modified signup to get grade and email
- * @author Sagar Khar <skhar@augments.edu>
+ * @author Sagar Khar <skhar@asu.edu>
  *           Fetch the user information to display on the admin screen
  */
 
