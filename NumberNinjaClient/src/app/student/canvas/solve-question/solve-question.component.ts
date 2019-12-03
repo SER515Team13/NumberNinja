@@ -11,6 +11,8 @@ import { MathparserService } from 'src/app/shared/mathparser.service';
 import { MatDialog } from '@angular/material/dialog';
 declare var Blockly: any;
 var workspace;
+var toolboxSource;
+var dom;
 
 @Component({
   selector: 'app-solve-question',
@@ -20,15 +22,17 @@ var workspace;
 export class SolveQuestionComponent implements OnInit {
 
   questionID: any;
-  toolboxSource: any;
   questionString: any;
   isDisconnected: boolean = false;
   hasError: boolean = false;
-  questionType: string;
   solution: string;
   isCorrectSolution: boolean = false;
   formulaDisplay: string;
-  resultString: string = "Result: "
+  resultString: string = "Result: ";
+  questionType: String;
+  questionTypes: String[] = ['Fill in the Blanks', 'Find the Answer'];
+  solutionOptions: String[];
+  history: any;
 
   constructor(private location: Location,
               private questionService: QuestionServiceService,
@@ -42,73 +46,84 @@ export class SolveQuestionComponent implements OnInit {
     this.questionID = this.route.snapshot.paramMap.get('id');
     this.questionService.getQuestionCanvas(this.questionID, localStorage.getItem('userEmail')).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
-        console.log("DATA: " + data);
-        console.log("Fetched data is--------->>", data[0].formulaForBlockly);
-        console.log(data[0].formulaForBlockly);
-        if (data[0].formulaForBlockly == null) {
-          //this.questionString = data[0].formula;//todo
-          this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
-        }
-        else{
-          this.questionString = data[0].formulaForBlockly;
-          this.solution = data[0].formula.substring(data[0].formula.indexOf('=') + 1).trim();
-          //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
-          console.log("QUESTION STRING: " + this.questionString);
-          this.formulaDisplay = "Fill in the blank(s) in ".concat(data[0].formulaWithBlanks.replace(/\?/g, " _____ "));
+        switch (data[0].formulaType) {
+          case this.questionTypes[0]:
+            this.questionType = this.questionTypes[0];
+            this.questionString = data[0].formulaForBlockly;
+            this.solution = data[0].formula.substring(data[0].formula.indexOf('=') + 1).trim();
+            this.formulaDisplay = "Fill in the blank(s) in ".concat(data[0].formulaWithBlanks.replace(/\?/g, " _____ "));
+            break;
+          
+          case this.questionTypes[1]:
+            this.questionType = this.questionTypes[1];
+            this.questionString = data[0].formulaForBlockly;
+            this.solutionOptions = data[0].answers;
+            this.formulaDisplay = "Choose the correct answer for ".concat(data[0].formula.split('=')[0]);
+            break;
         }
         console.log(this.questionString);
-        //this.solution = this.questionString.substring(this.questionString.indexOf('=') + 1).trim();
-        //this.questionString = this.questionString.substring(0, this.questionString.indexOf('='));
-        var xmlContent = this.generateQuestionBlock(this.questionString);
-        console.log("XML CONTENT: " + xmlContent);
-        var dom = Blockly.Xml.textToDom(xmlContent);
-        Blockly.Xml.domToWorkspace(dom, workspace);
+        console.log("HISTORY: " + data[0].history);
+        this.history = data[0].history;
       }
-    });
 
-    // Initialize toolbox depending on student grade.
-    switch(localStorage.getItem('userGrade')) {
-      case '2': 
-        this.toolboxSource = document.getElementById('toolbox-grade-2')
-        break;
+      // Initialize toolbox depending on student grade and question type.
+      switch(localStorage.getItem('userGrade')) {
+        case '2': 
+          toolboxSource = document.getElementById('toolbox-grade-2');
+          break;
 
-      case '7':
-        this.toolboxSource = document.getElementById('toolbox-grade-7')
-        break;
-    }
-    
-    // Spawn blockly workspace
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    workspace = Blockly.inject(blocklyDiv, {
-      readOnly: false,
-      grid: {
-        spacing: 20,
-        length: 20,
-        colour: '#ccc',
-        snap: true
-      },
-      zoom: {
-        controls: true,
-        wheel: true,
-        startScale: 1.4,
-        maxScale: 3,
-        minScale: 0.3,
-        scaleSpeed: 1.2
-      },
-      move: {
-        scrollbars: true,
-        drag: true,
-        wheel: true
-      },
-      toolbox: this.toolboxSource
-    });
+        case '7':
+          console.log('First test');
+          switch(this.questionType) {
+            case this.questionTypes[0]:
+              console.log('Second test');
+              toolboxSource = document.getElementById('toolbox-grade-7');
+              break;
 
-    // /*if (this.questionType == 'Fill in the Blanks') {
+            case this.questionTypes[1]:
+              console.log('Third test');
+              toolboxSource = this.getFindTheCorrectAnswerToolbar();
+              break;
+          }
+          break;
+      }
+
+      const blocklyDiv = document.getElementById('blocklyDiv');
+      workspace = Blockly.inject(blocklyDiv, {
+        readOnly: false,
+        grid: {
+          spacing: 20,
+          length: 20,
+          colour: '#ccc',
+          snap: true
+        },
+        zoom: {
+          controls: true,
+          wheel: true,
+          startScale: 1.4,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2
+        },
+        move: {
+          scrollbars: true,
+          drag: true,
+          wheel: true
+        },
+        toolbox: toolboxSource
+      });
+
+      if (this.history == null) {
+        var xmlContent = this.generateQuestionBlock(this.questionString);
+        dom = Blockly.Xml.textToDom(xmlContent);
+        Blockly.Xml.domToWorkspace(dom, workspace);
+      } else {
+        this.restoreHistory(this.history);
+      }
       
-    // } else if (this.questionType == 'Find the Answer') {
-
-    // }*/
-
+      workspace.addChangeListener(myUpdateFunction.bind(this));
+    });
+    
     function myUpdateFunction(event) {
       var generatedEquation = Blockly.JavaScript.workspaceToCode(workspace);
       generatedEquation = generatedEquation.replace("<br>", "");
@@ -135,9 +150,33 @@ export class SolveQuestionComponent implements OnInit {
         });
       }
       // TODO: Uncomment the below line when saveSolution() and restoreSolution() are implemented
-      // this.saveSolution();
+      this.saveHistory();
     }
-    workspace.addChangeListener(myUpdateFunction.bind(this));
+  }
+
+  /**
+   * This function generated the blocks in toolbar for 'Fill in the Answer' type
+   * questions depending on the possible answer options provided by the teacher.
+   */
+  getFindTheCorrectAnswerToolbar() {
+    var xmlForToolbar = `
+    <xml xmlns="https://developers.google.com/blockly/xml" style="display: none">
+      <label text="ANSWER OPTIONS"></label>
+    `;
+    
+    for (let i = 0; i < this.solutionOptions.length; i++) {
+      xmlForToolbar += `
+        <block editable="false" type="math_number">
+          <field name="NUM">` + this.solutionOptions[i] + `</field>
+        </block>
+      `;
+    }
+    
+    xmlForToolbar += `
+    </xml>
+    `;
+
+    return xmlForToolbar;
   }
 
   /**
@@ -270,17 +309,17 @@ export class SolveQuestionComponent implements OnInit {
             break;
 
           case '*':
-            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">MULTIPLY</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block editable="false" type="math_arithmetic" deletable="false"><field name="OP">MULTIPLY</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
           case '/':
-            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">DIVIDE</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block editable="false" type="math_arithmetic" deletable="false"><field name="OP">DIVIDE</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
           
           case '^':
-            tripleMiddle = '<block type="math_arithmetic" deletable="false"><field name="OP">POWER</field><value name="A">' + tripleLeft +
+            tripleMiddle = '<block editable="false" type="math_arithmetic" deletable="false"><field name="OP">POWER</field><value name="A">' + tripleLeft +
             '</value><value name="B">' + tripleRight + '</value></block>';
             break;
 
@@ -319,10 +358,24 @@ export class SolveQuestionComponent implements OnInit {
       }
     }
 
-    questionXml += stack.pop();
-    for (let i=0; i<disconnectedComponents.length; i++) {
-      questionXml += disconnectedComponents[i];
+    switch(this.questionType) {
+      case this.questionTypes[0]:
+        questionXml += stack.pop();
+        for (let i=0; i<disconnectedComponents.length; i++) {
+          questionXml += disconnectedComponents[i];
+        }
+        break;
+
+      case this.questionTypes[1]:
+        if (this.questionType == this.questionTypes[1]) {
+          questionXml += '<block editable="false" type="logic_compare" deletable="false"><field name="OP">EQ</field>' +
+          '<value name="A">' + stack.pop() + '</value>' +
+          '<value name="B"></value>' +
+          '</block>'
+        }
+        break;
     }
+
     questionXml += '</xml>';
     
     return questionXml;
@@ -332,9 +385,12 @@ export class SolveQuestionComponent implements OnInit {
    * This function saves the student's solution progress so that it can 
    * be resumed later from that position.
    */
-  saveSolution() {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.workspace);
-    //TODO: Store Blockly.Xml.domToText(xml) in question database.
+  saveHistory() {
+    var xml = Blockly.Xml.workspaceToDom(workspace);
+    //console.log("SAVED XML: " + Blockly.Xml.domToText(xml));
+    this.questionService.saveCanvasHistory(this.questionID, localStorage.getItem('userEmail'), Blockly.Xml.domToText(xml)).subscribe((data: any) => {
+      console.log("Response from client service submitSolutionCanvas: " + data);
+    });
     console.log("Progress saved!");
   }
 
@@ -342,10 +398,9 @@ export class SolveQuestionComponent implements OnInit {
    * This function restores the student's solution on opening the workspace 
    * if the student attempted to partly solve the question before.
    */
-  restoreSolution() {
-    Blockly.workspace.clear();
-    var xml = Blockly.Xml.textToDom(/*TODO: Fetch solution progress from question database*/);
-    Blockly.Xml.domToWorkspace(xml, Blockly.workspace);
+  restoreHistory(retrievedHistory: any) {
+    var xml = Blockly.Xml.textToDom(retrievedHistory);
+    Blockly.Xml.domToWorkspace(xml, workspace);
     console.log("Progress restored!");
   }
 
@@ -367,7 +422,7 @@ export class SolveQuestionComponent implements OnInit {
     } else {
       this.isDisconnected = false;
       console.log("SOLUTION:"+this.solution+"|EQUATED:"+generatedEquation);
-      if (this.solution === generatedEquation) {
+      if (this.solution === generatedEquation || generatedEquation == "true") {
         this.isCorrectSolution = true;
       } else {
         this.isCorrectSolution = false;

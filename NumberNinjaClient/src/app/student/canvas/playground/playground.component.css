@@ -1,9 +1,9 @@
 /**
  * @project NumberNinja
- * @author Sukhpreet Singh Anand, Saksham Jhawar
+ * @author Sukhpreet Singh Anand
  */
 
-#blocklyDiv {
+ #blocklyDiv {
     height: 480px;
     width: 100%;
     position: relative;

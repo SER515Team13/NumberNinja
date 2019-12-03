@@ -44,6 +44,14 @@ export class QuestionServiceService {
     });
   }
 
+  saveCanvasHistory(id: any, email: any, history: any): Observable<{}> {
+    console.log("Saving question history");
+    return this.http.get(this.rootUrl + '/questions/saveCanvasHistory', {
+      observe: 'body',
+      params: new HttpParams().append('id', id).append('email', email).append('history', history)
+    });
+  }
+
   getAllQuestion() {
     return this.questionList;
   }
