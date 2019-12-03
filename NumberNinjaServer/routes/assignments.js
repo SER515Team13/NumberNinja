@@ -11,6 +11,7 @@
 var mongoose = require("mongoose");
 var express = require('express');
 var Assignment = require('../models/assignment');
+var Question = require('../models/question');
 var router = express.Router();
 var StudentAssignment = require('../models/student-assignment');
 var StudentAssignmentQuestion = require('../models/studentAssignmentQuestion');
@@ -191,7 +192,7 @@ router.post('/deleterow', function (req, res, next) {
 
   var saq = mongoose.model("studentassignmentquestions", StudentAssignmentQuestion.schema);
   saq.deleteMany({ assignmentId: req.query.assignmentId}).exec();
-  
+
   var question = mongoose.model("questions", Question.schema);
   question.deleteMany({ assignmentID: req.query.assignmentId}).exec();
 
