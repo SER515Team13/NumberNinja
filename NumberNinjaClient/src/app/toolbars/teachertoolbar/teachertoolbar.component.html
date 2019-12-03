@@ -1,15 +1,23 @@
-<nav class="navbar navbar-inverse">
+<!--
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Saksham Jhawar
+ */
+-->
+
+<nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#" style="color:rgb(236, 160, 60); font-size: 40px">Number</a>
-        <a class="navbar-brand" href="#" style="color:rgb(230, 189, 101); font-size: 25px; padding: 9px">Ninja</a>
+        <a class="navbar-brand" href="#" style="color:rgb(236, 160, 60); font-size: 50px">Number</a>
+        <a class="navbar-brand" href="#" style="color:rgb(230, 189, 101); font-size: 30px; padding: 9px">Ninja</a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a href="#" style="color:yellow">MANAGE ASSIGNMENTS</a></li>
-        <li><a href="#" style="color:yellow">GRADES</a></li>
+        <li class="buttons"><a href="#" style="color:black; font-size: 15px;"><b>MANAGE ASSIGNMENTS</b></a></li>
+        <li class="buttons"><a href="#" style="color:black; font-size: 15px;" routerLink ="/teacher/teachergrades"><b>GRADES</b></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a (click)="Logout()"><span class="glyphicon glyphicon-user" style="color:cyan"></span> Log Out</a></li>
+        <li><a (click)="Logout()"><span class="glyphicon glyphicon-user" style="color:burlywood"></span><br><b>Log Out</b></a></li>
       </ul>
     </div>
 </nav>
+<body class="image"></body>

@@ -1,0 +1,21 @@
+/**
+ * @project NumberNinja
+ * @author Saksham Jhawar
+ */
+
+.matTable{
+    background-color: whitesmoke;
+    margin-top: 1px;
+    opacity: 0.8;
+    z-index: 1;
+    margin: 5px 25px 5px 25px;
+}
+.mat-cell {
+    color:black;
+    border-bottom: 1px groove;
+    font-size: 20px;
+}
+.mat-header-cell{
+    color: black;
+    border-bottom: 1px solid;
+}

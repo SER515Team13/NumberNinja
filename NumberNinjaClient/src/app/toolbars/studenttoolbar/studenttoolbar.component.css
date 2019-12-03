@@ -1,8 +1,65 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 .navbar {
     margin-top: 1px;
     padding: 1px;
 }
 .navbar-brand {
-    font-family: lobster;
+    font-family: 'Bungee Inline', cursive;
     font-style: italic;
+}
+.navbar-default{
+    background: #9796f0;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #fbc7d4, #9796f0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        
+}
+.buttons{
+    padding-top: 6px;
+    margin-left: 70px;
+    margin-top: 2px;
+    border-radius: 20px;
+    border-color: orange;
+    background-color:whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.navbar-brand1{
+    font-family: 'Monoton', cursive;
+}
+.outer{
+    position: relative;
+    z-index: 1;
+}
+.image{
+    position: absolute;
+    z-index: -1;
+    background: url('../../../assets/images/bg.jpg') center center;
+    opacity: .1;
+    width: 100%;
+    height: 650px;
+}
+.image7{
+    position: absolute;
+    z-index: -1;
+    background: url('../../../assets/images/bg7.jpg') center center;
+    opacity: .1;
+    width: 100%;
+    height: 650px;
+}
+.glyphicon {
+    font-size: 18px;
+    padding-left: 18px;
+}
+.neeche{
+    padding-top: 22px;
+    margin-left: 70px;
+    margin-top: 1px;
+    border-radius: 25px;
+    background-color: lightgoldenrodyellow;
+}
+.last{
+    font-size: 14px;
 }

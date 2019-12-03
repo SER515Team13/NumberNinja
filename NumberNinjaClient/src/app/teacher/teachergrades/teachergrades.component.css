@@ -1,0 +1,16 @@
+/**
+ * @project NumberNinja
+ * @author Sagar Khar
+ */
+.select{
+    font-size: 15px;
+    padding-left: 5px;
+}
+.mat-select{
+    color: purple;
+}
+
+  :host /deep/ .mat-select-value-text {
+    color:black !important;
+    padding-left: 5px;
+  }

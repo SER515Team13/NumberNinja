@@ -1,5 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/**
+ * @project NumberNinja
+ * @author Sagar Khar, Abhinaw Sarang
+ */
 
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule, MatIcon, MatIconModule, MatToolbarModule, MatTableModule, MatDialogModule } from '@angular/material';
 import { MatTableDataSource } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';

@@ -1,37 +1,50 @@
+<!--
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Abhinaw Sarang, Smit Shah
+ */
+-->
+
 <form class="col s12 white" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
     <div class="row">
         <div class="input-field col s6">
             <input class="validate" type="text" name="UserName" #UserName="ngModel" [(ngModel)]="user.userName" required>
-            <label data-error="Required field!">UserName</label>
+            <label data-error="Required field!" style="font-size: 15px;">UserName</label>
         </div>
         <div class="input-field col s6">
             <input class="validate" type="text" name="Email" #Email="ngModel" [(ngModel)]="user.email" [pattern]="emailPattern">
-            <label data-error="Invalid email!">Email</label>
+            <label data-error="Invalid email!" style="font-size: 15px;">Email</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6">
             <input class="validate" type="password" name="Password" #Password="ngModel" [(ngModel)]="user.password" required minlength="3">
-            <label [attr.data-error]="Password.errors != null ? (Password.errors.required ? 'Required field!' : 'Minimum 3 characters needed') : '' ">Password</label>
+            <label [attr.data-error]="Password.errors != null ? (Password.errors.required ? 'Required field!' : 'Minimum 3 characters needed') : '' " style="font-size: 15px;">Password</label>
         </div>
         <div class="input-field col s6">
             <input class="validate" type="password" name="ConfPassword" #ConfPassword="ngModel" [(ngModel)]="confPassword" required minlength="3" compare='Password'>
-            <label [attr.data-error]="ConfPassword.errors != null ? (ConfPassword.errors.compare ? 'Passwords are not same.' : '' ) : '' ">Confirm Password</label>
+            <label [attr.data-error]="ConfPassword.errors != null ? (ConfPassword.errors.compare ? 'Passwords are not same.' : '' ) : '' " style="font-size: 15px;">Confirm Password</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6">
             <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.firstName" required>
-            <label data-error="Required field!">First Name</label>
+            <label data-error="Required field!" style="font-size: 15px;">First Name</label>
         </div>
         <div class="input-field col s6">
             <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.lastName" required>
-            <label data-error="Required field!">Last Name</label>
+            <label data-error="Required field!" style="font-size: 15px;">Last Name</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s12">
-            <button [disabled]="!userRegistrationForm.valid" class="btn btn-submit" type="submit">Register</button>
+            <button [disabled]="!userRegistrationForm.valid" class="btn btn-submit" type="submit" (click)="register(firstDialog)">Register</button>
         </div>
     </div>
 </form>
+<ng-template #firstDialog>
+    <h2 matDialogTitle><h3>Successfully registered</h3><br>You will be contacted by email once you are approved</h2>
+    <mat-dialog-actions align="end">
+    <button mat-button matDialogClose>OK</button>
+    </mat-dialog-actions>
+</ng-template>

@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @authors Sagar Khar, Abhinaw Sarang, Saksham Jhawar
+**/
+
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { QuestionServiceService } from '../../service/question-service.service';
@@ -27,8 +32,23 @@ export class ViewQuestionsComponent implements OnInit {
   }
 
   getData() {
-    this.questionService.getQuestions(this.assignmentID).subscribe((data: any) => {
+    let email = localStorage.getItem('userEmail');
+    this.questionService.getQuestions(this.assignmentID, email).subscribe((data: any) => {
       if (data && data != undefined && data.length) {
+        for (var each = 0; each < data.length; each++) {
+          console.log(data[each].isSolved)
+            if (data[each].isSolved) {
+              data[each]["status"] = "Complete";
+            } else {
+              data[each]["status"] = "Incomplete";
+            }
+            if (data[each].formulaWithBlanks==null) {
+              data[each].formulaWithBlanks = "Choose the correct answer for ".concat(data[each].formula.split('=')[0]);
+            }
+            else{
+              data[each].formulaWithBlanks = "Fill in the blank in equation ".concat(data[each].formulaWithBlanks.replace(/\?/g, " _____ "));
+            }
+         }
         this.dataSource = new MatTableDataSource<Question>(data);
       }
     });

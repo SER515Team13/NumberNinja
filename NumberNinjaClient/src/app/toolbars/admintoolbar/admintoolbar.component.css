@@ -1,3 +1,8 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 .navbar {
     margin-top: 1px;
     padding: 1px;
@@ -5,4 +10,26 @@
 .navbar-brand {
     font-family: lobster;
     font-style: italic;  
+}
+.glyphicon {
+    font-size: 18px;
+    padding-left: 8px;
+}
+.buttons{
+    padding-top: 6px;
+    margin-left: 70px;
+    margin-top: 2px;
+    border-radius: 25px;
+    border-color: orange;
+    background-color: bisque;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.image{
+    position: absolute;
+    z-index: -1;
+    background: url('../../../assets/images/admin.jpg') center center;
+    opacity: .3;
+    width: 100%;
+    height: 650px;
 }

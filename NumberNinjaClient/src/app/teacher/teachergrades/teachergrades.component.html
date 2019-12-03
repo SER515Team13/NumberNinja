@@ -1,0 +1,53 @@
+<!--
+/**
+ * @project NumberNinja
+ * @author Sagar Khar
+ */
+-->
+<div>
+    <app-teachertoolbar></app-teachertoolbar>
+</div>
+<div>
+<h3><b>Grade Assignments</b></h3>
+<p class="select"><b>Select the Assignment :</b>
+<mat-form-field>
+<mat-select [(ngModel)]="assignment"  (ngModelChange)= onSelectAssignment()> 
+        <mat-option>-assignment-</mat-option>
+        <mat-option [value]="assign._id" *ngFor="let assign of assignmentData">
+                {{assign.name}}
+        </mat-option>
+</mat-select>
+</mat-form-field>
+</p>
+<mat-table [dataSource]="dataSource" class="matTable">
+    <!--Student Name Column -->
+    <ng-container matColumnDef="studentname" >
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Student Name </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="hyperlink">{{element._id.firstName}} {{element._id.lastName}}</mat-cell>
+    </ng-container>
+
+    <!--Marks Column -->
+    <ng-container matColumnDef="marks">
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Answers Correct </mat-header-cell>
+            <mat-cell *matCellDef="let element" type ="number">{{calc(totalQuestions,element.correctAns,element._id.isCorrect)}}/{{totalQuestions}} </mat-cell>
+    </ng-container>
+
+    <!--Grade Column -->
+    <ng-container matColumnDef="grade">
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"> Grade </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <input matInput placeholder="-Enter Grade here-" [(ngModel)]="element.assignedGrade">
+            </mat-cell>
+    </ng-container>
+
+    <!-- Update Column -->
+    <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef style="font-family: 'Times New Roman', Times, serif ; font-size: 22px"></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                    <button mat-button (click)="updateGrade(element)"><mat-icon>check_circle</mat-icon></button>
+            </mat-cell>
+    </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+</div>

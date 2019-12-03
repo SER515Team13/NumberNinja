@@ -1,0 +1,47 @@
+/**
+ * @project NumberNinja
+ * @author Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
+#blocklyDiv {
+    height: 480px;
+    width: 100%;
+    position: relative;
+}
+
+.submitline {
+    width: 100%;
+    padding-left: 715px;
+    font-family:'Courier New', Courier, monospace;
+    margin-top: 8px;
+    background-color: black;
+    z-index: 1;
+}
+.canvasdiv{
+    padding-top:1px;
+}
+.btn-info{
+    border-radius: 20px;
+    background-color: lightgoldenrodyellow;
+    margin-right:20px;
+    float:left;
+}
+.btn-info:hover{
+    background-color:lightcoral;
+}
+.lol{
+    background-color: lightgray;
+    font-size: 30px;
+    padding-left: 10px;
+}
+.upper{
+    padding-left: 650px ;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    background-color: white;
+    margin-bottom: 2px;
+    height: 70px;
+    padding-top: 15px;
+    border: 2px solid black;
+    border-radius: 20px;
+}

@@ -1,3 +1,10 @@
+<!--
+/**
+ * @project NumberNinja
+ * @author Sagar Khar, Saksham Jhawar
+ */
+-->
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -5,11 +12,13 @@
         <a class="navbar-brand" href="#" style="color:rgb(230, 189, 101); font-size: 25px; padding: 9px">Ninja</a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a href="#" style="color:yellow">PENDING ACCOUNTS</a></li>
-        <li><a href="#" style="color:yellow" routerLink = "existingusers">EXISTING ACCOUNTS</a></li>
+        <li class="buttons" ><a href="#" style="color:black"><b>PENDING ACCOUNTS</b></a></li>
+        <li class="buttons" ><a href="#" style="color:black" routerLink = "existingusers"><b>EXISTING ACCOUNTS</b></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a (click)="Logout()"><span class="glyphicon glyphicon-user" style="color:cyan"></span> Log Out</a></li>
+        <li><a (click)="Logout()"><span class="glyphicon glyphicon-user" style="color:cyan"></span><br><b>Log Out</b></a></li>
       </ul>
     </div>
 </nav>
+
+<body class="image"></body>

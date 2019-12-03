@@ -1,6 +1,10 @@
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar
+ */
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { StudentComponent } from './student.component';
 import { StudentToolbarComponent } from './../toolbars/studenttoolbar/studenttoolbar.component';
 import { ViewAssignmentsComponent } from './assignments/view-assignments/view-assignments.component';

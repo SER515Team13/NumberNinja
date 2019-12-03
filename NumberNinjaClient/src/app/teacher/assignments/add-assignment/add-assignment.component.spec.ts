@@ -1,5 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/**
+ * @project NumberNinja
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar, Abhinaw Sarang
+ */
 
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddAssignmentComponent } from './add-assignment.component';
 import { AssignmentService } from '../../service/assignment.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
