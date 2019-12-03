@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @authors Sukhpreet Singh Anand, Saksham Jhawar, Abhinaw Sarang
+ * @authors Sukhpreet Singh Anand, Saksham Jhawar, Abhinaw Sarang, Sagar Khar
  */
 
 import { Injectable, ComponentFactoryResolver } from '@angular/core';

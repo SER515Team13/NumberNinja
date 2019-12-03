@@ -6,6 +6,8 @@
  * @author Abhinaw Sarang <asarang@augments.edu>
  *          Fetch assignment for logged in student.
  *          Fetch assignment for teacher based on the class he is assigned.
+ * @author Sagar Khar <skhar@augments.edu>
+ *          Fetch assignments and the grades for those assignments
  */
 
 var mongoose = require("mongoose");

@@ -1,3 +1,7 @@
+/**
+ * @project NumberNinja
+ * @author Sagar Khar
+ */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';

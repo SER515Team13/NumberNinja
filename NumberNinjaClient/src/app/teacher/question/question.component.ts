@@ -1,6 +1,6 @@
 /**
  * @project NumberNinja
- * @authors Abhinaw Sarang, Smit Shah
+ * @authors Sagar Khar, Abhinaw Sarang, Smit Shah
  */
 
 import { Component, OnInit, Inject } from '@angular/core';
