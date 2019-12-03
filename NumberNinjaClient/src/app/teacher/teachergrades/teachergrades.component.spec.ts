@@ -1,3 +1,7 @@
+/**
+ * @project NumberNinja
+ * @author Sagar Khar
+ */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeachergradesComponent } from './teachergrades.component';
